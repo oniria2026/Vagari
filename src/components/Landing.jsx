@@ -10,7 +10,7 @@ import fondoForm2 from '../assets/fondoForm2.webp';
 // Images & SVGs
 import cardImg from '../assets/card.webp';
 import mapaImg from '../assets/mapa.webp';
-import organicoSvg from '../assets/organico.svg';
+import teleSvg from '../assets/tele.svg';
 import espiralSvg from '../assets/espiral.svg';
 import puertaSvg from '../assets/puerta.svg';
 import aireSvg from '../assets/aire.svg';
@@ -55,7 +55,7 @@ export default function Landing() {
             ¿Qué mundo te espera?
           </motion.h2>
 
-          {/* Div cuadrado color rosa con bordes redondeados (rounded-xl) conteniendo el SVG de la flor */}
+          {/* Div cuadrado color rosa con bordes redondeados (rounded-xl) conteniendo el SVG dia */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
@@ -69,8 +69,8 @@ export default function Landing() {
               className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40"
             />
             <img
-              src={organicoSvg}
-              alt="Flor"
+              src={diaSvg}
+              alt="Día"
               className="relative z-10 w-28 h-28 object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
             />
           </motion.div>
@@ -109,13 +109,13 @@ export default function Landing() {
             />
           </motion.div>
 
-          {/* Lista vertical de 4 ítems con flexbox e iconos SVG importados a la izquierda con delay escalonado */}
+          {/* Lista vertical de 4 ítems: 1: dia.svg, 2: puerta.svg, 3: tele.svg, 4: espiral.svg */}
           <div className="w-full max-w-[320px] flex flex-col gap-2.5">
             {[
               {
                 num: '01',
                 title: 'Los símbolos',
-                icon: espiralSvg,
+                icon: diaSvg,
               },
               {
                 num: '02',
@@ -125,12 +125,12 @@ export default function Landing() {
               {
                 num: '03',
                 title: '???',
-                icon: aireSvg,
+                icon: teleSvg,
               },
               {
                 num: '04',
                 title: '???',
-                icon: diaSvg,
+                icon: espiralSvg,
               },
             ].map((item, index) => (
               <motion.div
@@ -163,7 +163,7 @@ export default function Landing() {
         style={{ backgroundImage: `url(${fondoFecha2})` }}
       >
         <div className="w-full flex flex-col items-center pt-10">
-          {/* Estrella centrada y título */}
+          {/* Logo superior: aire.svg */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
@@ -173,8 +173,8 @@ export default function Landing() {
           >
             <div className="w-12 h-12 mb-3 flex items-center justify-center">
               <img
-                src={nocheSvg}
-                alt="Estrella Oniria"
+                src={aireSvg}
+                alt="Aire Oniria"
                 className="w-full h-full object-contain filter drop-shadow animate-pulse"
               />
             </div>
