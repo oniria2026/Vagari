@@ -238,13 +238,16 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center max-w-[320px]"
           >
             <h1 className="text-3xl font-bold text-[#354854] tracking-wider mb-2">
               Vagari
             </h1>
-            <p className="text-xs text-[#4b5d67] max-w-[280px] leading-relaxed mb-8">
-              Adentrate en los senderos de Oniria. Dejanos tus datos para recibir las coordenadas de ingreso y novedades del próximo portal.
+            <p className="text-sm font-medium text-[#4b5d67] leading-relaxed mb-3">
+              ¿Alguna vez te preguntaste de qué estan hechos los sueños?
+            </p>
+            <p className="text-xs text-[#5c6f79] leading-relaxed mb-6">
+              Las primeras señales ya aprecieron. Dejanos tus datos y seguí el rastro:
             </p>
           </motion.div>
 
@@ -297,17 +300,32 @@ export default function Landing() {
           viewport={fadeUp.viewport}
           className="w-full py-6 flex flex-col items-center gap-3 border-t border-black/10 mt-6"
         >
-          <div className="flex justify-center gap-5 text-sm font-medium text-[#4b5d67]">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-[#E76F8E] transition">
-              Instagram
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#4b5d67]">
+            <a
+              href="https://instagram.com/somos.oniria"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[#E76F8E] transition"
+            >
+              @somos.oniria
             </a>
-            <span>•</span>
-            <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:text-[#E76F8E] transition">
-              TikTok
+            <span className="text-[#4b5d67]/50">|</span>
+            <a
+              href="https://instagram.com/oniria.tdm3"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[#E76F8E] transition"
+            >
+              @oniria.tdm3
             </a>
-            <span>•</span>
-            <a href="https://spotify.com" target="_blank" rel="noreferrer" className="hover:text-[#E76F8E] transition">
-              Spotify
+            <span className="text-[#4b5d67]/50">|</span>
+            <a
+              href="https://tiktok.com/@somos.oniria"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[#E76F8E] transition"
+            >
+              @somos.oniria
             </a>
           </div>
           <span className="text-[11px] text-[#6b7b83]">
