@@ -119,17 +119,17 @@ export default function Landing() {
               },
               {
                 num: '02',
-                title: 'Las puertas del umbral',
+                title: '???',
                 icon: puertaSvg,
               },
               {
                 num: '03',
-                title: 'El valle flotante',
+                title: '???',
                 icon: aireSvg,
               },
               {
                 num: '04',
-                title: 'El despertar',
+                title: '???',
                 icon: diaSvg,
               },
             ].map((item, index) => (
