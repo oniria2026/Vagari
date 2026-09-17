@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
 // Backgrounds
 import fondoCard2 from '../assets/fondoCard2.webp';
@@ -28,6 +29,13 @@ export default function Landing() {
     alert(`¡Gracias por registrarte, ${formData.nombre || 'viajero'}!`);
   };
 
+  const fadeUp = {
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: "easeOut" },
+    viewport: { once: true, amount: 0.2 },
+  };
+
   return (
     <div className="flex flex-col w-full max-w-[400px] mx-auto min-h-screen">
       {/* 1. SECCIÓN CARD: fondoCard2.webp */}
@@ -37,12 +45,24 @@ export default function Landing() {
         style={{ backgroundImage: `url(${fondoCard2})` }}
       >
         <div className="relative z-10 flex flex-col items-center">
-          <h2 className="text-[#F296B6] text-2xl font-bold tracking-wide drop-shadow-md mb-8">
+          <motion.h2
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={fadeUp.transition}
+            viewport={fadeUp.viewport}
+            className="text-[#F296B6] text-2xl font-bold tracking-wide drop-shadow-md mb-8"
+          >
             ¿Qué mundo te espera?
-          </h2>
+          </motion.h2>
 
           {/* Div cuadrado color rosa con bordes redondeados (rounded-xl) conteniendo el SVG de la flor */}
-          <div className="relative w-52 h-52 bg-[#F296B6]/90 rounded-xl shadow-2xl flex items-center justify-center p-6 overflow-hidden border border-white/40">
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.2 }}
+            viewport={fadeUp.viewport}
+            className="relative w-52 h-52 bg-[#F296B6]/90 rounded-xl shadow-2xl flex items-center justify-center p-6 overflow-hidden border border-white/40"
+          >
             <img
               src={cardImg}
               alt="Card Frame"
@@ -53,7 +73,7 @@ export default function Landing() {
               alt="Flor"
               className="relative z-10 w-28 h-28 object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -64,20 +84,32 @@ export default function Landing() {
         style={{ backgroundImage: `url(${fondoMapa})` }}
       >
         <div className="w-full flex flex-col items-center py-6">
-          <h2 className="text-[#2b3a24] uppercase text-xl font-bold tracking-widest mb-4 drop-shadow-sm">
+          <motion.h2
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={fadeUp.transition}
+            viewport={fadeUp.viewport}
+            className="text-[#2b3a24] uppercase text-xl font-bold tracking-widest mb-4 drop-shadow-sm"
+          >
             mapa de oniria
-          </h2>
+          </motion.h2>
 
           {/* Imagen importada mapa.webp */}
-          <div className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl border border-white/50 mb-6 bg-white/20">
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.15 }}
+            viewport={fadeUp.viewport}
+            className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl border border-white/50 mb-6 bg-white/20"
+          >
             <img
               src={mapaImg}
               alt="Mapa de Oniria"
               className="w-full h-full object-cover"
             />
-          </div>
+          </motion.div>
 
-          {/* Lista vertical de 4 ítems con flexbox e iconos SVG importados a la izquierda */}
+          {/* Lista vertical de 4 ítems con flexbox e iconos SVG importados a la izquierda con delay escalonado */}
           <div className="w-full max-w-[320px] flex flex-col gap-2.5">
             {[
               {
@@ -100,9 +132,13 @@ export default function Landing() {
                 title: 'El despertar',
                 icon: diaSvg,
               },
-            ].map((item) => (
-              <div
+            ].map((item, index) => (
+              <motion.div
                 key={item.num}
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.25 + index * 0.1 }}
+                viewport={fadeUp.viewport}
                 className="flex items-center gap-3 bg-white/70 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-sm text-left border border-white/60 text-[#2b3a24]"
               >
                 <div className="w-6 h-6 shrink-0 flex items-center justify-center">
@@ -114,7 +150,7 @@ export default function Landing() {
                 </div>
                 <span className="font-bold text-xs tracking-wider">{item.num}</span>
                 <span className="text-sm font-medium tracking-wide">{item.title}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -127,21 +163,35 @@ export default function Landing() {
         style={{ backgroundImage: `url(${fondoFecha2})` }}
       >
         <div className="w-full flex flex-col items-center pt-10">
-          {/* Estrella centrada */}
-          <div className="w-12 h-12 mb-3 flex items-center justify-center">
-            <img
-              src={nocheSvg}
-              alt="Estrella Oniria"
-              className="w-full h-full object-contain filter drop-shadow animate-pulse"
-            />
-          </div>
+          {/* Estrella centrada y título */}
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={fadeUp.transition}
+            viewport={fadeUp.viewport}
+            className="flex flex-col items-center"
+          >
+            <div className="w-12 h-12 mb-3 flex items-center justify-center">
+              <img
+                src={nocheSvg}
+                alt="Estrella Oniria"
+                className="w-full h-full object-contain filter drop-shadow animate-pulse"
+              />
+            </div>
 
-          <h2 className="text-[#F4F1E1] text-xl font-semibold tracking-widest uppercase mb-8 drop-shadow-sm">
-            Próximo Vagari
-          </h2>
+            <h2 className="text-[#F4F1E1] text-xl font-semibold tracking-widest uppercase mb-8 drop-shadow-sm">
+              Próximo Vagari
+            </h2>
+          </motion.div>
 
           {/* Contador grande */}
-          <div className="flex items-center justify-center gap-2 mb-2 bg-black/20 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20">
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.2 }}
+            viewport={fadeUp.viewport}
+            className="flex items-center justify-center gap-2 mb-2 bg-black/20 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20"
+          >
             <div className="flex flex-col items-center">
               <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">14</span>
               <span className="text-[11px] uppercase tracking-wider text-white/70">días</span>
@@ -156,15 +206,21 @@ export default function Landing() {
               <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">32</span>
               <span className="text-[11px] uppercase tracking-wider text-white/70">minutos</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Texto de ubicación requerido */}
-          <div className="mt-8 text-sm text-white/90 space-y-1">
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.35 }}
+            viewport={fadeUp.viewport}
+            className="mt-8 text-sm text-white/90 space-y-1"
+          >
             <p className="font-semibold text-[#F4F1E1] text-base drop-shadow-sm">
               Facultad de Artes Sede Fonseca
             </p>
             <p className="text-xs text-white/80">Entrada libre y gratuita</p>
-          </div>
+          </motion.div>
         </div>
 
         <div className="pb-4" />
@@ -177,44 +233,70 @@ export default function Landing() {
         style={{ backgroundImage: `url(${fondoForm2})` }}
       >
         <div className="w-full flex flex-col items-center pt-8">
-          <h1 className="text-3xl font-bold text-[#354854] tracking-wider mb-2">
-            Vagari
-          </h1>
-          <p className="text-xs text-[#4b5d67] max-w-[280px] leading-relaxed mb-8">
-            Adentrate en los senderos de Oniria. Dejanos tus datos para recibir las coordenadas de ingreso y novedades del próximo portal.
-          </p>
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={fadeUp.transition}
+            viewport={fadeUp.viewport}
+            className="flex flex-col items-center"
+          >
+            <h1 className="text-3xl font-bold text-[#354854] tracking-wider mb-2">
+              Vagari
+            </h1>
+            <p className="text-xs text-[#4b5d67] max-w-[280px] leading-relaxed mb-8">
+              Adentrate en los senderos de Oniria. Dejanos tus datos para recibir las coordenadas de ingreso y novedades del próximo portal.
+            </p>
+          </motion.div>
 
-          {/* Formulario */}
+          {/* Formulario con inputs escalonados */}
           <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4">
-            <input
+            <motion.input
               type="text"
               name="nombre"
               value={formData.nombre}
               onChange={handleChange}
               placeholder="Nombre"
               required
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.15 }}
+              viewport={fadeUp.viewport}
               className="w-full bg-white/40 border border-white/60 focus:border-[#E76F8E] focus:bg-white/70 px-4 py-3 rounded-2xl outline-none text-sm text-[#2b3a24] placeholder:text-[#6b7b83] transition"
             />
-            <input
+            <motion.input
               type="email"
               name="mail"
               value={formData.mail}
               onChange={handleChange}
               placeholder="Mail"
               required
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.25 }}
+              viewport={fadeUp.viewport}
               className="w-full bg-white/40 border border-white/60 focus:border-[#E76F8E] focus:bg-white/70 px-4 py-3 rounded-2xl outline-none text-sm text-[#2b3a24] placeholder:text-[#6b7b83] transition"
             />
-            <button
+            <motion.button
               type="submit"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.35 }}
+              viewport={fadeUp.viewport}
               className="w-full mt-2 bg-[#E76F8E] hover:bg-[#d85c7c] active:scale-98 transition duration-200 text-white font-medium py-3 rounded-2xl shadow-md text-sm uppercase tracking-wider cursor-pointer"
             >
               registrarme
-            </button>
+            </motion.button>
           </form>
         </div>
 
         {/* Pie: Redes Sociales centradas */}
-        <div className="w-full py-6 flex flex-col items-center gap-3 border-t border-black/10 mt-6">
+        <motion.div
+          initial={fadeUp.initial}
+          whileInView={fadeUp.whileInView}
+          transition={{ ...fadeUp.transition, delay: 0.4 }}
+          viewport={fadeUp.viewport}
+          className="w-full py-6 flex flex-col items-center gap-3 border-t border-black/10 mt-6"
+        >
           <div className="flex justify-center gap-5 text-sm font-medium text-[#4b5d67]">
             <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-[#E76F8E] transition">
               Instagram
@@ -231,7 +313,7 @@ export default function Landing() {
           <span className="text-[11px] text-[#6b7b83]">
             © 2026 Oniria Project • Todos los derechos reservados
           </span>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
