@@ -1,8 +1,12 @@
 import React from 'react';
+import fondoPortada from '../assets/fondoPortada.webp';
 
 export default function Portada({ onExplorar }) {
   return (
-    <div className="relative w-full h-screen bg-[url('/fondoPortada.webp')] bg-cover bg-center bg-no-repeat overflow-hidden flex flex-col items-center">
+    <div
+      className="relative w-full h-screen bg-cover bg-center bg-no-repeat overflow-hidden flex flex-col items-center"
+      style={{ backgroundImage: `url(${fondoPortada})` }}
+    >
       {/* Botón Explorar posicionado debajo del centro geométrico, alineado con la base de la puerta */}
       <button
         type="button"
