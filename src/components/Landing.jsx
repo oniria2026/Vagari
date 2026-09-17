@@ -3,9 +3,7 @@ import { motion } from 'framer-motion';
 
 // Backgrounds
 import fondoCard2 from '../assets/fondoCard2.webp';
-import fondoMapa from '../assets/fondoMapa.webp';
-import fondoFecha2 from '../assets/fondoFecha2.webp';
-import fondoForm2 from '../assets/fondoForm2.webp';
+import mapaCompleto from '../assets/mapaCompleto.svg';
 
 // Images & SVGs
 import cardImg from '../assets/card.webp';
@@ -77,161 +75,163 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 2. SECCIÓN MAPA: fondoMapa.webp */}
-      <section
-        id="mapa"
-        className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center p-6 text-center relative"
-        style={{ backgroundImage: `url(${fondoMapa})` }}
+      {/* Wrapper continuo para las últimas 3 secciones: Mapa, Fecha y Formulario */}
+      <div
+        className="bg-[url('./assets/mapaCompleto.svg')] bg-cover bg-top bg-no-repeat w-full flex flex-col"
+        style={{ backgroundImage: `url(${mapaCompleto})` }}
       >
-        <div className="w-full flex flex-col items-center py-6">
-          <motion.h2
-            initial={fadeUp.initial}
-            whileInView={fadeUp.whileInView}
-            transition={fadeUp.transition}
-            viewport={fadeUp.viewport}
-            className="text-[#2b3a24] uppercase text-xl font-bold tracking-widest mb-4 drop-shadow-sm"
-          >
-            mapa de oniria
-          </motion.h2>
+        {/* 2. SECCIÓN MAPA: fondo transparente */}
+        <section
+          id="mapa"
+          className="min-h-screen w-full flex flex-col items-center justify-center p-6 text-center relative bg-transparent"
+        >
+          <div className="w-full flex flex-col items-center py-6">
+            <motion.h2
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={fadeUp.transition}
+              viewport={fadeUp.viewport}
+              className="text-[#2b3a24] uppercase text-xl font-bold tracking-widest mb-4 drop-shadow-sm"
+            >
+              mapa de oniria
+            </motion.h2>
 
-          {/* Imagen importada mapa.webp */}
-          <motion.div
-            initial={fadeUp.initial}
-            whileInView={fadeUp.whileInView}
-            transition={{ ...fadeUp.transition, delay: 0.15 }}
-            viewport={fadeUp.viewport}
-            className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl border border-white/50 mb-6 bg-white/20"
-          >
-            <img
-              src={mapaImg}
-              alt="Mapa de Oniria"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* Lista vertical de 4 ítems: 1: dia.svg, 2: puerta.svg, 3: tele.svg, 4: espiral.svg */}
-          <div className="w-full max-w-[320px] flex flex-col gap-2.5">
-            {[
-              {
-                num: '01',
-                title: 'Los símbolos',
-                icon: diaSvg,
-              },
-              {
-                num: '02',
-                title: '???',
-                icon: puertaSvg,
-              },
-              {
-                num: '03',
-                title: '???',
-                icon: teleSvg,
-              },
-              {
-                num: '04',
-                title: '???',
-                icon: espiralSvg,
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={item.num}
-                initial={fadeUp.initial}
-                whileInView={fadeUp.whileInView}
-                transition={{ ...fadeUp.transition, delay: 0.25 + index * 0.1 }}
-                viewport={fadeUp.viewport}
-                className="flex items-center gap-3 bg-white/70 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-sm text-left border border-white/60 text-[#2b3a24]"
-              >
-                <div className="w-6 h-6 shrink-0 flex items-center justify-center">
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="font-bold text-xs tracking-wider">{item.num}</span>
-                <span className="text-sm font-medium tracking-wide">{item.title}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. SECCIÓN FECHA: fondoFecha2.webp */}
-      <section
-        id="fecha"
-        className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-between p-8 text-center relative overflow-hidden text-white"
-        style={{ backgroundImage: `url(${fondoFecha2})` }}
-      >
-        <div className="w-full flex flex-col items-center pt-10">
-          {/* Logo superior: aire.svg */}
-          <motion.div
-            initial={fadeUp.initial}
-            whileInView={fadeUp.whileInView}
-            transition={fadeUp.transition}
-            viewport={fadeUp.viewport}
-            className="flex flex-col items-center"
-          >
-            <div className="w-12 h-12 mb-3 flex items-center justify-center">
+            {/* Imagen importada mapa.webp */}
+            <motion.div
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.15 }}
+              viewport={fadeUp.viewport}
+              className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl border border-white/50 mb-6 bg-white/20"
+            >
               <img
-                src={aireSvg}
-                alt="Aire Oniria"
-                className="w-full h-full object-contain filter drop-shadow animate-pulse"
+                src={mapaImg}
+                alt="Mapa de Oniria"
+                className="w-full h-full object-cover"
               />
+            </motion.div>
+
+            {/* Lista vertical de 4 ítems: 1: dia.svg, 2: puerta.svg, 3: tele.svg, 4: espiral.svg */}
+            <div className="w-full max-w-[320px] flex flex-col gap-2.5">
+              {[
+                {
+                  num: '01',
+                  title: 'Los símbolos',
+                  icon: diaSvg,
+                },
+                {
+                  num: '02',
+                  title: '???',
+                  icon: puertaSvg,
+                },
+                {
+                  num: '03',
+                  title: '???',
+                  icon: teleSvg,
+                },
+                {
+                  num: '04',
+                  title: '???',
+                  icon: espiralSvg,
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.num}
+                  initial={fadeUp.initial}
+                  whileInView={fadeUp.whileInView}
+                  transition={{ ...fadeUp.transition, delay: 0.25 + index * 0.1 }}
+                  viewport={fadeUp.viewport}
+                  className="flex items-center gap-3 bg-white/70 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-sm text-left border border-white/60 text-[#2b3a24]"
+                >
+                  <div className="w-6 h-6 shrink-0 flex items-center justify-center">
+                    <img
+                      src={item.icon}
+                      alt={item.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span className="font-bold text-xs tracking-wider">{item.num}</span>
+                  <span className="text-sm font-medium tracking-wide">{item.title}</span>
+                </motion.div>
+              ))}
             </div>
+          </div>
+        </section>
 
-            <h2 className="text-[#F4F1E1] text-xl font-semibold tracking-widest uppercase mb-8 drop-shadow-sm">
-              Próximo Vagari
-            </h2>
-          </motion.div>
+        {/* 3. SECCIÓN FECHA: fondo transparente */}
+        <section
+          id="fecha"
+          className="min-h-screen w-full flex flex-col items-center justify-between p-8 text-center relative overflow-hidden text-white bg-transparent"
+        >
+          <div className="w-full flex flex-col items-center pt-10">
+            {/* Logo superior: aire.svg */}
+            <motion.div
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={fadeUp.transition}
+              viewport={fadeUp.viewport}
+              className="flex flex-col items-center"
+            >
+              <div className="w-12 h-12 mb-3 flex items-center justify-center">
+                <img
+                  src={aireSvg}
+                  alt="Aire Oniria"
+                  className="w-full h-full object-contain filter drop-shadow animate-pulse"
+                />
+              </div>
 
-          {/* Contador grande */}
-          <motion.div
-            initial={fadeUp.initial}
-            whileInView={fadeUp.whileInView}
-            transition={{ ...fadeUp.transition, delay: 0.2 }}
-            viewport={fadeUp.viewport}
-            className="flex items-center justify-center gap-2 mb-2 bg-black/20 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20"
-          >
-            <div className="flex flex-col items-center">
-              <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">14</span>
-              <span className="text-[11px] uppercase tracking-wider text-white/70">días</span>
-            </div>
-            <span className="text-3xl font-bold -mt-3 text-white/50">:</span>
-            <div className="flex flex-col items-center">
-              <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">06</span>
-              <span className="text-[11px] uppercase tracking-wider text-white/70">horas</span>
-            </div>
-            <span className="text-3xl font-bold -mt-3 text-white/50">:</span>
-            <div className="flex flex-col items-center">
-              <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">32</span>
-              <span className="text-[11px] uppercase tracking-wider text-white/70">minutos</span>
-            </div>
-          </motion.div>
+              <h2 className="text-[#F4F1E1] text-xl font-semibold tracking-widest uppercase mb-8 drop-shadow-sm">
+                Próximo Vagari
+              </h2>
+            </motion.div>
 
-          {/* Texto de ubicación requerido */}
-          <motion.div
-            initial={fadeUp.initial}
-            whileInView={fadeUp.whileInView}
-            transition={{ ...fadeUp.transition, delay: 0.35 }}
-            viewport={fadeUp.viewport}
-            className="mt-8 text-sm text-white/90 space-y-1"
-          >
-            <p className="font-semibold text-[#F4F1E1] text-base drop-shadow-sm">
-              Facultad de Artes Sede Fonseca
-            </p>
-            <p className="text-xs text-white/80">Entrada libre y gratuita</p>
-          </motion.div>
-        </div>
+            {/* Contador grande */}
+            <motion.div
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.2 }}
+              viewport={fadeUp.viewport}
+              className="flex items-center justify-center gap-2 mb-2 bg-black/20 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20"
+            >
+              <div className="flex flex-col items-center">
+                <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">14</span>
+                <span className="text-[11px] uppercase tracking-wider text-white/70">días</span>
+              </div>
+              <span className="text-3xl font-bold -mt-3 text-white/50">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">06</span>
+                <span className="text-[11px] uppercase tracking-wider text-white/70">horas</span>
+              </div>
+              <span className="text-3xl font-bold -mt-3 text-white/50">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-4xl font-bold tracking-tight text-[#F4F1E1]">32</span>
+                <span className="text-[11px] uppercase tracking-wider text-white/70">minutos</span>
+              </div>
+            </motion.div>
 
-        <div className="pb-4" />
-      </section>
+            {/* Texto de ubicación requerido */}
+            <motion.div
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.35 }}
+              viewport={fadeUp.viewport}
+              className="mt-8 text-sm text-white/90 space-y-1"
+            >
+              <p className="font-semibold text-[#F4F1E1] text-base drop-shadow-sm">
+                Facultad de Artes Sede Fonseca
+              </p>
+              <p className="text-xs text-white/80">Entrada libre y gratuita</p>
+            </motion.div>
+          </div>
 
-      {/* 4. SECCIÓN FORMULARIO: fondoForm2.webp */}
-      <section
-        id="formulario"
-        className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-between p-8 text-center relative"
-        style={{ backgroundImage: `url(${fondoForm2})` }}
-      >
+          <div className="pb-4" />
+        </section>
+
+        {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
+        <section
+          id="formulario"
+          className="min-h-screen w-full flex flex-col justify-between p-8 text-center relative bg-transparent"
+        >
         <div className="w-full flex flex-col items-center pt-8">
           <motion.div
             initial={fadeUp.initial}
@@ -333,6 +333,7 @@ export default function Landing() {
           </span>
         </motion.div>
       </section>
+      </div>
     </div>
   );
 }
