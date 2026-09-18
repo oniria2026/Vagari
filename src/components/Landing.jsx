@@ -162,7 +162,7 @@ export default function Landing() {
               className="w-full h-full relative"
               style={{ transformStyle: 'preserve-3d' }}
               animate={{ rotateY: isFlipped ? 180 : 0 }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
             >
               {/* Frente */}
               <div 
@@ -191,7 +191,7 @@ export default function Landing() {
                   alt="Card Frame Dorso"
                   className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xl"
                 />
-                <div className="relative z-10 font-naiveer text-[#FF94DA] text-4xl tracking-widest drop-shadow-md text-center">
+                <div className="relative z-10 font-naiveer text-[#F1EEE7] text-4xl tracking-widest drop-shadow-md text-center">
                   {randomSymbol.name}
                 </div>
               </div>
