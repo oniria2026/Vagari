@@ -182,7 +182,7 @@ export default function Landing() {
               </div>
 
               <h2 className="font-naiveer text-[#F1EEE7] text-3xl tracking-wider mb-8 drop-shadow-md">
-                Próximo Vagari
+                proximo vagari
               </h2>
             </motion.div>
 
@@ -242,7 +242,7 @@ export default function Landing() {
             className="flex flex-col items-center max-w-[320px]"
           >
             <h1 className="font-naiveer text-4xl text-[#F1EEE7] tracking-wider mb-2 drop-shadow-md">
-              Vagari
+              vagari
             </h1>
             <p className="text-sm font-medium text-[#24251E] leading-relaxed mb-3 drop-shadow-sm">
               ¿Alguna vez te preguntaste de qué estan hechos los sueños?
