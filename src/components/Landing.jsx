@@ -16,6 +16,7 @@ import puertaSvg from '../assets/puerta.svg';
 import aireSvg from '../assets/aire.svg';
 import diaSvg from '../assets/dia.svg';
 import nocheSvg from '../assets/noche.svg';
+import ubicacionImg from '../assets/ubicacion.webp';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
@@ -310,43 +311,83 @@ export default function Landing() {
 
           {/* Bloque central: Segundo subtítulo y Formulario centrados verticalmente */}
           <div className="w-full flex flex-col items-center relative z-10 my-auto py-4">
-            <motion.p
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.1 }}
-              viewport={fadeUp.viewport}
-              className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-5 text-center w-full max-w-[340px] px-1"
-            >
-              <span className="font-bold">Las primeras señales ya<br />aprecieron.</span><br />
-              Dejanos tus datos y<br />seguí el rastro:
-            </motion.p>
-
-            {/* Formulario siempre visible */}
-            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10">
-              <motion.input
-                type="text"
-                name="nombre"
-                placeholder="Nombre"
-                required
+            {/* Contenedor relativo del subtítulo con la señal 1 (arriba a la derecha) */}
+            <div className="relative w-full max-w-[340px] flex flex-col items-center">
+              {/* Señal 1: Por encima del subtítulo a la derecha */}
+              <motion.img
+                src={ubicacionImg}
+                alt=""
                 initial={fadeUp.initial}
                 whileInView={fadeUp.whileInView}
                 transition={{ ...fadeUp.transition, delay: 0.15 }}
                 viewport={fadeUp.viewport}
-                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
+                className="absolute -top-6 right-6 w-9 h-9 object-contain pointer-events-none z-0 filter drop-shadow-sm select-none"
               />
-              <motion.input
-                type="email"
-                name="email"
-                placeholder="Mail"
-                required
-                onInput={handleEmailInput}
-                title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
+
+              <motion.p
                 initial={fadeUp.initial}
                 whileInView={fadeUp.whileInView}
-                transition={{ ...fadeUp.transition, delay: 0.25 }}
+                transition={{ ...fadeUp.transition, delay: 0.1 }}
                 viewport={fadeUp.viewport}
-                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400"
-              />
+                className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-5 text-center w-full px-1 relative z-10"
+              >
+                <span className="font-bold">Las primeras señales ya<br />aprecieron.</span><br />
+                Dejanos tus datos y<br />seguí el rastro:
+              </motion.p>
+            </div>
+
+            {/* Formulario siempre visible con señales detrás de los campos */}
+            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10">
+              {/* Campo Nombre con Señal 2 detrás a la izquierda */}
+              <div className="relative w-full">
+                <motion.img
+                  src={ubicacionImg}
+                  alt=""
+                  initial={fadeUp.initial}
+                  whileInView={fadeUp.whileInView}
+                  transition={{ ...fadeUp.transition, delay: 0.2 }}
+                  viewport={fadeUp.viewport}
+                  className="absolute -top-4 left-6 w-9 h-9 object-contain pointer-events-none z-0 filter drop-shadow-sm select-none"
+                />
+                <motion.input
+                  type="text"
+                  name="nombre"
+                  placeholder="Nombre"
+                  required
+                  initial={fadeUp.initial}
+                  whileInView={fadeUp.whileInView}
+                  transition={{ ...fadeUp.transition, delay: 0.15 }}
+                  viewport={fadeUp.viewport}
+                  className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition relative z-10 backdrop-blur-[2px]"
+                />
+              </div>
+
+              {/* Campo Mail con Señal 3 detrás a la derecha */}
+              <div className="relative w-full">
+                <motion.img
+                  src={ubicacionImg}
+                  alt=""
+                  initial={fadeUp.initial}
+                  whileInView={fadeUp.whileInView}
+                  transition={{ ...fadeUp.transition, delay: 0.3 }}
+                  viewport={fadeUp.viewport}
+                  className="absolute -bottom-4 right-5 w-9 h-9 object-contain pointer-events-none z-0 filter drop-shadow-sm select-none"
+                />
+                <motion.input
+                  type="email"
+                  name="email"
+                  placeholder="Mail"
+                  required
+                  onInput={handleEmailInput}
+                  title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
+                  initial={fadeUp.initial}
+                  whileInView={fadeUp.whileInView}
+                  transition={{ ...fadeUp.transition, delay: 0.25 }}
+                  viewport={fadeUp.viewport}
+                  className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400 relative z-10 backdrop-blur-[2px]"
+                />
+              </div>
+
               <motion.button
                 type="submit"
                 disabled={state.submitting}
@@ -354,20 +395,20 @@ export default function Landing() {
                 whileInView={fadeUp.whileInView}
                 transition={{ ...fadeUp.transition, delay: 0.35 }}
                 viewport={fadeUp.viewport}
-                className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed relative z-10"
               >
                 {state.submitting ? 'Enviando...' : 'Registrarme'}
               </motion.button>
             </form>
           </div>
 
-          {/* Bloque inferior: Redes Sociales centradas verticalmente sobre el fondo de nubes */}
+          {/* Bloque inferior: Redes Sociales al pie */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.4 }}
             viewport={fadeUp.viewport}
-            className="w-full pt-2 pb-6 flex justify-center items-center relative z-10"
+            className="w-full pt-2 pb-6 flex justify-center items-center relative z-20"
           >
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#24251E]">
               <a
@@ -421,8 +462,19 @@ export default function Landing() {
             </div>
           )}
 
-          {/* Fondo final: sobre mapaCompleto, detrás de las redes */}
-          <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-0">
+          {/* Señal 4: Detrás de la nube del final a la izquierda, asomando un poquito */}
+          <motion.img
+            src={ubicacionImg}
+            alt=""
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.45 }}
+            viewport={fadeUp.viewport}
+            className="absolute bottom-16 left-1/2 -translate-x-[110px] w-9 h-9 object-contain pointer-events-none z-[5] filter drop-shadow-sm select-none"
+          />
+
+          {/* Fondo final: sobre mapaCompleto, detrás de las redes y delante de la señal 4 */}
+          <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-10">
             <img
               src={fondoFinal}
               alt=""
