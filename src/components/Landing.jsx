@@ -70,18 +70,18 @@ export default function Landing() {
             ¿Qué mundo te espera?
           </motion.h2>
 
-          {/* Div cuadrado color rosa con bordes redondeados (rounded-xl) conteniendo el SVG dia */}
+          {/* Card conteniendo el SVG dia */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.2 }}
             viewport={fadeUp.viewport}
-            className="relative w-52 h-52 bg-[#FF94DA]/90 rounded-xl shadow-2xl flex items-center justify-center p-6 overflow-hidden border border-[#F1EEE7]/40"
+            className="relative w-56 h-56 flex items-center justify-center p-6"
           >
             <img
               src={cardImg}
               alt="Card Frame"
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xl"
             />
             <img
               src={diaSvg}
