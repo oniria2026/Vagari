@@ -130,24 +130,24 @@ export default function Landing() {
         className="bg-[url('./assets/mapaCompleto.svg')] bg-cover bg-top bg-no-repeat w-full flex flex-col relative"
         style={{ backgroundImage: `url(${mapaCompleto})` }}
       >
-        {/* Nubes laterales (entre la primera y segunda sección) */}
+        {/* Nubes laterales (entre la primera y segunda sección, deslizando desde los bordes) */}
         <motion.img
           src={nubeIzquierda}
           alt=""
-          initial={fadeUp.initial}
-          whileInView={fadeUp.whileInView}
-          transition={{ ...fadeUp.transition, delay: 0.1 }}
-          viewport={fadeUp.viewport}
-          className="absolute -top-24 left-0 w-40 md:w-48 object-contain pointer-events-none z-20"
+          initial={{ opacity: 0, x: -80 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.1 }}
+          className="absolute -top-56 left-0 w-48 md:w-64 object-contain pointer-events-none z-0"
         />
         <motion.img
           src={nubeDerecha}
           alt=""
-          initial={fadeUp.initial}
-          whileInView={fadeUp.whileInView}
-          transition={{ ...fadeUp.transition, delay: 0.2 }}
-          viewport={fadeUp.viewport}
-          className="absolute -top-24 right-0 w-40 md:w-48 object-contain pointer-events-none z-20"
+          initial={{ opacity: 0, x: 80 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.1 }}
+          className="absolute -top-56 right-0 w-48 md:w-64 object-contain pointer-events-none z-0"
         />
         {/* 2. SECCIÓN MAPA: fondo transparente */}
         <section
