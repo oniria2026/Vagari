@@ -310,39 +310,29 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          {/* Decoraciones Vagari: Pasto, Puerta, Nubes (animadas desde la derecha, por detrás del texto) */}
+          {/* Decoraciones Vagari: Pasto, Puerta (animadas desde la derecha, por detrás del texto) */}
           <div className="absolute inset-0 pointer-events-none z-0">
             {/* Pasto: corrido bien a la derecha para que no quede centrado */}
             <motion.img
               src={pastoVagari}
               alt=""
-              initial={{ x: 200, opacity: 0 }}
+              initial={{ x: 100, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute bottom-0 -right-[40%] w-[130%] max-w-[600px] object-contain z-[1]"
+              className="absolute bottom-0 -right-[60%] w-[150%] max-w-[800px] object-contain z-[1]"
             />
             
-            {/* Puerta: encima del pasto, pegada a la derecha y sobre el nivel inferior del pasto */}
+            {/* Puerta: encima del pasto, pegada a la derecha y sobre el nivel inferior del pasto.
+                Se reduce el x inicial para evitar que quede 100% fuera de pantalla y nunca dispare la animación. */}
             <motion.img
               src={puertaVagari}
               alt=""
-              initial={{ x: 200, opacity: 0 }}
+              initial={{ x: 50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: true, amount: 0.1 }}
-              className="absolute bottom-[10%] right-0 w-[45%] max-w-[200px] object-contain z-[2]"
-            />
-            
-            {/* Nubes: corridas bastante hacia abajo para superponer la sección siguiente */}
-            <motion.img
-              src={nubesVagari}
-              alt=""
-              initial={{ x: 200, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-              viewport={{ once: true, amount: 0.1 }}
-              className="absolute -bottom-32 -right-[10%] w-[120%] max-w-[600px] object-contain z-[3]"
+              viewport={{ once: true, amount: 0 }}
+              className="absolute bottom-[5%] right-0 w-[50%] max-w-[250px] object-contain z-[2]"
             />
           </div>
         </section>
