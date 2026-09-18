@@ -102,7 +102,7 @@ export default function Landing() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, amount: 0 }}
-          className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 md:w-80 object-contain pointer-events-none z-0"
+          className="absolute -top-10 right-0 w-64 md:w-80 object-contain pointer-events-none z-0"
         />
 
         <div className="relative z-10 flex flex-col items-center">
@@ -151,7 +151,7 @@ export default function Landing() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, amount: 0, margin: "100px" }}
-          className="absolute -top-24 -left-14 md:-left-24 w-48 md:w-64 object-contain pointer-events-none z-0"
+          className="absolute -top-32 -left-14 md:-left-24 w-48 md:w-64 object-contain pointer-events-none z-0"
         />
         <motion.img
           src={nubeDerecha}
