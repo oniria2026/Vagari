@@ -212,15 +212,15 @@ export default function Landing() {
           className="min-h-screen w-full flex flex-col items-center justify-between p-8 text-center relative overflow-hidden text-[#F1EEE7] bg-transparent"
         >
           <div className="w-full flex flex-col items-center pt-10">
-            {/* Logo superior: dia.svg achicado y con separación equilibrada */}
+            {/* Logo superior: dia.svg achicado y con separación más amplia */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={fadeUp.transition}
               viewport={fadeUp.viewport}
-              className="flex flex-col items-center pt-8"
+              className="flex flex-col items-center pt-8 mb-8"
             >
-              <div className="w-8 h-8 mb-8 flex items-center justify-center">
+              <div className="w-8 h-8 mb-16 flex items-center justify-center">
                 <img
                   src={diaSvg}
                   alt="Día Oniria"
@@ -228,18 +228,18 @@ export default function Landing() {
                 />
               </div>
 
-              <h2 className="font-naiveer text-[#F1EEE7] text-3xl tracking-wider mb-2 drop-shadow-md">
+              <h2 className="font-naiveer text-[#F1EEE7] text-3xl tracking-wider drop-shadow-md">
                 proximo vagari
               </h2>
             </motion.div>
 
-            {/* Contador grande en tiempo real sin fondo con segundos activos */}
+            {/* Contador grande en tiempo real sin fondo con segundos activos y espacios más grandes */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.2 }}
               viewport={fadeUp.viewport}
-              className="flex items-center justify-center gap-2 mt-8 mb-12 px-2 py-2"
+              className="flex items-center justify-center gap-2 mt-6 mb-16 px-2 py-2"
             >
               <div className="flex flex-col items-center min-w-[44px]">
                 <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
@@ -284,7 +284,6 @@ export default function Landing() {
               <p className="mt-4 text-sm font-semibold tracking-wider text-[#F1EEE7]/90 drop-shadow-sm">
                 24/10 - 18:00 hs
               </p>
-              <p className="mt-1 text-xs text-[#F1EEE7]/70">Entrada libre y gratuita</p>
             </motion.div>
           </div>
 
