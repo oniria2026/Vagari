@@ -17,6 +17,8 @@ import aireSvg from '../assets/aire.svg';
 import diaSvg from '../assets/dia.svg';
 import nocheSvg from '../assets/noche.svg';
 import ubicacionImg from '../assets/ubicacion.webp';
+import nubeDerecha from '../assets/nubeDerecha.svg';
+import nubeIzquierda from '../assets/NubeIzquierda.svg';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
@@ -125,9 +127,28 @@ export default function Landing() {
 
       {/* Wrapper continuo para las últimas 3 secciones: Mapa, Fecha y Formulario */}
       <div
-        className="bg-[url('./assets/mapaCompleto.svg')] bg-cover bg-top bg-no-repeat w-full flex flex-col"
+        className="bg-[url('./assets/mapaCompleto.svg')] bg-cover bg-top bg-no-repeat w-full flex flex-col relative"
         style={{ backgroundImage: `url(${mapaCompleto})` }}
       >
+        {/* Nubes laterales (entre la primera y segunda sección) */}
+        <motion.img
+          src={nubeIzquierda}
+          alt=""
+          initial={fadeUp.initial}
+          whileInView={fadeUp.whileInView}
+          transition={{ ...fadeUp.transition, delay: 0.1 }}
+          viewport={fadeUp.viewport}
+          className="absolute -top-24 left-0 w-40 md:w-48 object-contain pointer-events-none z-20"
+        />
+        <motion.img
+          src={nubeDerecha}
+          alt=""
+          initial={fadeUp.initial}
+          whileInView={fadeUp.whileInView}
+          transition={{ ...fadeUp.transition, delay: 0.2 }}
+          viewport={fadeUp.viewport}
+          className="absolute -top-24 right-0 w-40 md:w-48 object-contain pointer-events-none z-20"
+        />
         {/* 2. SECCIÓN MAPA: fondo transparente */}
         <section
           id="mapa"
