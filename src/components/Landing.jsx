@@ -34,7 +34,7 @@ export default function Landing() {
       'outlook.com.ar', 'outlook.es', 'live.com', 'live.com.ar',
       'icloud.com', 'aol.com', 'protonmail.com', 'proton.me',
       'me.com', 'mac.com', 'alumnos.unlp.edu.ar', 'unlp.edu.ar',
-      'fba.unlp.edu.ar'
+      'fba.unlp.edu.ar', 'alumnos.info.unlp.edu.ar'
     ];
 
     if (domain && !validDomains.includes(domain)) {
@@ -268,54 +268,65 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          {/* Formulario con inputs escalonados o mensaje de éxito */}
-          {state.succeeded ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="w-full max-w-[300px] bg-[#F1EEE7]/80 backdrop-blur-sm border border-[#FF94DA] rounded-2xl p-6 shadow-md my-4"
+          {/* Formulario siempre visible */}
+          <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10">
+            <motion.input
+              type="text"
+              name="nombre"
+              placeholder="Nombre"
+              required
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.15 }}
+              viewport={fadeUp.viewport}
+              className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
+            />
+            <motion.input
+              type="email"
+              name="email"
+              placeholder="Mail"
+              required
+              onInput={handleEmailInput}
+              title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.25 }}
+              viewport={fadeUp.viewport}
+              className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400"
+            />
+            <motion.button
+              type="submit"
+              disabled={state.submitting}
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.35 }}
+              viewport={fadeUp.viewport}
+              className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm uppercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <h3 className="font-naiveer text-[#FF94DA] text-2xl mb-2">¡gracias!</h3>
-              <p className="text-sm font-medium text-[#24251E]">Tus datos fueron enviados correctamente. Mantenete alerta a las señales.</p>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4">
-              <motion.input
-                type="text"
-                name="nombre"
-                placeholder="Nombre"
-                required
-                initial={fadeUp.initial}
-                whileInView={fadeUp.whileInView}
-                transition={{ ...fadeUp.transition, delay: 0.15 }}
-                viewport={fadeUp.viewport}
-                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
-              />
-              <motion.input
-                type="email"
-                name="email"
-                placeholder="Mail"
-                required
-                onInput={handleEmailInput}
-                title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
-                initial={fadeUp.initial}
-                whileInView={fadeUp.whileInView}
-                transition={{ ...fadeUp.transition, delay: 0.25 }}
-                viewport={fadeUp.viewport}
-                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400"
-              />
-              <motion.button
-                type="submit"
-                disabled={state.submitting}
-                initial={fadeUp.initial}
-                whileInView={fadeUp.whileInView}
-                transition={{ ...fadeUp.transition, delay: 0.35 }}
-                viewport={fadeUp.viewport}
-                className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm uppercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              {state.submitting ? 'enviando...' : 'registrarme'}
+            </motion.button>
+          </form>
+
+          {/* Popup de éxito */}
+          {state.succeeded && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#24251E]/80 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full max-w-[320px] bg-[#F1EEE7] border border-[#FF94DA] rounded-3xl p-8 shadow-2xl text-center relative"
               >
-                {state.submitting ? 'enviando...' : 'registrarme'}
-              </motion.button>
-            </form>
+                <h3 className="font-naiveer text-[#FF94DA] text-3xl mb-4 drop-shadow-sm">¡gracias!</h3>
+                <p className="text-sm font-medium text-[#24251E] leading-relaxed mb-8">
+                  Tus datos fueron enviados correctamente. Mantenete alerta a las señales.
+                </p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="w-full bg-[#FF94DA] hover:bg-[#ff7fd2] transition text-[#24251E] font-semibold py-3 rounded-xl text-sm uppercase tracking-wider shadow-sm cursor-pointer"
+                >
+                  Cerrar
+                </button>
+              </motion.div>
+            </div>
           )}
         </div>
 
