@@ -20,9 +20,9 @@ import nocheSvg from '../assets/noche.svg';
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
 
-  // Contador de tiempo real hacia el 14 de octubre
+  // Contador de tiempo real hacia el 24 de octubre a las 18:00 hs
   const [timeLeft, setTimeLeft] = useState(() => {
-    const target = new Date('2026-10-14T00:00:00');
+    const target = new Date('2026-10-24T18:00:00');
     const now = new Date();
     const diff = Math.max(0, target - now);
     return {
@@ -34,7 +34,7 @@ export default function Landing() {
   });
 
   useEffect(() => {
-    const target = new Date('2026-10-14T00:00:00');
+    const target = new Date('2026-10-24T18:00:00');
     const updateCountdown = () => {
       const now = new Date();
       const diff = Math.max(0, target - now);
@@ -138,7 +138,7 @@ export default function Landing() {
               whileInView={fadeUp.whileInView}
               transition={fadeUp.transition}
               viewport={fadeUp.viewport}
-              className="font-naiveer text-[#FF94DA] text-3xl tracking-wider mb-4 drop-shadow-md"
+              className="w-full max-w-[320px] text-left font-naiveer text-[#FF94DA] text-3xl tracking-wider mb-4 drop-shadow-md"
             >
               mapa de oniria
             </motion.h2>
@@ -212,15 +212,15 @@ export default function Landing() {
           className="min-h-screen w-full flex flex-col items-center justify-between p-8 text-center relative overflow-hidden text-[#F1EEE7] bg-transparent"
         >
           <div className="w-full flex flex-col items-center pt-10">
-            {/* Logo superior: dia.svg */}
+            {/* Logo superior: dia.svg achicado y con separación equilibrada */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={fadeUp.transition}
               viewport={fadeUp.viewport}
-              className="flex flex-col items-center"
+              className="flex flex-col items-center pt-8"
             >
-              <div className="w-14 h-14 mb-3 flex items-center justify-center">
+              <div className="w-8 h-8 mb-8 flex items-center justify-center">
                 <img
                   src={diaSvg}
                   alt="Día Oniria"
@@ -228,7 +228,7 @@ export default function Landing() {
                 />
               </div>
 
-              <h2 className="font-naiveer text-[#F1EEE7] text-3xl tracking-wider mb-8 drop-shadow-md">
+              <h2 className="font-naiveer text-[#F1EEE7] text-3xl tracking-wider mb-2 drop-shadow-md">
                 proximo vagari
               </h2>
             </motion.div>
@@ -239,7 +239,7 @@ export default function Landing() {
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.2 }}
               viewport={fadeUp.viewport}
-              className="flex items-center justify-center gap-2 mb-2 px-2 py-2"
+              className="flex items-center justify-center gap-2 mt-8 mb-12 px-2 py-2"
             >
               <div className="flex flex-col items-center min-w-[44px]">
                 <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
@@ -270,18 +270,21 @@ export default function Landing() {
               </div>
             </motion.div>
 
-            {/* Texto de ubicación requerido */}
+            {/* Texto de ubicación y fecha del evento */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.35 }}
               viewport={fadeUp.viewport}
-              className="mt-8 text-sm text-[#F1EEE7]/90 space-y-1"
+              className="flex flex-col items-center text-center"
             >
-              <p className="font-semibold text-[#F1EEE7] text-base drop-shadow-sm">
-                Facultad de Artes Sede Fonseca
+              <p className="font-semibold text-[#F1EEE7] text-lg leading-snug drop-shadow-sm">
+                Facultad de Artes<br />Sede Fonseca
               </p>
-              <p className="text-xs text-[#F1EEE7]/80">Entrada libre y gratuita</p>
+              <p className="mt-4 text-sm font-semibold tracking-wider text-[#F1EEE7]/90 drop-shadow-sm">
+                24/10 - 18:00 hs
+              </p>
+              <p className="mt-1 text-xs text-[#F1EEE7]/70">Entrada libre y gratuita</p>
             </motion.div>
           </div>
 
@@ -299,16 +302,16 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col items-center max-w-[320px]"
+            className="flex flex-col items-start w-full max-w-[300px] text-left"
           >
             <h1 className="font-naiveer text-4xl text-[#F1EEE7] tracking-wider mb-2 drop-shadow-md">
               vagari
             </h1>
-            <p className="text-sm font-medium text-[#24251E] leading-relaxed mb-3 drop-shadow-sm">
-              ¿Alguna vez te preguntaste de qué estan hechos los sueños?
+            <p className="text-sm text-[#24251E] leading-relaxed mb-3 drop-shadow-sm">
+              ¿Alguna vez te preguntaste <span className="font-bold">de qué estan hechos los sueños</span>?
             </p>
             <p className="text-xs text-[#24251E]/90 leading-relaxed mb-6">
-              Las primeras señales ya aprecieron. Dejanos tus datos y seguí el rastro:
+              <span className="font-bold">Las primeras señales ya aprecieron.</span> Dejanos tus datos y seguí el rastro:
             </p>
           </motion.div>
 
@@ -345,7 +348,7 @@ export default function Landing() {
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.35 }}
               viewport={fadeUp.viewport}
-              className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm uppercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm lowercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {state.submitting ? 'enviando...' : 'registrarme'}
             </motion.button>
