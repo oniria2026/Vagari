@@ -289,29 +289,31 @@ export default function Landing() {
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
-          className="min-h-screen w-full flex flex-col justify-end items-center px-6 pt-36 pb-6 text-center relative bg-transparent overflow-hidden"
+          className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-10 pb-4 text-center relative bg-transparent overflow-hidden"
         >
-        <div className="w-full flex flex-col items-center relative z-10">
+        <div className="w-full flex flex-col items-center relative z-10 my-auto">
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col w-full max-w-[300px]"
+            className="flex flex-col w-full max-w-[310px]"
           >
-            <h1 className="font-naiveer text-7xl text-[#F1EEE7] tracking-wider mb-3 drop-shadow-md text-left">
+            <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-5 drop-shadow-md text-left">
               vagari
             </h1>
-            <p className="text-base md:text-lg text-[#24251E] leading-snug mb-8 drop-shadow-sm text-left">
-              ¿Alguna vez te preguntaste <span className="font-bold">de qué estan hechos los sueños</span>?
+            <p className="text-lg md:text-xl text-[#24251E] leading-snug mb-8 drop-shadow-sm text-left font-medium">
+              ¿Alguna vez te preguntaste<br />
+              <span className="font-bold">de qué estan hechos los<br />sueños?</span>
             </p>
-            <p className="text-sm md:text-base text-[#24251E]/90 leading-relaxed mb-6 text-center w-full">
-              <span className="font-bold">Las primeras señales ya aprecieron.</span> Dejanos tus datos y seguí el rastro:
+            <p className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-5 text-center w-full">
+              <span className="font-bold">Las primeras señales ya<br />aprecieron.</span><br />
+              Dejanos tus datos y<br />seguí el rastro:
             </p>
           </motion.div>
 
           {/* Formulario siempre visible */}
-          <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10">
+          <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-3.5 relative z-10 -mt-1">
             <motion.input
               type="text"
               name="nombre"
