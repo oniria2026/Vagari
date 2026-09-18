@@ -289,67 +289,78 @@ export default function Landing() {
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
-          className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-10 pb-4 text-center relative bg-transparent overflow-hidden"
+          className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-6 pb-4 text-center relative bg-transparent overflow-hidden"
         >
         <div className="w-full flex flex-col items-center relative z-10 my-auto">
+          {/* Título vagari y primer subtítulo */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col w-full max-w-[310px]"
+            className="flex flex-col w-full max-w-[320px]"
           >
-            <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-5 drop-shadow-md text-left">
+            <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-7 -mt-4 drop-shadow-md text-left">
               vagari
             </h1>
-            <p className="text-lg md:text-xl text-[#24251E] leading-snug mb-8 drop-shadow-sm text-left font-medium">
+            <p className="text-lg md:text-xl text-[#24251E] leading-snug mb-9 drop-shadow-sm text-left font-medium">
               ¿Alguna vez te preguntaste<br />
               <span className="font-bold">de qué estan hechos los<br />sueños?</span>
             </p>
-            <p className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-5 text-center w-full">
-              <span className="font-bold">Las primeras señales ya<br />aprecieron.</span><br />
-              Dejanos tus datos y<br />seguí el rastro:
-            </p>
           </motion.div>
 
-          {/* Formulario siempre visible */}
-          <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-3.5 relative z-10 -mt-1">
-            <motion.input
-              type="text"
-              name="nombre"
-              placeholder="Nombre"
-              required
+          {/* Bloque de segundo subtítulo y formulario (bajado para guardar la misma proporción con las redes) */}
+          <div className="w-full flex flex-col items-center mt-1">
+            <motion.p
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.15 }}
+              transition={{ ...fadeUp.transition, delay: 0.1 }}
               viewport={fadeUp.viewport}
-              className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
-            />
-            <motion.input
-              type="email"
-              name="email"
-              placeholder="Mail"
-              required
-              onInput={handleEmailInput}
-              title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.25 }}
-              viewport={fadeUp.viewport}
-              className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400"
-            />
-            <motion.button
-              type="submit"
-              disabled={state.submitting}
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.35 }}
-              viewport={fadeUp.viewport}
-              className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm lowercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-6 text-center w-full max-w-[340px] px-1"
             >
-              {state.submitting ? 'enviando...' : 'registrarme'}
-            </motion.button>
-          </form>
+              <span className="font-bold">Las primeras señales ya<br />aprecieron.</span><br />
+              Dejanos tus datos y<br />seguí el rastro:
+            </motion.p>
+
+            {/* Formulario siempre visible */}
+            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10">
+              <motion.input
+                type="text"
+                name="nombre"
+                placeholder="Nombre"
+                required
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.15 }}
+                viewport={fadeUp.viewport}
+                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
+              />
+              <motion.input
+                type="email"
+                name="email"
+                placeholder="Mail"
+                required
+                onInput={handleEmailInput}
+                title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.25 }}
+                viewport={fadeUp.viewport}
+                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400"
+              />
+              <motion.button
+                type="submit"
+                disabled={state.submitting}
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.35 }}
+                viewport={fadeUp.viewport}
+                className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {state.submitting ? 'Enviando...' : 'Registrarme'}
+              </motion.button>
+            </form>
+          </div>
 
           {/* Popup de éxito */}
           {state.succeeded && (
