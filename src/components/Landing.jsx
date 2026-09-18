@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 // Backgrounds
 import fondoCard2 from '../assets/fondoCard2.webp';
 import mapaCompleto from '../assets/mapaCompleto.svg';
+import fondoFinal from '../assets/fondoFinal.svg';
 
 // Images & SVGs
 import cardImg from '../assets/card.webp';
@@ -230,9 +231,9 @@ export default function Landing() {
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
-          className="min-h-screen w-full flex flex-col justify-between p-8 text-center relative bg-transparent"
+          className="min-h-screen w-full flex flex-col justify-between p-8 text-center relative bg-transparent overflow-hidden"
         >
-        <div className="w-full flex flex-col items-center pt-8">
+        <div className="w-full flex flex-col items-center pt-8 relative z-10">
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
@@ -292,13 +293,22 @@ export default function Landing() {
           </form>
         </div>
 
+        {/* Fondo final: sobre mapaCompleto, detrás de las redes */}
+        <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-0">
+          <img
+            src={fondoFinal}
+            alt=""
+            className="w-full h-auto object-contain object-bottom"
+          />
+        </div>
+
         {/* Pie: Redes Sociales centradas */}
         <motion.div
           initial={fadeUp.initial}
           whileInView={fadeUp.whileInView}
           transition={{ ...fadeUp.transition, delay: 0.4 }}
           viewport={fadeUp.viewport}
-          className="w-full py-6 flex flex-col items-center gap-3 border-t border-[#24251E]/10 mt-6"
+          className="w-full py-6 flex flex-col items-center gap-3 mt-6 relative z-10"
         >
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#24251E]">
             <a
