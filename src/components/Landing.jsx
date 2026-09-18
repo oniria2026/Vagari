@@ -233,33 +233,40 @@ export default function Landing() {
               </h2>
             </motion.div>
 
-            {/* Contador grande en tiempo real sin fondo */}
+            {/* Contador grande en tiempo real sin fondo con segundos activos */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.2 }}
               viewport={fadeUp.viewport}
-              className="flex items-center justify-center gap-3 mb-2 px-2 py-2"
+              className="flex items-center justify-center gap-2 mb-2 px-2 py-2"
             >
-              <div className="flex flex-col items-center min-w-[50px]">
-                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">
+              <div className="flex flex-col items-center min-w-[44px]">
+                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
                   {String(timeLeft.days).padStart(2, '0')}
                 </span>
-                <span className="text-[11px] uppercase tracking-wider text-[#F1EEE7]/80">días</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">días</span>
               </div>
-              <span className="text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center min-w-[50px]">
-                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">
+              <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
+              <div className="flex flex-col items-center min-w-[44px]">
+                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
                   {String(timeLeft.hours).padStart(2, '0')}
                 </span>
-                <span className="text-[11px] uppercase tracking-wider text-[#F1EEE7]/80">horas</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">horas</span>
               </div>
-              <span className="text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center min-w-[50px]">
-                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">
+              <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
+              <div className="flex flex-col items-center min-w-[44px]">
+                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </span>
-                <span className="text-[11px] uppercase tracking-wider text-[#F1EEE7]/80">minutos</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">minutos</span>
+              </div>
+              <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
+              <div className="flex flex-col items-center min-w-[44px]">
+                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                  {String(timeLeft.seconds).padStart(2, '0')}
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">segundos</span>
               </div>
             </motion.div>
 
