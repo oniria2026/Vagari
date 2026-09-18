@@ -24,6 +24,13 @@ import pastoVagari from '../assets/pastoVagari.png';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (state.succeeded) {
+      setShowModal(true);
+    }
+  }, [state.succeeded]);
 
   // Contador de tiempo real hacia el 24 de octubre a las 18:00 hs
   const [timeLeft, setTimeLeft] = useState(() => {
@@ -491,7 +498,7 @@ export default function Landing() {
           </motion.div>
 
           {/* Popup de éxito */}
-          {state.succeeded && (
+          {showModal && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#24251E]/80 backdrop-blur-sm">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -503,7 +510,7 @@ export default function Landing() {
                   Tus datos fueron enviados correctamente. Mantenete alerta a las señales.
                 </p>
                 <button 
-                  onClick={() => window.location.reload()} 
+                  onClick={() => setShowModal(false)} 
                   className="w-full bg-[#FF94DA] hover:bg-[#ff7fd2] transition text-[#24251E] font-semibold py-3 rounded-xl text-sm uppercase tracking-wider shadow-sm cursor-pointer"
                 >
                   Cerrar
