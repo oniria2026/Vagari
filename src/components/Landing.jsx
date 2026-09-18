@@ -135,10 +135,10 @@ export default function Landing() {
         <motion.img
           src={nubeIzquierda}
           alt=""
-          initial={{ opacity: 0, x: -80 }}
+          initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0 }}
           className="absolute -top-56 left-0 w-48 md:w-64 object-contain pointer-events-none z-0"
         />
         <motion.img
@@ -310,14 +310,10 @@ export default function Landing() {
 
           {/* Decoraciones Vagari: Imagen unificada animada desde la derecha */}
           <div className="absolute inset-0 pointer-events-none z-0">
-            {/* Imagen unificada: restaurada a bottom-0 y movida a right-0 para asomar la puerta */}
-            <motion.img
+            {/* Imagen unificada: restaurada a bottom-0 y movida a right-0 para asomar la puerta. Sin animación. */}
+            <img
               src={pastoVagari}
               alt=""
-              initial={{ x: 100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
-              viewport={{ once: true, amount: 0.1 }}
               className="absolute bottom-0 right-0 w-[150%] max-w-[800px] object-contain z-[1]"
             />
           </div>
