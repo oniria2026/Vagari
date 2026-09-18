@@ -272,11 +272,13 @@ export default function Landing() {
                 name="email"
                 placeholder="Mail"
                 required
+                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
                 initial={fadeUp.initial}
                 whileInView={fadeUp.whileInView}
                 transition={{ ...fadeUp.transition, delay: 0.25 }}
                 viewport={fadeUp.viewport}
-                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
+                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400"
               />
               <motion.button
                 type="submit"
