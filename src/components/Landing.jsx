@@ -358,7 +358,7 @@ export default function Landing() {
                   whileInView={fadeUp.whileInView}
                   transition={{ ...fadeUp.transition, delay: 0.15 }}
                   viewport={fadeUp.viewport}
-                  className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition relative z-10 backdrop-blur-[2px]"
+                  className="w-full bg-[#F1EEE7] border border-[#F1EEE7] focus:border-[#FF94DA] px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition relative z-10 shadow-sm"
                 />
               </div>
 
@@ -384,7 +384,7 @@ export default function Landing() {
                   whileInView={fadeUp.whileInView}
                   transition={{ ...fadeUp.transition, delay: 0.25 }}
                   viewport={fadeUp.viewport}
-                  className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400 relative z-10 backdrop-blur-[2px]"
+                  className="w-full bg-[#F1EEE7] border border-[#F1EEE7] focus:border-[#FF94DA] px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition invalid:focus:border-red-400 relative z-10 shadow-sm"
                 />
               </div>
 
@@ -395,7 +395,7 @@ export default function Landing() {
                 whileInView={fadeUp.whileInView}
                 transition={{ ...fadeUp.transition, delay: 0.35 }}
                 viewport={fadeUp.viewport}
-                className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed relative z-10"
+                className="w-[170px] self-center mt-4 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-2.5 rounded-full shadow-md text-sm tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed relative z-10"
               >
                 {state.submitting ? 'Enviando...' : 'Registrarme'}
               </motion.button>
