@@ -129,7 +129,7 @@ export default function Landing() {
             </motion.div>
 
             {/* Lista vertical de 4 ítems: 1: dia.svg, 2: puerta.svg, 3: tele.svg, 4: espiral.svg */}
-            <div className="w-full max-w-[320px] flex flex-col gap-2.5">
+            <div className="w-full max-w-[340px] px-2 flex flex-col divide-y divide-[#FF94DA]/70">
               {[
                 {
                   num: '01',
@@ -158,17 +158,18 @@ export default function Landing() {
                   whileInView={fadeUp.whileInView}
                   transition={{ ...fadeUp.transition, delay: 0.25 + index * 0.1 }}
                   viewport={fadeUp.viewport}
-                  className="flex items-center gap-3 bg-[#F1EEE7]/80 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-sm text-left border border-[#F1EEE7] text-[#24251E]"
+                  className="flex items-center gap-4 py-3.5 text-left text-[#F1EEE7]"
                 >
-                  <div className="w-6 h-6 shrink-0 flex items-center justify-center">
+                  <div className="w-9 h-9 shrink-0 flex items-center justify-center">
                     <img
                       src={item.icon}
                       alt={item.title}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain filter drop-shadow-sm"
                     />
                   </div>
-                  <span className="font-bold text-xs tracking-wider">{item.num}</span>
-                  <span className="text-sm font-medium tracking-wide">{item.title}</span>
+                  <span className="font-medium text-base tracking-wide text-[#F1EEE7]">
+                    {item.num} - {item.title}
+                  </span>
                 </motion.div>
               ))}
             </div>
