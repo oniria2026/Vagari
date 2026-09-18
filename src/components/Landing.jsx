@@ -300,7 +300,7 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.35 }}
             viewport={fadeUp.viewport}
-            className="flex flex-col items-center text-center relative z-10"
+            className="flex flex-col items-center text-center relative z-10 mb-20"
           >
             <p className="font-semibold text-[#F1EEE7] text-lg leading-snug drop-shadow-sm">
               Facultad de Artes<br />Sede Fonseca
@@ -320,7 +320,7 @@ export default function Landing() {
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute bottom-0 -right-[60%] w-[150%] max-w-[800px] object-contain z-[1]"
+              className="absolute bottom-0 -right-[20%] w-[150%] max-w-[800px] object-contain z-[1]"
             />
             
             {/* Puerta: encima del pasto, pegada a la derecha y sobre el nivel inferior del pasto.
