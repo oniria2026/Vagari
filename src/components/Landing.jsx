@@ -135,11 +135,11 @@ export default function Landing() {
         <motion.img
           src={nubeIzquierda}
           alt=""
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, x: -80 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0 }}
-          className="absolute -top-56 left-0 w-48 md:w-64 object-contain pointer-events-none z-0"
+          viewport={{ once: true, amount: 0.1 }}
+          className="absolute -top-56 left-0 w-48 md:w-64 object-contain pointer-events-none z-10"
         />
         <motion.img
           src={nubeDerecha}
@@ -148,7 +148,7 @@ export default function Landing() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.1 }}
-          className="absolute -top-56 right-0 w-48 md:w-64 object-contain pointer-events-none z-0"
+          className="absolute -top-56 right-0 w-48 md:w-64 object-contain pointer-events-none z-10"
         />
         {/* 2. SECCIÓN MAPA: fondo transparente */}
         <section
