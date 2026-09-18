@@ -95,9 +95,9 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="text-[#FF94DA] text-2xl font-bold tracking-wide drop-shadow-md mb-8"
+            className="text-[#FF94DA] text-3xl md:text-4xl font-bold tracking-wide drop-shadow-md mb-8 leading-tight text-center"
           >
-            ¿Qué mundo te espera?
+            ¿Qué mundo<br />te espera?
           </motion.h2>
 
           {/* Card conteniendo el SVG dia */}
