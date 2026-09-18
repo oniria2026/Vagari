@@ -162,7 +162,7 @@ export default function Landing() {
               className="w-full h-full relative"
               style={{ transformStyle: 'preserve-3d' }}
               animate={{ rotateY: isFlipped ? 180 : 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: 0.55, ease: "easeInOut" }}
             >
               {/* Frente */}
               <div 
