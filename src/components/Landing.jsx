@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from '@formspree/react';
 
@@ -19,6 +19,36 @@ import nocheSvg from '../assets/noche.svg';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
+
+  // Contador de tiempo real hacia el 14 de octubre
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const target = new Date('2026-10-14T00:00:00');
+    const now = new Date();
+    const diff = Math.max(0, target - now);
+    return {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / 1000 / 60) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    };
+  });
+
+  useEffect(() => {
+    const target = new Date('2026-10-14T00:00:00');
+    const updateCountdown = () => {
+      const now = new Date();
+      const diff = Math.max(0, target - now);
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / 1000 / 60) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      });
+    };
+
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleEmailInput = (e) => {
     const value = e.target.value.toLowerCase();
@@ -182,7 +212,7 @@ export default function Landing() {
           className="min-h-screen w-full flex flex-col items-center justify-between p-8 text-center relative overflow-hidden text-[#F1EEE7] bg-transparent"
         >
           <div className="w-full flex flex-col items-center pt-10">
-            {/* Logo superior: aire.svg */}
+            {/* Logo superior: dia.svg */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
@@ -190,10 +220,10 @@ export default function Landing() {
               viewport={fadeUp.viewport}
               className="flex flex-col items-center"
             >
-              <div className="w-12 h-12 mb-3 flex items-center justify-center">
+              <div className="w-14 h-14 mb-3 flex items-center justify-center">
                 <img
-                  src={aireSvg}
-                  alt="Aire Oniria"
+                  src={diaSvg}
+                  alt="Día Oniria"
                   className="w-full h-full object-contain filter drop-shadow animate-pulse"
                 />
               </div>
@@ -203,26 +233,32 @@ export default function Landing() {
               </h2>
             </motion.div>
 
-            {/* Contador grande */}
+            {/* Contador grande en tiempo real sin fondo */}
             <motion.div
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.2 }}
               viewport={fadeUp.viewport}
-              className="flex items-center justify-center gap-2 mb-2 bg-[#24251E]/40 backdrop-blur-sm px-6 py-3 rounded-2xl border border-[#F1EEE7]/20"
+              className="flex items-center justify-center gap-3 mb-2 px-2 py-2"
             >
-              <div className="flex flex-col items-center">
-                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">14</span>
+              <div className="flex flex-col items-center min-w-[50px]">
+                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                  {String(timeLeft.days).padStart(2, '0')}
+                </span>
                 <span className="text-[11px] uppercase tracking-wider text-[#F1EEE7]/80">días</span>
               </div>
               <span className="text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">06</span>
+              <div className="flex flex-col items-center min-w-[50px]">
+                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                  {String(timeLeft.hours).padStart(2, '0')}
+                </span>
                 <span className="text-[11px] uppercase tracking-wider text-[#F1EEE7]/80">horas</span>
               </div>
               <span className="text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">32</span>
+              <div className="flex flex-col items-center min-w-[50px]">
+                <span className="text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                  {String(timeLeft.minutes).padStart(2, '0')}
+                </span>
                 <span className="text-[11px] uppercase tracking-wider text-[#F1EEE7]/80">minutos</span>
               </div>
             </motion.div>
