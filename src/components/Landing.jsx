@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useForm } from '@formspree/react';
 
 // Backgrounds
-import fondoCard2 from '../assets/fondoCard2.webp';
+import fondoCard from '../assets/fondoCard.webp';
 import mapaCompleto from '../assets/mapaCompleto.svg';
 import fondoFinal from '../assets/fondoFinal.svg';
 
@@ -17,6 +17,7 @@ import aireSvg from '../assets/aire.svg';
 import diaSvg from '../assets/dia.svg';
 import nocheSvg from '../assets/noche.svg';
 import ubicacionImg from '../assets/ubicacion.webp';
+import nubeArriba from '../assets/NubeArriba.svg';
 import nubeDerecha from '../assets/nubeDerecha.svg';
 import nubeIzquierda from '../assets/NubeIzquierda.svg';
 import pastoVagari from '../assets/pastoVagari.svg';
@@ -87,12 +88,23 @@ export default function Landing() {
 
   return (
     <div className="flex flex-col w-full max-w-[400px] mx-auto min-h-screen">
-      {/* 1. SECCIÓN CARD: fondoCard2.webp */}
+      {/* 1. SECCIÓN CARD: fondoCard.webp */}
       <section
         id="card"
-        className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center p-6 text-center relative"
-        style={{ backgroundImage: `url(${fondoCard2})` }}
+        className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center p-6 text-center relative overflow-hidden"
+        style={{ backgroundImage: `url(${fondoCard})` }}
       >
+        {/* Nube superior apareciendo desde arriba */}
+        <motion.img
+          src={nubeArriba}
+          alt=""
+          initial={{ opacity: 0, y: -60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0 }}
+          className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 md:w-80 object-contain pointer-events-none z-0"
+        />
+
         <div className="relative z-10 flex flex-col items-center">
           <motion.h2
             initial={fadeUp.initial}
