@@ -348,7 +348,7 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col w-full max-w-[320px] relative z-10 mt-16"
+            className="flex flex-col w-full max-w-[320px] relative z-10 mt-24"
           >
             <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-6 drop-shadow-md text-left">
               vagari
