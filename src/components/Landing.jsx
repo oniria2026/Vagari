@@ -19,6 +19,9 @@ import nocheSvg from '../assets/noche.svg';
 import ubicacionImg from '../assets/ubicacion.webp';
 import nubeDerecha from '../assets/nubeDerecha.svg';
 import nubeIzquierda from '../assets/NubeIzquierda.svg';
+import puertaVagari from '../assets/puertaVagari.svg';
+import pastoVagari from '../assets/pastoVagari.svg';
+import nubesVagari from '../assets/nubesVagari.svg';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
@@ -239,7 +242,7 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center relative z-10"
           >
             <div className="w-8 h-8 mb-10 flex items-center justify-center">
               <img
@@ -260,7 +263,7 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.2 }}
             viewport={fadeUp.viewport}
-            className="flex items-center justify-center gap-2 my-auto py-10 px-2"
+            className="flex items-center justify-center gap-2 my-auto py-10 px-2 relative z-10"
           >
             <div className="flex flex-col items-center min-w-[44px]">
               <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
@@ -297,7 +300,7 @@ export default function Landing() {
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.35 }}
             viewport={fadeUp.viewport}
-            className="flex flex-col items-center text-center"
+            className="flex flex-col items-center text-center relative z-10"
           >
             <p className="font-semibold text-[#F1EEE7] text-lg leading-snug drop-shadow-sm">
               Facultad de Artes<br />Sede Fonseca
@@ -306,6 +309,42 @@ export default function Landing() {
               24/10 - 18:00 hs
             </p>
           </motion.div>
+
+          {/* Decoraciones Vagari: Pasto, Puerta, Nubes (animadas desde la derecha, por detrás del texto) */}
+          <div className="absolute bottom-0 right-0 w-full h-[60%] max-h-[400px] pointer-events-none z-0">
+            {/* Pasto: más al fondo (z-1) y corrido un poco a la derecha */}
+            <motion.img
+              src={pastoVagari}
+              alt=""
+              initial={{ x: 200, opacity: 0 }}
+              whileInView={{ x: 16, opacity: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              className="absolute bottom-0 right-0 w-[85%] object-contain z-[1]"
+            />
+            
+            {/* Puerta: encima del pasto (z-2) y pegada a la derecha */}
+            <motion.img
+              src={puertaVagari}
+              alt=""
+              initial={{ x: 200, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+              viewport={{ once: true, amount: 0.1 }}
+              className="absolute top-0 right-0 w-[35%] object-contain z-[2]"
+            />
+            
+            {/* Nubes: encima del pasto (z-3) y corridas un poco a la derecha */}
+            <motion.img
+              src={nubesVagari}
+              alt=""
+              initial={{ x: 200, opacity: 0 }}
+              whileInView={{ x: 12, opacity: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
+              className="absolute bottom-0 right-0 w-[95%] object-contain z-[3]"
+            />
+          </div>
         </section>
 
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
