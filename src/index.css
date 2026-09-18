@@ -2,10 +2,14 @@
 
 @font-face {
   font-family: 'Naiveer';
-  src: url('./assets/Naiveer.ttf') format('truetype');
+  src: url('./assets/NaiveFont.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+@theme {
+  --font-naiveer: 'Naiveer', sans-serif;
 }
 
 body {
@@ -13,6 +17,5 @@ body {
 }
 
 .font-naiveer {
-  font-family: 'Naiveer', sans-serif;
   text-transform: lowercase;
 }
