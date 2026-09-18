@@ -13,18 +13,43 @@ import mapaImg from '../assets/mapa.webp';
 import teleSvg from '../assets/tele.svg';
 import espiralSvg from '../assets/espiral.svg';
 import puertaSvg from '../assets/puerta.svg';
+import aguaSvg from '../assets/agua.svg';
 import aireSvg from '../assets/aire.svg';
+import colorSvg from '../assets/color.svg';
 import diaSvg from '../assets/dia.svg';
+import fuegoSvg from '../assets/fuego.svg';
+import mixtoSvg from '../assets/mixto.svg';
+import monocromoSvg from '../assets/monocromo.svg';
 import nocheSvg from '../assets/noche.svg';
+import organicoSvg from '../assets/organico.svg';
+import tecnologicoSvg from '../assets/tecnologico.svg';
+import tierraSvg from '../assets/tierra.svg';
 import ubicacionImg from '../assets/ubicacion.webp';
 import nubeArriba from '../assets/NubeArriba.svg';
 import nubeDerecha from '../assets/nubeDerecha.svg';
 import nubeIzquierda from '../assets/NubeIzquierda.svg';
 import pastoVagari from '../assets/pastoVagari.png';
 
+const SYMBOLS = [
+  { name: 'agua', src: aguaSvg },
+  { name: 'aire', src: aireSvg },
+  { name: 'color', src: colorSvg },
+  { name: 'dia', src: diaSvg },
+  { name: 'fuego', src: fuegoSvg },
+  { name: 'mixto', src: mixtoSvg },
+  { name: 'monocromo', src: monocromoSvg },
+  { name: 'noche', src: nocheSvg },
+  { name: 'organico', src: organicoSvg },
+  { name: 'tecnologico', src: tecnologicoSvg },
+  { name: 'tierra', src: tierraSvg }
+];
+
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
   const [showModal, setShowModal] = useState(false);
+  
+  const [randomSymbol] = useState(() => SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     if (state.succeeded) {
@@ -123,24 +148,54 @@ export default function Landing() {
             ¿Qué mundo<br />te espera?
           </motion.h2>
 
-          {/* Card conteniendo el SVG dia */}
+          {/* Card interactiva */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.2 }}
             viewport={fadeUp.viewport}
-            className="relative w-56 h-56 flex items-center justify-center p-6"
+            className="relative w-56 h-56 cursor-pointer"
+            style={{ perspective: 1000 }}
+            onClick={() => setIsFlipped(!isFlipped)}
           >
-            <img
-              src={cardImg}
-              alt="Card Frame"
-              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xl"
-            />
-            <img
-              src={diaSvg}
-              alt="Día"
-              className="relative z-10 w-28 h-28 object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
-            />
+            <motion.div
+              className="w-full h-full relative"
+              style={{ transformStyle: 'preserve-3d' }}
+              animate={{ rotateY: isFlipped ? 180 : 0 }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+            >
+              {/* Frente */}
+              <div 
+                className="absolute inset-0 flex items-center justify-center p-6" 
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                <img
+                  src={cardImg}
+                  alt="Card Frame"
+                  className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xl"
+                />
+                <img
+                  src={randomSymbol.src}
+                  alt={randomSymbol.name}
+                  className="relative z-10 w-28 h-28 object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+
+              {/* Dorso */}
+              <div 
+                className="absolute inset-0 flex items-center justify-center p-6" 
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                <img
+                  src={cardImg}
+                  alt="Card Frame Dorso"
+                  className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xl"
+                />
+                <div className="relative z-10 font-naiveer text-[#FF94DA] text-4xl tracking-widest drop-shadow-md text-center">
+                  {randomSymbol.name}
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -204,13 +259,13 @@ export default function Landing() {
               />
             </motion.div>
 
-            {/* Lista vertical de 4 ítems: 1: dia.svg, 2: puerta.svg, 3: tele.svg, 4: espiral.svg */}
+            {/* Lista vertical de 4 ítems */}
             <div className="w-full max-w-[340px] px-2 flex flex-col divide-y divide-[#FF94DA]/70">
               {[
                 {
                   num: '01',
                   title: 'Los símbolos',
-                  icon: diaSvg,
+                  icon: randomSymbol.src,
                 },
                 {
                   num: '02',
@@ -268,8 +323,8 @@ export default function Landing() {
           >
             <div className="w-8 h-8 mb-10 flex items-center justify-center">
               <img
-                src={diaSvg}
-                alt="Día Oniria"
+                src={randomSymbol.src}
+                alt={randomSymbol.name}
                 className="w-full h-full object-contain filter drop-shadow animate-pulse"
               />
             </div>
