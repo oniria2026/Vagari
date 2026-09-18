@@ -234,7 +234,7 @@ export default function Landing() {
         {/* 3. SECCIÓN FECHA: fondo transparente - distribuye los 3 bloques en todo el alto */}
         <section
           id="fecha"
-          className="min-h-screen w-full flex flex-col items-center justify-between px-6 pt-12 pb-28 text-center relative overflow-hidden text-[#F1EEE7] bg-transparent"
+          className="min-h-screen w-full flex flex-col items-center justify-between px-6 pt-12 pb-28 text-center relative overflow-visible text-[#F1EEE7] bg-transparent"
         >
           {/* 1. Uno arriba junto al logo */}
           <motion.div
@@ -312,19 +312,18 @@ export default function Landing() {
 
           {/* Decoraciones Vagari: Pasto, Puerta, Nubes (animadas desde la derecha, por detrás del texto) */}
           <div className="absolute inset-0 pointer-events-none z-0">
-            {/* Pasto: más al fondo (z-1) y más hacia la derecha para que no quede centrado */}
+            {/* Pasto: corrido bien a la derecha para que no quede centrado */}
             <motion.img
               src={pastoVagari}
               alt=""
               initial={{ x: 200, opacity: 0 }}
-              whileInView={{ x: 60, opacity: 1 }}
+              whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute bottom-0 -right-10 w-[110%] max-w-[500px] object-contain z-[1]"
+              className="absolute bottom-0 -right-[40%] w-[130%] max-w-[600px] object-contain z-[1]"
             />
             
-            {/* Puerta: encima del pasto (z-2) y pegada a la derecha. 
-                Subida con bottom-[25%] para que se vea completa y no la tape el contenedor */}
+            {/* Puerta: encima del pasto, pegada a la derecha y sobre el nivel inferior del pasto */}
             <motion.img
               src={puertaVagari}
               alt=""
@@ -332,18 +331,18 @@ export default function Landing() {
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute bottom-[25%] right-0 w-[45%] max-w-[200px] object-contain z-[2]"
+              className="absolute bottom-[10%] right-0 w-[45%] max-w-[200px] object-contain z-[2]"
             />
             
-            {/* Nubes: encima del pasto (z-3), movidas más abajo para quedar sobre el final del pasto */}
+            {/* Nubes: corridas bastante hacia abajo para superponer la sección siguiente */}
             <motion.img
               src={nubesVagari}
               alt=""
               initial={{ x: 200, opacity: 0 }}
-              whileInView={{ x: 20, opacity: 1 }}
+              whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute -bottom-12 right-0 w-[100%] max-w-[500px] object-contain z-[3]"
+              className="absolute -bottom-32 -right-[10%] w-[120%] max-w-[600px] object-contain z-[3]"
             />
           </div>
         </section>
