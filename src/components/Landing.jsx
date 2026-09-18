@@ -139,7 +139,7 @@ export default function Landing() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.1 }}
-          className="absolute -top-56 left-0 w-48 md:w-64 object-contain pointer-events-none z-0"
+          className="absolute -top-24 left-0 w-48 md:w-64 object-contain pointer-events-none z-0"
         />
         <motion.img
           src={nubeDerecha}
