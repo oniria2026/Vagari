@@ -289,41 +289,40 @@ export default function Landing() {
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
-          className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-6 pb-4 text-center relative bg-transparent overflow-hidden"
+          className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-10 pb-4 text-center relative bg-transparent overflow-hidden"
         >
-        <div className="w-full flex flex-col items-center relative z-10 my-auto">
-          {/* Título vagari y primer subtítulo */}
+          {/* Bloque superior: Título vagari y primer subtítulo bien arriba */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col w-full max-w-[320px]"
+            className="flex flex-col w-full max-w-[320px] relative z-10 pt-2"
           >
-            <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-7 -mt-4 drop-shadow-md text-left">
+            <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-6 drop-shadow-md text-left">
               vagari
             </h1>
-            <p className="text-lg md:text-xl text-[#24251E] leading-snug mb-9 drop-shadow-sm text-left font-medium">
+            <p className="text-lg md:text-xl text-[#24251E] leading-snug drop-shadow-sm text-left font-medium">
               ¿Alguna vez te preguntaste<br />
               <span className="font-bold">de qué estan hechos los<br />sueños?</span>
             </p>
           </motion.div>
 
-          {/* Bloque de segundo subtítulo y formulario (bajado para guardar la misma proporción con las redes) */}
-          <div className="w-full flex flex-col items-center mt-1">
+          {/* Bloque inferior: Segundo subtítulo, Formulario y Redes Sociales ocupando la mitad baja */}
+          <div className="w-full flex flex-col items-center relative z-10 pb-2">
             <motion.p
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.1 }}
               viewport={fadeUp.viewport}
-              className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-6 text-center w-full max-w-[340px] px-1"
+              className="text-base md:text-lg text-[#24251E]/90 leading-snug mb-5 text-center w-full max-w-[340px] px-1"
             >
               <span className="font-bold">Las primeras señales ya<br />aprecieron.</span><br />
               Dejanos tus datos y<br />seguí el rastro:
             </motion.p>
 
             {/* Formulario siempre visible */}
-            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10">
+            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4 relative z-10 mb-6">
               <motion.input
                 type="text"
                 name="nombre"
@@ -360,6 +359,44 @@ export default function Landing() {
                 {state.submitting ? 'Enviando...' : 'Registrarme'}
               </motion.button>
             </form>
+
+            {/* Redes Sociales integradas en el bloque inferior */}
+            <motion.div
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              transition={{ ...fadeUp.transition, delay: 0.4 }}
+              viewport={fadeUp.viewport}
+              className="w-full pt-2 flex justify-center items-center relative z-10"
+            >
+              <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#24251E]">
+                <a
+                  href="https://instagram.com/somos.oniria"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-[#FF94DA] transition"
+                >
+                  @somos.oniria
+                </a>
+                <span className="text-[#24251E]/40">|</span>
+                <a
+                  href="https://instagram.com/oniria.tdm3"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-[#FF94DA] transition"
+                >
+                  @oniria.tdm3
+                </a>
+                <span className="text-[#24251E]/40">|</span>
+                <a
+                  href="https://tiktok.com/@somos.oniria"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-[#FF94DA] transition"
+                >
+                  @somos.oniria
+                </a>
+              </div>
+            </motion.div>
           </div>
 
           {/* Popup de éxito */}
@@ -383,55 +420,16 @@ export default function Landing() {
               </motion.div>
             </div>
           )}
-        </div>
 
-        {/* Fondo final: sobre mapaCompleto, detrás de las redes */}
-        <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-0">
-          <img
-            src={fondoFinal}
-            alt=""
-            className="w-full h-auto object-contain object-bottom"
-          />
-        </div>
-
-        {/* Pie: Redes Sociales centradas (un poco más abajo, reemplazando el copyright) */}
-        <motion.div
-          initial={fadeUp.initial}
-          whileInView={fadeUp.whileInView}
-          transition={{ ...fadeUp.transition, delay: 0.4 }}
-          viewport={fadeUp.viewport}
-          className="w-full pt-8 pb-3 flex justify-center items-center relative z-10"
-        >
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#24251E]">
-            <a
-              href="https://instagram.com/somos.oniria"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-[#FF94DA] transition"
-            >
-              @somos.oniria
-            </a>
-            <span className="text-[#24251E]/40">|</span>
-            <a
-              href="https://instagram.com/oniria.tdm3"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-[#FF94DA] transition"
-            >
-              @oniria.tdm3
-            </a>
-            <span className="text-[#24251E]/40">|</span>
-            <a
-              href="https://tiktok.com/@somos.oniria"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-[#FF94DA] transition"
-            >
-              @somos.oniria
-            </a>
+          {/* Fondo final: sobre mapaCompleto, detrás de las redes */}
+          <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-0">
+            <img
+              src={fondoFinal}
+              alt=""
+              className="w-full h-auto object-contain object-bottom"
+            />
           </div>
-        </motion.div>
-      </section>
+        </section>
       </div>
     </div>
   );
