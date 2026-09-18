@@ -293,23 +293,23 @@ export default function Landing() {
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
-          className="min-h-screen w-full flex flex-col justify-between p-8 text-center relative bg-transparent overflow-hidden"
+          className="min-h-screen w-full flex flex-col justify-end items-center px-6 pt-36 pb-6 text-center relative bg-transparent overflow-hidden"
         >
-        <div className="w-full flex flex-col items-center pt-8 relative z-10">
+        <div className="w-full flex flex-col items-center relative z-10">
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col items-start w-full max-w-[300px] text-left"
+            className="flex flex-col w-full max-w-[300px]"
           >
-            <h1 className="font-naiveer text-4xl text-[#F1EEE7] tracking-wider mb-2 drop-shadow-md">
+            <h1 className="font-naiveer text-7xl text-[#F1EEE7] tracking-wider mb-3 drop-shadow-md text-left">
               vagari
             </h1>
-            <p className="text-sm text-[#24251E] leading-relaxed mb-3 drop-shadow-sm">
+            <p className="text-base md:text-lg text-[#24251E] leading-snug mb-8 drop-shadow-sm text-left">
               ¿Alguna vez te preguntaste <span className="font-bold">de qué estan hechos los sueños</span>?
             </p>
-            <p className="text-xs text-[#24251E]/90 leading-relaxed mb-6">
+            <p className="text-sm md:text-base text-[#24251E]/90 leading-relaxed mb-6 text-center w-full">
               <span className="font-bold">Las primeras señales ya aprecieron.</span> Dejanos tus datos y seguí el rastro:
             </p>
           </motion.div>
@@ -385,13 +385,13 @@ export default function Landing() {
           />
         </div>
 
-        {/* Pie: Redes Sociales centradas */}
+        {/* Pie: Redes Sociales centradas (un poco más abajo, reemplazando el copyright) */}
         <motion.div
           initial={fadeUp.initial}
           whileInView={fadeUp.whileInView}
           transition={{ ...fadeUp.transition, delay: 0.4 }}
           viewport={fadeUp.viewport}
-          className="w-full py-6 flex flex-col items-center gap-3 mt-6 relative z-10"
+          className="w-full pt-8 pb-3 flex justify-center items-center relative z-10"
         >
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#24251E]">
             <a
@@ -421,9 +421,6 @@ export default function Landing() {
               @somos.oniria
             </a>
           </div>
-          <span className="text-[11px] text-[#24251E]/70">
-            © 2026 Oniria Project • Todos los derechos reservados
-          </span>
         </motion.div>
       </section>
       </div>
