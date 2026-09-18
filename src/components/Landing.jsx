@@ -324,13 +324,13 @@ export default function Landing() {
           id="formulario"
           className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-10 pb-3 text-center relative bg-transparent overflow-hidden"
         >
-          {/* Bloque superior: Título vagari y primer subtítulo bien arriba (misma altura) */}
+          {/* Bloque superior: Título vagari y primer subtítulo */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={fadeUp.transition}
             viewport={fadeUp.viewport}
-            className="flex flex-col w-full max-w-[320px] relative z-10 pt-2"
+            className="flex flex-col w-full max-w-[320px] relative z-10 mt-16"
           >
             <h1 className="font-naiveer text-6xl text-[#F1EEE7] tracking-wider mb-6 drop-shadow-md text-left">
               vagari
