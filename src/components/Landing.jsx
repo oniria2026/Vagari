@@ -310,7 +310,7 @@ export default function Landing() {
 
           {/* Decoraciones Vagari: Imagen unificada animada desde la derecha */}
           <div className="absolute inset-0 pointer-events-none z-0">
-            {/* Imagen unificada: corrida a la izquierda para asomar bien la puerta */}
+            {/* Imagen unificada: restaurada a bottom-0 y movida a right-0 para asomar la puerta */}
             <motion.img
               src={pastoVagari}
               alt=""
@@ -318,7 +318,7 @@ export default function Landing() {
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute -bottom-10 right-[-2%] w-[130%] max-w-[800px] object-contain z-[1]"
+              className="absolute bottom-0 right-0 w-[150%] max-w-[800px] object-contain z-[1]"
             />
           </div>
         </section>
