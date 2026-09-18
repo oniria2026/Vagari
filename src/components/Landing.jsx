@@ -206,88 +206,84 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* 3. SECCIÓN FECHA: fondo transparente */}
+        {/* 3. SECCIÓN FECHA: fondo transparente - distribuye los 3 bloques en todo el alto */}
         <section
           id="fecha"
-          className="min-h-screen w-full flex flex-col items-center justify-between p-8 text-center relative overflow-hidden text-[#F1EEE7] bg-transparent"
+          className="min-h-screen w-full flex flex-col items-center justify-between px-6 pt-12 pb-28 text-center relative overflow-hidden text-[#F1EEE7] bg-transparent"
         >
-          <div className="w-full flex flex-col items-center pt-10">
-            {/* Logo superior: dia.svg achicado y con separación más amplia */}
-            <motion.div
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={fadeUp.transition}
-              viewport={fadeUp.viewport}
-              className="flex flex-col items-center pt-8 mb-8"
-            >
-              <div className="w-8 h-8 mb-16 flex items-center justify-center">
-                <img
-                  src={diaSvg}
-                  alt="Día Oniria"
-                  className="w-full h-full object-contain filter drop-shadow animate-pulse"
-                />
-              </div>
+          {/* 1. Uno arriba junto al logo */}
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={fadeUp.transition}
+            viewport={fadeUp.viewport}
+            className="flex flex-col items-center"
+          >
+            <div className="w-8 h-8 mb-10 flex items-center justify-center">
+              <img
+                src={diaSvg}
+                alt="Día Oniria"
+                className="w-full h-full object-contain filter drop-shadow animate-pulse"
+              />
+            </div>
 
-              <h2 className="font-naiveer text-[#F1EEE7] text-3xl tracking-wider drop-shadow-md">
-                proximo vagari
-              </h2>
-            </motion.div>
+            <h2 className="font-naiveer text-[#F1EEE7] text-3xl md:text-4xl tracking-wider drop-shadow-md">
+              proximo vagari
+            </h2>
+          </motion.div>
 
-            {/* Contador grande en tiempo real sin fondo con segundos activos y espacios más grandes */}
-            <motion.div
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.2 }}
-              viewport={fadeUp.viewport}
-              className="flex items-center justify-center gap-2 mt-6 mb-16 px-2 py-2"
-            >
-              <div className="flex flex-col items-center min-w-[44px]">
-                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
-                  {String(timeLeft.days).padStart(2, '0')}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">días</span>
-              </div>
-              <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center min-w-[44px]">
-                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
-                  {String(timeLeft.hours).padStart(2, '0')}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">horas</span>
-              </div>
-              <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center min-w-[44px]">
-                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
-                  {String(timeLeft.minutes).padStart(2, '0')}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">minutos</span>
-              </div>
-              <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
-              <div className="flex flex-col items-center min-w-[44px]">
-                <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
-                  {String(timeLeft.seconds).padStart(2, '0')}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">segundos</span>
-              </div>
-            </motion.div>
+          {/* 2. El contador en el medio */}
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.2 }}
+            viewport={fadeUp.viewport}
+            className="flex items-center justify-center gap-2 my-auto py-10 px-2"
+          >
+            <div className="flex flex-col items-center min-w-[44px]">
+              <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                {String(timeLeft.days).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">días</span>
+            </div>
+            <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
+            <div className="flex flex-col items-center min-w-[44px]">
+              <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                {String(timeLeft.hours).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">horas</span>
+            </div>
+            <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
+            <div className="flex flex-col items-center min-w-[44px]">
+              <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                {String(timeLeft.minutes).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">minutos</span>
+            </div>
+            <span className="text-2xl md:text-3xl font-bold -mt-3 text-[#F1EEE7]/50">:</span>
+            <div className="flex flex-col items-center min-w-[44px]">
+              <span className="text-3xl md:text-4xl font-bold tracking-tight text-[#F1EEE7]">
+                {String(timeLeft.seconds).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-[#F1EEE7]/80">segundos</span>
+            </div>
+          </motion.div>
 
-            {/* Texto de ubicación y fecha del evento */}
-            <motion.div
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.35 }}
-              viewport={fadeUp.viewport}
-              className="flex flex-col items-center text-center"
-            >
-              <p className="font-semibold text-[#F1EEE7] text-lg leading-snug drop-shadow-sm">
-                Facultad de Artes<br />Sede Fonseca
-              </p>
-              <p className="mt-4 text-sm font-semibold tracking-wider text-[#F1EEE7]/90 drop-shadow-sm">
-                24/10 - 18:00 hs
-              </p>
-            </motion.div>
-          </div>
-
-          <div className="pb-4" />
+          {/* 3. Facultad de artes abajo con espacio reservado al borde inferior */}
+          <motion.div
+            initial={fadeUp.initial}
+            whileInView={fadeUp.whileInView}
+            transition={{ ...fadeUp.transition, delay: 0.35 }}
+            viewport={fadeUp.viewport}
+            className="flex flex-col items-center text-center"
+          >
+            <p className="font-semibold text-[#F1EEE7] text-lg leading-snug drop-shadow-sm">
+              Facultad de Artes<br />Sede Fonseca
+            </p>
+            <p className="mt-4 text-sm font-semibold tracking-wider text-[#F1EEE7]/90 drop-shadow-sm">
+              24/10 - 18:00 hs
+            </p>
+          </motion.div>
         </section>
 
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
