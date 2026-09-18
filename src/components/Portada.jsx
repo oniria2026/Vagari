@@ -11,7 +11,8 @@ export default function Portada({ onExplorar }) {
       <button
         type="button"
         onClick={onExplorar}
-        className="absolute top-[64%] -translate-y-1/2 bg-[#F1EEE7] hover:bg-[#e5e1d5] active:scale-95 transition duration-200 text-[#24251E] font-semibold px-8 py-3 rounded-full shadow-md cursor-pointer tracking-wider text-sm uppercase"
+        style={{ boxShadow: '0px 7px 28.3px #566700' }}
+        className="absolute top-[64%] -translate-y-1/2 bg-[#F1EEE7] hover:bg-[#e5e1d5] active:scale-95 transition duration-200 text-[#566700] font-semibold px-8 py-3 rounded-full cursor-pointer tracking-wider text-sm"
       >
         Explorar
       </button>
