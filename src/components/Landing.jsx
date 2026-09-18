@@ -20,6 +20,30 @@ import nocheSvg from '../assets/noche.svg';
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
 
+  const handleEmailInput = (e) => {
+    const value = e.target.value.toLowerCase();
+    if (!value.includes('@')) {
+      e.target.setCustomValidity('');
+      return;
+    }
+    
+    const domain = value.split('@')[1];
+    const validDomains = [
+      'gmail.com', 'hotmail.com', 'hotmail.com.ar', 'hotmail.es',
+      'yahoo.com', 'yahoo.com.ar', 'yahoo.es', 'outlook.com',
+      'outlook.com.ar', 'outlook.es', 'live.com', 'live.com.ar',
+      'icloud.com', 'aol.com', 'protonmail.com', 'proton.me',
+      'me.com', 'mac.com', 'alumnos.unlp.edu.ar', 'unlp.edu.ar',
+      'fba.unlp.edu.ar'
+    ];
+
+    if (domain && !validDomains.includes(domain)) {
+      e.target.setCustomValidity('Por favor ingresá un dominio de correo real (ej. gmail.com, hotmail.com, yahoo.com.ar)');
+    } else {
+      e.target.setCustomValidity('');
+    }
+  };
+
   const fadeUp = {
     initial: { opacity: 0, y: 40 },
     whileInView: { opacity: 1, y: 0 },
@@ -272,7 +296,7 @@ export default function Landing() {
                 name="email"
                 placeholder="Mail"
                 required
-                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                onInput={handleEmailInput}
                 title="Por favor, ingresá un correo electrónico válido (ejemplo: nombre@dominio.com)"
                 initial={fadeUp.initial}
                 whileInView={fadeUp.whileInView}
