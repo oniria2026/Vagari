@@ -20,7 +20,7 @@ import ubicacionImg from '../assets/ubicacion.webp';
 import nubeArriba from '../assets/NubeArriba.svg';
 import nubeDerecha from '../assets/nubeDerecha.svg';
 import nubeIzquierda from '../assets/NubeIzquierda.svg';
-import pastoVagari from '../assets/pastoVagari.svg';
+import pastoVagari from '../assets/pastoVagari.png';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
