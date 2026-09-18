@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { useForm } from '@formspree/react';
 
 // Backgrounds
 import fondoCard2 from '../assets/fondoCard2.webp';
@@ -17,16 +18,7 @@ import diaSvg from '../assets/dia.svg';
 import nocheSvg from '../assets/noche.svg';
 
 export default function Landing() {
-  const [formData, setFormData] = useState({ nombre: '', mail: '' });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`¡Gracias por registrarte, ${formData.nombre || 'viajero'}!`);
-  };
+  const [state, handleSubmit] = useForm('xdekovjd');
 
   const fadeUp = {
     initial: { opacity: 0, y: 40 },
@@ -252,45 +244,53 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          {/* Formulario con inputs escalonados */}
-          <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4">
-            <motion.input
-              type="text"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-              placeholder="Nombre"
-              required
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.15 }}
-              viewport={fadeUp.viewport}
-              className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
-            />
-            <motion.input
-              type="email"
-              name="mail"
-              value={formData.mail}
-              onChange={handleChange}
-              placeholder="Mail"
-              required
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.25 }}
-              viewport={fadeUp.viewport}
-              className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
-            />
-            <motion.button
-              type="submit"
-              initial={fadeUp.initial}
-              whileInView={fadeUp.whileInView}
-              transition={{ ...fadeUp.transition, delay: 0.35 }}
-              viewport={fadeUp.viewport}
-              className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm uppercase tracking-wider cursor-pointer"
+          {/* Formulario con inputs escalonados o mensaje de éxito */}
+          {state.succeeded ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-full max-w-[300px] bg-[#F1EEE7]/80 backdrop-blur-sm border border-[#FF94DA] rounded-2xl p-6 shadow-md my-4"
             >
-              registrarme
-            </motion.button>
-          </form>
+              <h3 className="font-naiveer text-[#FF94DA] text-2xl mb-2">¡gracias!</h3>
+              <p className="text-sm font-medium text-[#24251E]">Tus datos fueron enviados correctamente. Mantenete alerta a las señales.</p>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} className="w-full max-w-[300px] flex flex-col gap-4">
+              <motion.input
+                type="text"
+                name="nombre"
+                placeholder="Nombre"
+                required
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.15 }}
+                viewport={fadeUp.viewport}
+                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
+              />
+              <motion.input
+                type="email"
+                name="email"
+                placeholder="Mail"
+                required
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.25 }}
+                viewport={fadeUp.viewport}
+                className="w-full bg-[#F1EEE7]/60 border border-[#F1EEE7] focus:border-[#FF94DA] focus:bg-[#F1EEE7]/80 px-4 py-3 rounded-2xl outline-none text-sm text-[#24251E] placeholder:text-[#24251E]/60 transition"
+              />
+              <motion.button
+                type="submit"
+                disabled={state.submitting}
+                initial={fadeUp.initial}
+                whileInView={fadeUp.whileInView}
+                transition={{ ...fadeUp.transition, delay: 0.35 }}
+                viewport={fadeUp.viewport}
+                className="w-full mt-2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-98 transition duration-200 text-[#24251E] font-semibold py-3 rounded-2xl shadow-md text-sm uppercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {state.submitting ? 'enviando...' : 'registrarme'}
+              </motion.button>
+            </form>
+          )}
         </div>
 
         {/* Fondo final: sobre mapaCompleto, detrás de las redes */}
