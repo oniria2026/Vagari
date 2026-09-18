@@ -87,11 +87,11 @@ export default function Landing() {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-[400px] mx-auto min-h-screen">
+    <div className="flex flex-col w-full max-w-[430px] mx-auto min-h-screen">
       {/* 1. SECCIÓN CARD: fondoCard.webp */}
       <section
         id="card"
-        className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center p-6 text-center relative overflow-hidden"
+        className="min-h-[100svh] min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center p-6 text-center relative overflow-hidden"
         style={{ backgroundImage: `url(${fondoCard})` }}
       >
         {/* Nube superior apareciendo desde arriba */}
@@ -140,8 +140,11 @@ export default function Landing() {
 
       {/* Wrapper continuo para las últimas 3 secciones: Mapa, Fecha y Formulario */}
       <div
-        className="bg-[url('./assets/mapaCompleto.svg')] bg-cover bg-top bg-no-repeat w-full flex flex-col relative"
-        style={{ backgroundImage: `url(${mapaCompleto})` }}
+        className="w-full flex flex-col relative bg-no-repeat bg-top"
+        style={{
+          backgroundImage: `url(${mapaCompleto})`,
+          backgroundSize: '100% 100%',
+        }}
       >
         {/* Nubes laterales (entre la primera y segunda sección, deslizando desde los bordes) */}
         <motion.img
@@ -165,7 +168,8 @@ export default function Landing() {
         {/* 2. SECCIÓN MAPA: fondo transparente */}
         <section
           id="mapa"
-          className="min-h-screen w-full flex flex-col items-center justify-center p-6 text-center relative bg-transparent"
+          className="w-full flex flex-col items-center justify-center p-6 text-center relative bg-transparent"
+          style={{ height: 'calc(min(100vw, 430px) * 1.966)' }}
         >
           <div className="w-full flex flex-col items-center py-6">
             <motion.h2
@@ -244,7 +248,8 @@ export default function Landing() {
         {/* 3. SECCIÓN FECHA: fondo transparente - distribuye los 3 bloques en todo el alto */}
         <section
           id="fecha"
-          className="min-h-screen w-full flex flex-col items-center justify-between px-6 pt-12 pb-28 text-center relative overflow-visible text-[#F1EEE7] bg-transparent"
+          className="w-full flex flex-col items-center justify-between px-6 pt-10 pb-20 text-center relative overflow-visible text-[#F1EEE7] bg-transparent"
+          style={{ height: 'calc(min(100vw, 430px) * 1.966)' }}
         >
           {/* 1. Uno arriba junto al logo */}
           <motion.div
@@ -334,7 +339,8 @@ export default function Landing() {
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
-          className="min-h-screen w-full flex flex-col justify-between items-center px-6 pt-10 pb-3 text-center relative bg-transparent overflow-hidden"
+          className="w-full flex flex-col justify-between items-center px-6 pt-6 pb-4 text-center relative bg-transparent overflow-hidden"
+          style={{ height: 'calc(min(100vw, 430px) * 1.966)' }}
         >
           {/* Bloque superior: Título vagari y primer subtítulo */}
           <motion.div
