@@ -361,13 +361,13 @@ export default function Landing() {
             </form>
           </div>
 
-          {/* Bloque inferior: Redes Sociales al pie */}
+          {/* Bloque inferior: Redes Sociales centradas verticalmente sobre el fondo de nubes */}
           <motion.div
             initial={fadeUp.initial}
             whileInView={fadeUp.whileInView}
             transition={{ ...fadeUp.transition, delay: 0.4 }}
             viewport={fadeUp.viewport}
-            className="w-full pt-4 pb-2 flex justify-center items-center relative z-10"
+            className="w-full pt-2 pb-6 flex justify-center items-center relative z-10"
           >
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-[#24251E]">
               <a
