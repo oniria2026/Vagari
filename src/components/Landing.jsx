@@ -19,9 +19,7 @@ import nocheSvg from '../assets/noche.svg';
 import ubicacionImg from '../assets/ubicacion.webp';
 import nubeDerecha from '../assets/nubeDerecha.svg';
 import nubeIzquierda from '../assets/NubeIzquierda.svg';
-import puertaVagari from '../assets/puertaVagari.svg';
 import pastoVagari from '../assets/pastoVagari.svg';
-import nubesVagari from '../assets/nubesVagari.svg';
 
 export default function Landing() {
   const [state, handleSubmit] = useForm('xdekovjd');
@@ -310,9 +308,9 @@ export default function Landing() {
             </p>
           </motion.div>
 
-          {/* Decoraciones Vagari: Pasto, Puerta (animadas desde la derecha, por detrás del texto) */}
+          {/* Decoraciones Vagari: Imagen unificada animada desde la derecha */}
           <div className="absolute inset-0 pointer-events-none z-0">
-            {/* Pasto: corrido bien a la derecha para que no quede centrado */}
+            {/* Imagen unificada: corrida a la izquierda para asomar bien la puerta */}
             <motion.img
               src={pastoVagari}
               alt=""
@@ -320,19 +318,7 @@ export default function Landing() {
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, amount: 0.1 }}
-              className="absolute bottom-0 -right-[20%] w-[150%] max-w-[800px] object-contain z-[1]"
-            />
-            
-            {/* Puerta: encima del pasto, pegada a la derecha y sobre el nivel inferior del pasto.
-                Se reduce el x inicial para evitar que quede 100% fuera de pantalla y nunca dispare la animación. */}
-            <motion.img
-              src={puertaVagari}
-              alt=""
-              initial={{ x: 50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: true, amount: 0 }}
-              className="absolute bottom-[5%] right-0 w-[50%] max-w-[250px] object-contain z-[2]"
+              className="absolute -bottom-10 right-[-2%] w-[130%] max-w-[800px] object-contain z-[1]"
             />
           </div>
         </section>
