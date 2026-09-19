@@ -246,20 +246,23 @@ export default function Landing() {
               mapa de oniria
             </motion.h2>
 
-            {/* Imagen importada mapa.webp */}
-            <motion.div
+            {/* Imagen importada mapa.webp con redirección a Google Maps */}
+            <motion.a
+              href="https://maps.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
               initial={fadeUp.initial}
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.15 }}
               viewport={fadeUp.viewport}
-              className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl border border-[#F1EEE7]/50 mb-6 bg-white/10"
+              className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl mb-6 bg-white/10 block cursor-pointer group transition-transform duration-300 hover:scale-[1.02] active:scale-95"
             >
               <img
                 src={mapaImg}
                 alt="Mapa de Oniria"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition duration-300 group-hover:brightness-105"
               />
-            </motion.div>
+            </motion.a>
 
             {/* Lista vertical de 4 ítems */}
             <div className="w-full max-w-[340px] px-2 flex flex-col divide-y divide-[#FF94DA]/70">
