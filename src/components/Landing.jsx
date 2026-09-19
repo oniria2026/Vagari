@@ -28,7 +28,6 @@ import ubicacionImg from '../assets/ubicacion.webp';
 import nubeArriba from '../assets/NubeArriba.svg';
 import nubeDerecha from '../assets/nubeDerecha.svg';
 import nubeIzquierda from '../assets/NubeIzquierda.svg';
-import pastoVagari from '../assets/pastoVagari.png';
 
 const SYMBOLS = [
   { name: 'agua', src: aguaSvg },
@@ -391,18 +390,7 @@ export default function Landing() {
               24/10 - 18:00 hs
             </p>
           </motion.div>
-
-          {/* Decoraciones Vagari: Imagen unificada animada desde la derecha */}
-          <div className="absolute inset-0 pointer-events-none z-0">
-            {/* Imagen unificada: restaurada a bottom-0 y movida a right-0 para asomar la puerta. Sin animación. */}
-            <img
-              src={pastoVagari}
-              alt=""
-              className="absolute bottom-0 right-0 w-[150%] max-w-[800px] object-contain z-[1]"
-            />
-          </div>
         </section>
-
         {/* 4. SECCIÓN FORMULARIO: fondo transparente */}
         <section
           id="formulario"
