@@ -255,7 +255,7 @@ export default function Landing() {
               whileInView={fadeUp.whileInView}
               transition={{ ...fadeUp.transition, delay: 0.15 }}
               viewport={fadeUp.viewport}
-              className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-xl mb-6 bg-white/10 block cursor-pointer group transition-transform duration-300 hover:scale-[1.02] active:scale-95"
+              className="w-full max-w-[320px] aspect-square overflow-hidden shadow-xl mb-6 bg-white/10 block cursor-pointer group transition-transform duration-300 hover:scale-[1.02] active:scale-95"
             >
               <img
                 src={mapaImg}
