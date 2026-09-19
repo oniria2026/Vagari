@@ -191,7 +191,9 @@ export default function Landing() {
                   alt="Card Frame Dorso"
                   className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xl"
                 />
-                <div className="relative z-10 font-naiveer text-[#F1EEE7] text-4xl tracking-widest drop-shadow-md text-center">
+                <div className={`relative z-10 font-naiveer text-[#F1EEE7] tracking-widest drop-shadow-md text-center ${
+                  randomSymbol.name.length > 10 ? 'text-xl' : (randomSymbol.name.length > 7 ? 'text-2xl' : 'text-4xl')
+                }`}>
                   {randomSymbol.name}
                 </div>
               </div>
