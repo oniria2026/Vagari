@@ -12,7 +12,8 @@
   --font-naiveer: 'Naiveer', sans-serif;
 }
 
-body {
+html, body {
+  background-color: #ffffff;
   font-family: 'Montserrat', sans-serif;
 }
 
