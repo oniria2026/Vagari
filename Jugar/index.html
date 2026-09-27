@@ -62,16 +62,21 @@
             font-family: 'Naiveer', sans-serif;
             text-transform: lowercase;
             font-size: 38px;
-            letter-spacing: 4px;
-            color: #ffffff;
+            letter-spacing: 0px; /* separación 0 */
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
             margin: 0;
             user-select: none;
+            /* Efecto vidrio de texto: refracción 83, profundidad 24, dispersión 54, escarcha 4 */
+            color: rgba(255, 255, 255, 0.42);
+            -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.88);
+            filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.45)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.75));
             text-shadow: 
-                0 1px 2px rgba(255,255,255,0.7),
-                0 3px 12px rgba(0,0,0,0.5);
+                -1px -1px 1px rgba(255, 255, 255, 0.9),
+                1px 1px 2px rgba(0, 0, 0, 0.5),
+                0 0 4px rgba(255, 255, 255, 0.6),
+                2px 3px 6px rgba(0, 0, 0, 0.35);
         }
         .score-container {
             font-size: 18px;
