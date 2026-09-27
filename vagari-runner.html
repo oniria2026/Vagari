@@ -68,15 +68,19 @@
             transform: translateX(-50%);
             margin: 0;
             user-select: none;
-            /* Efecto vidrio de texto: refracción 83, profundidad 24, dispersión 54, escarcha 4 */
-            color: rgba(255, 255, 255, 0.42);
-            -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.88);
-            filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.45)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.75));
+            /* Efecto vidrio Figma: ángulo 160°, intensidad 80%, refracción 83, profundidad 24, dispersión 54, escarcha 4, separación 0 */
+            color: rgba(255, 255, 255, 0.45);
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.6) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+            filter: 
+                drop-shadow(-2px 1px 2px rgba(255, 255, 255, 0.8))
+                drop-shadow(2.5px -1px 3.5px rgba(0, 0, 0, 0.55));
             text-shadow: 
-                -1px -1px 1px rgba(255, 255, 255, 0.9),
-                1px 1px 2px rgba(0, 0, 0, 0.5),
-                0 0 4px rgba(255, 255, 255, 0.6),
-                2px 3px 6px rgba(0, 0, 0, 0.35);
+                -2px 1px 3px rgba(255, 255, 255, 0.8),
+                2px -1px 4px rgba(0, 0, 0, 0.5),
+                0 0 4px rgba(255, 255, 255, 0.54);
         }
         .score-container {
             font-size: 18px;
