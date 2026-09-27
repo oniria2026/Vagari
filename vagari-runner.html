@@ -290,7 +290,7 @@
             if (this.y + this.height < groundY) {
                 this.vy += this.gravity;
                 this.grounded = false;
-                this.currentFrame = 1; // frame estático durante el salto
+                this.currentFrame = 5; // frame estático durante el salto (segundo de la fila inferior)
             } else {
                 this.vy = 0;
                 this.y = groundY - this.height;
