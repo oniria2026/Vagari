@@ -260,31 +260,34 @@
                 const sx = col * frameWidth;
                 const sy = row * frameHeight;
 
+                const drawY = this.y + (this.visualOffsetY || 0);
+
                 if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
                     ctx.save();
                     ctx.globalAlpha = 0.5;
                     ctx.drawImage(
                         spriteSheet,
                         sx, sy, frameWidth, frameHeight,
-                        this.x + (Math.random()*10 - 5), this.y, this.width, this.height
+                        this.x + (Math.random()*10 - 5), drawY, this.width, this.height
                     );
                     ctx.restore();
                 } else {
                     ctx.drawImage(
                         spriteSheet,
                         sx, sy, frameWidth, frameHeight,
-                        this.x, this.y, this.width, this.height
+                        this.x, drawY, this.width, this.height
                     );
                 }
             } else {
                 ctx.fillStyle = '#ffffff';
+                const drawY = this.y + (this.visualOffsetY || 0);
                 if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
                     ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
-                    ctx.fillRect(this.x + (Math.random()*10 - 5), this.y, this.width, this.height);
+                    ctx.fillRect(this.x + (Math.random()*10 - 5), drawY, this.width, this.height);
                 } else {
-                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                    ctx.fillRect(this.x, drawY, this.width, this.height);
                     ctx.fillStyle = '#000';
-                    ctx.fillRect(this.x + this.width * 0.6, this.y + this.height * 0.15, this.width * 0.15, this.height * 0.15);
+                    ctx.fillRect(this.x + this.width * 0.6, drawY + this.height * 0.15, this.width * 0.15, this.height * 0.15);
                 }
             }
         },
@@ -326,8 +329,11 @@
         canvas.height = height;
         groundY = height * 0.75;
         
-        player.width = Math.min(40, width * 0.1);
-        player.height = Math.min(60, height * 0.15);
+        // Proporción basada en el sprite original (ancho y alto equilibrados)
+        const charBaseHeight = Math.min(75, height * 0.16);
+        player.height = charBaseHeight;
+        player.width = charBaseHeight; // El frame es 1:1 (256x256)
+        player.visualOffsetY = player.height * 0.10; // Ajuste para que los pies toquen directamente la línea del suelo
         player.gravity = height < 600 ? 0.4 : 0.6;
         player.jumpForce = height < 600 ? -9 : -12;
 
