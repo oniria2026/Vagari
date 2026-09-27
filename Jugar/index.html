@@ -48,15 +48,16 @@
             justify-content: space-between;
             align-items: center;
             pointer-events: auto;
-            /* Color #566700 con efecto vidrio Figma: ángulo -45°, refracción/profundidad/escarcha */
-            background: linear-gradient(135deg, rgba(86, 103, 0, 0.88), rgba(86, 103, 0, 0.72));
+            /* Color #FFFFFF 4% con efecto vidrio Figma: ángulo -45° (135°), refracción, profundidad, dispersión, escarcha */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            background-color: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 
-                inset 1px 1px 2px rgba(255, 255, 255, 0.4),
-                inset -2px -2px 6px rgba(0, 0, 0, 0.25),
-                0 6px 20px rgba(0, 0, 0, 0.35);
+                inset 1px 1px 2px rgba(255, 255, 255, 0.35),
+                inset -2px -2px 6px rgba(0, 0, 0, 0.15),
+                0 6px 20px rgba(0, 0, 0, 0.25);
         }
         .header-title {
             font-family: 'Naiveer', sans-serif;
