@@ -389,13 +389,13 @@
         };
 
         if (currentWorld.bgType === 'bubbles') {
-            const size = player.height * 0.6;
+            const size = player.height * 0.65;
             obs.width = size;
             obs.height = size;
             if (type === 'ground') {
                 obs.y = groundY - obs.height;
             } else {
-                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 15;
+                obs.y = groundY - player.height - obs.height - 20 - Math.random() * 15;
             }
         } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
@@ -532,7 +532,10 @@
             
             if (currentWorld.bgType === 'bubbles') {
                 if (bubbleImg.complete && bubbleImg.naturalWidth > 0) {
-                    ctx.drawImage(bubbleImg, obs.x, obs.y, obs.width, obs.height);
+                    // Recorte exacto de la burbuja dentro de burbuja.png (evitando márgenes transparentes)
+                    // La burbuja está centrada entre x: 382..1191 y y: 101..921
+                    const sx = 380, sy = 100, sSize = 820;
+                    ctx.drawImage(bubbleImg, sx, sy, sSize, sSize, obs.x, obs.y, obs.width, obs.height);
                 } else {
                     ctx.beginPath();
                     ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
@@ -545,14 +548,38 @@
             }
 
             // Hitbox relaxation for better gameplay feel
-            let paddingX = player.width * 0.15;
+            let paddingX = player.width * 0.18;
             let paddingY = player.height * 0.15;
-            if (
-                player.x + paddingX < obs.x + obs.width &&
-                player.x + player.width - paddingX > obs.x &&
-                player.y + paddingY < obs.y + obs.height &&
-                player.y + player.height - paddingY > obs.y
-            ) {
+
+            let collides = false;
+            if (currentWorld.bgType === 'bubbles') {
+                // Colisión circular precisa con la burbuja
+                const bubbleRadius = (obs.width / 2) * 0.90; // Radio real de la burbuja
+                const bubbleCenterX = obs.x + obs.width / 2;
+                const bubbleCenterY = obs.y + obs.height / 2;
+
+                // Encontrar el punto más cercano de la caja del jugador al centro de la burbuja
+                const playerBoxLeft = player.x + paddingX;
+                const playerBoxRight = player.x + player.width - paddingX;
+                const playerBoxTop = player.y + paddingY;
+                const playerBoxBottom = player.y + player.height - paddingY;
+
+                const closestX = Math.max(playerBoxLeft, Math.min(bubbleCenterX, playerBoxRight));
+                const closestY = Math.max(playerBoxTop, Math.min(bubbleCenterY, playerBoxBottom));
+
+                const distX = bubbleCenterX - closestX;
+                const distY = bubbleCenterY - closestY;
+                collides = (distX * distX + distY * distY) < (bubbleRadius * bubbleRadius);
+            } else {
+                collides = (
+                    player.x + paddingX < obs.x + obs.width &&
+                    player.x + player.width - paddingX > obs.x &&
+                    player.y + paddingY < obs.y + obs.height &&
+                    player.y + player.height - paddingY > obs.y
+                );
+            }
+
+            if (collides) {
                 gameOver();
             }
         }
