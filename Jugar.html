@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vagari Runner</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: auto;
+        }
+        .score-container {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-align: right;
+        }
+        .btn-back {
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-back:hover {
+            background-color: #fff;
+            color: #000;
+        }
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            pointer-events: auto;
+            transition: opacity 0.3s;
+        }
+        .hidden {
+            opacity: 0;
+            pointer-events: none !important;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 0 10px #fff;
+        }
+        p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .btn-main {
+            background: linear-gradient(45deg, #ff00cc, #3333ff);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 0, 204, 0.5);
+            transition: transform 0.1s;
+        }
+        .btn-main:active {
+            transform: scale(0.95);
+        }
+        #flash {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: white;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 32px; }
+            p { font-size: 16px; }
+            .score-container { font-size: 18px; }
+            .btn-back { font-size: 14px; padding: 8px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="ui-layer">
+    <div class="header">
+        <button class="btn-back" onclick="goBack()">← Volver a Oniria</button>
+        <div class="score-container">
+            Distancia: <span id="scoreDisplay">0</span>m<br>
+            <span id="worldDisplay" style="font-size: 16px; opacity: 0.8;">Mundo 1</span>
+        </div>
+    </div>
+</div>
+
+<div id="startScreen" class="screen">
+    <h1>Vagari Runner</h1>
+    <p>Toca la pantalla o usa la Barra Espaciadora para saltar.</p>
+    <button class="btn-main" onclick="startGame()">Comenzar</button>
+</div>
+
+<div id="gameOverScreen" class="screen hidden">
+    <h1>¡Juego Terminado!</h1>
+    <p>Distancia recorrida: <span id="finalScore">0</span>m</p>
+    <div style="display: flex; gap: 20px;">
+        <button class="btn-main" onclick="startGame()">Reintentar</button>
+        <button class="btn-back" style="pointer-events: auto; padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
+    </div>
+</div>
+
+<div id="flash"></div>
+
+<script>
+    function goBack() {
+        if (window.history.length > 1) {
+            window.close();
+            window.history.back();
+        }
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 300);
+    }
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const startScreen = document.getElementById('startScreen');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const worldDisplay = document.getElementById('worldDisplay');
+    const finalScore = document.getElementById('finalScore');
+    const flash = document.getElementById('flash');
+
+    let animationId;
+    let isPlaying = false;
+    let score = 0;
+    let gameSpeed = 5;
+    let frame = 0;
+    
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    window.addEventListener('resize', () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        if (!isPlaying && !gameOverScreen.classList.contains('hidden')) {
+             groundY = height * 0.75;
+        }
+    });
+
+    const WORLDS = [
+        {
+            name: "Playa & Helados",
+            bgType: 'beach',
+            bgColor: '#ffb380',
+            groundColor: '#E6C280',
+            groundObsColor: '#c29a53',
+            airObsColor: '#ffffff'
+        },
+        {
+            name: "Glitch Dimensional",
+            bgType: 'glitch',
+            bgColor: '#1a1a1a',
+            groundColor: '#333333',
+            groundObsColor: '#ff00ff',
+            airObsColor: '#00ffff'
+        },
+        {
+            name: "Burbujas",
+            bgType: 'bubbles',
+            bgColor: '#a0e6ff',
+            groundColor: '#80d4ff',
+            groundObsColor: '#ffffff',
+            airObsColor: '#ffffff'
+        },
+        {
+            name: "Ciudad Neón",
+            bgType: 'neon',
+            bgColor: '#0f0f29',
+            groundColor: '#222222',
+            groundObsColor: '#ff0055',
+            airObsColor: '#00ffcc'
+        }
+    ];
+
+    function generateShuffledCycle(excludeFirstIndex) {
+        let indices = [0, 1, 2, 3];
+        // Fisher-Yates shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        // Evitar que el primer mundo del nuevo ciclo sea igual al último del ciclo anterior
+        if (indices[0] === excludeFirstIndex) {
+            const swapWith = 1 + Math.floor(Math.random() * (indices.length - 1));
+            [indices[0], indices[swapWith]] = [indices[swapWith], indices[0]];
+        }
+        return indices;
+    }
+
+    let worldQueue = [];
+    let currentWorldIndex = 0;
+    let timeSinceLastPortal = 0;
+    let currentWorld = WORLDS[currentWorldIndex];
+
+    // Resolver base de assets dinámicamente según la URL
+    const assetBase = window.location.pathname.endsWith('/Jugar/') ? '../assets/' : './assets/';
+
+    const spriteSheet = new Image();
+    spriteSheet.src = assetBase + 'sprites-personaje.png';
+
+    const bubbleImg = new Image();
+    bubbleImg.src = assetBase + 'burbuja.png';
+
+    const castilloImg = new Image();
+    castilloImg.src = assetBase + 'castillo-arena.png';
+
+    const heladoImg = new Image();
+    heladoImg.src = assetBase + 'helado.png';
+
+    const cieloMarImg = new Image();
+    cieloMarImg.src = assetBase + 'cielo-mar.png';
+
+    const sueloHeladoImg = new Image();
+    sueloHeladoImg.src = assetBase + 'suelo-helado.png';
+
+    const cieloNeonImg = new Image();
+    cieloNeonImg.src = assetBase + 'cielo-neon.jpeg';
+
+    const sueloNeonImg = new Image();
+    sueloNeonImg.src = assetBase + 'suelo-neon.jpg';
+
+    const player = {
+        x: 50,
+        y: 0,
+        width: Math.min(40, width * 0.1),
+        height: Math.min(60, height * 0.15),
+        vy: 0,
+        gravity: window.innerHeight < 600 ? 0.4 : 0.6,
+        jumpForce: window.innerHeight < 600 ? -9 : -12,
+        grounded: false,
+        currentFrame: 0,
+        frameTimer: 0,
+        draw() {
+            if (spriteSheet.complete && spriteSheet.naturalWidth > 0) {
+                const frameWidth = spriteSheet.naturalWidth / 4;
+                const frameHeight = spriteSheet.naturalHeight / 2;
+                const col = this.currentFrame % 4;
+                const row = Math.floor(this.currentFrame / 4);
+                const sx = col * frameWidth;
+                const sy = row * frameHeight;
+
+                const drawY = this.y + (this.visualOffsetY || 0);
+
+                if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.5;
+                    ctx.drawImage(
+                        spriteSheet,
+                        sx, sy, frameWidth, frameHeight,
+                        this.x + (Math.random()*10 - 5), drawY, this.width, this.height
+                    );
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(
+                        spriteSheet,
+                        sx, sy, frameWidth, frameHeight,
+                        this.x, drawY, this.width, this.height
+                    );
+                }
+            } else {
+                ctx.fillStyle = '#ffffff';
+                const drawY = this.y + (this.visualOffsetY || 0);
+                if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
+                    ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+                    ctx.fillRect(this.x + (Math.random()*10 - 5), drawY, this.width, this.height);
+                } else {
+                    ctx.fillRect(this.x, drawY, this.width, this.height);
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(this.x + this.width * 0.6, drawY + this.height * 0.15, this.width * 0.15, this.height * 0.15);
+                }
+            }
+        },
+        update() {
+            this.y += this.vy;
+            if (this.y + this.height < groundY) {
+                this.vy += this.gravity;
+                this.grounded = false;
+                this.currentFrame = 5; // frame estático durante el salto (segundo de la fila inferior)
+            } else {
+                this.vy = 0;
+                this.y = groundY - this.height;
+                this.grounded = true;
+                
+                this.frameTimer += gameSpeed;
+                if (this.frameTimer > 25) { 
+                    this.currentFrame = (this.currentFrame + 1) % 8;
+                    this.frameTimer = 0;
+                }
+            }
+        },
+        jump() {
+            if (this.grounded) {
+                this.vy = this.jumpForce;
+                this.grounded = false;
+            }
+        }
+    };
+
+    let obstacles = [];
+    let portals = [];
+    let groundY = height * 0.75;
+    let particles = [];
+
+    function initGame() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        groundY = height * 0.75;
+        
+        // Proporción basada en el sprite original (ancho y alto equilibrados)
+        const charBaseHeight = Math.min(75, height * 0.16);
+        player.height = charBaseHeight;
+        player.width = charBaseHeight; // El frame es 1:1 (256x256)
+        player.visualOffsetY = player.height * 0.10; // Ajuste para que los pies toquen directamente la línea del suelo
+        player.gravity = height < 600 ? 0.4 : 0.6;
+        player.jumpForce = height < 600 ? -9 : -12;
+
+        score = 0;
+        gameSpeed = width < 768 ? 4.5 : 6; 
+        frame = 0;
+
+        // Iniciar con un ciclo barajado de los 4 mundos
+        worldQueue = generateShuffledCycle(-1);
+        currentWorldIndex = worldQueue.shift();
+        currentWorld = WORLDS[currentWorldIndex];
+        timeSinceLastPortal = 0;
+        worldDisplay.innerText = currentWorld.name;
+
+        player.y = groundY - player.height;
+        player.vy = 0;
+        obstacles = [];
+        portals = [];
+        particles = [];
+        
+        startScreen.classList.add('hidden');
+        gameOverScreen.classList.add('hidden');
+        
+        isPlaying = true;
+        animate();
+    }
+
+    function spawnObstacle() {
+        const type = Math.random() > 0.5 ? 'ground' : 'air';
+        let obs = {
+            x: width,
+            y: 0,
+            width: 40,
+            height: 40,
+            type: type,
+            passed: false
+        };
+
+        if (currentWorld.bgType === 'bubbles') {
+            const size = player.height * 0.65;
+            obs.width = size;
+            obs.height = size;
+            if (type === 'ground') {
+                obs.y = groundY - obs.height;
+            } else {
+                obs.y = groundY - player.height - obs.height - 20 - Math.random() * 15;
+            }
+        } else if (currentWorld.bgType === 'beach') {
+            if (type === 'ground') {
+                // Castillo de arena (proporción 1:1 ~ 326x325)
+                const castleSize = player.height * 0.65;
+                obs.width = castleSize;
+                obs.height = castleSize;
+                obs.y = groundY - obs.height;
+            } else {
+                // Helado horizontal / de costado (proporción 1868x847, ancho/alto ~ 2.2)
+                obs.width = player.height * 0.75;
+                obs.height = obs.width * (847 / 1868);
+                // Altura aérea: pasa caminando por debajo sin agacharse
+                obs.y = groundY - player.height - obs.height - 20 - Math.random() * 12;
+            }
+        } else if (type === 'ground') {
+            obs.width = player.width * (0.8 + Math.random() * 0.5);
+            obs.height = player.height * (0.5 + Math.random() * 0.5);
+            obs.y = groundY - obs.height;
+        } else {
+            obs.width = player.width * (1 + Math.random() * 0.5);
+            obs.height = player.height * 0.4;
+            // Height to clear without ducking.
+            // When jumping max height is around groundY - height - jumpForce^2 / 2g.
+            // Safe to pass under: groundY - player.height - (obs.height + small buffer).
+            obs.y = groundY - player.height - obs.height - 15 - Math.random() * 20;
+        }
+
+        obstacles.push(obs);
+    }
+
+    function spawnPortal() {
+        portals.push({
+            x: width,
+            y: 0,
+            width: 80,
+            height: height
+        });
+    }
+
+    function drawBackground() {
+        if (currentWorld.bgType === 'beach' && cieloMarImg.complete && cieloMarImg.naturalWidth > 0) {
+            // Cielo con parallax continuo sin costura visible
+            const skyAspect = cieloMarImg.naturalWidth / cieloMarImg.naturalHeight;
+            const skyHeight = groundY;
+            const skyWidth = Math.ceil(skyHeight * skyAspect);
+            const skyOffset = (frame * gameSpeed * 0.15) % skyWidth;
+            // Solapar 2px para evitar líneas subpixel entre imágenes consecutivas
+            for (let x = -skyOffset; x < width + skyWidth; x += (skyWidth - 2)) {
+                ctx.drawImage(cieloMarImg, x, 0, skyWidth, skyHeight);
+            }
+        } else if (currentWorld.bgType === 'neon' && cieloNeonImg.complete && cieloNeonImg.naturalWidth > 0) {
+            // Cielo Neón con parallax continuo
+            const skyAspect = cieloNeonImg.naturalWidth / cieloNeonImg.naturalHeight;
+            const skyHeight = groundY;
+            const skyWidth = Math.ceil(skyHeight * skyAspect);
+            const skyOffset = (frame * gameSpeed * 0.15) % skyWidth;
+            for (let x = -skyOffset; x < width + skyWidth; x += (skyWidth - 2)) {
+                ctx.drawImage(cieloNeonImg, x, 0, skyWidth, skyHeight);
+            }
+        } else {
+            ctx.fillStyle = currentWorld.bgColor;
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        if (currentWorld.bgType === 'beach' && sueloHeladoImg.complete && sueloHeladoImg.naturalWidth > 0) {
+            // Suelo: Una sola tira en vertical, repitiéndose a lo ancho de forma espejada continua (seamless)
+            const groundHeight = height - groundY;
+            const tileAspect = sueloHeladoImg.naturalWidth / sueloHeladoImg.naturalHeight;
+            const tileWidth = Math.ceil(groundHeight * tileAspect);
+            const cycleWidth = tileWidth * 2;
+            const groundOffset = (frame * gameSpeed) % cycleWidth;
+            
+            let tileIndex = 0;
+            for (let x = -groundOffset; x < width + tileWidth * 2; x += (tileWidth - 1)) {
+                ctx.save();
+                if (tileIndex % 2 === 1) {
+                    ctx.translate(x + tileWidth, groundY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(sueloHeladoImg, 0, 0, tileWidth, groundHeight);
+                } else {
+                    ctx.drawImage(sueloHeladoImg, x, groundY, tileWidth, groundHeight);
+                }
+                ctx.restore();
+                tileIndex++;
+            }
+        } else if (currentWorld.bgType === 'neon' && sueloNeonImg.complete && sueloNeonImg.naturalWidth > 0) {
+            // Suelo Neón: Tira única vertical que se repite de forma continua sin costura
+            const groundHeight = height - groundY;
+            const tileAspect = sueloNeonImg.naturalWidth / sueloNeonImg.naturalHeight;
+            const tileWidth = Math.ceil(groundHeight * tileAspect);
+            const cycleWidth = tileWidth * 2;
+            const groundOffset = (frame * gameSpeed) % cycleWidth;
+
+            let tileIndex = 0;
+            for (let x = -groundOffset; x < width + tileWidth * 2; x += (tileWidth - 1)) {
+                ctx.save();
+                if (tileIndex % 2 === 1) {
+                    ctx.translate(x + tileWidth, groundY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(sueloNeonImg, 0, 0, tileWidth, groundHeight);
+                } else {
+                    ctx.drawImage(sueloNeonImg, x, groundY, tileWidth, groundHeight);
+                }
+                ctx.restore();
+                tileIndex++;
+            }
+        } else {
+            ctx.fillStyle = currentWorld.groundColor;
+            ctx.fillRect(0, groundY, width, height - groundY);
+        } else if (currentWorld.bgType === 'glitch') {
+            ctx.fillStyle = 'rgba(0,255,0,0.1)';
+            for(let i=0; i<5; i++){
+                ctx.fillRect(Math.random()*width, Math.random()*groundY, Math.random()*100, Math.random()*10);
+            }
+        } else if (currentWorld.bgType === 'bubbles') {
+            if (frame % 20 === 0) {
+                particles.push({x: width, y: Math.random()*groundY, r: Math.random()*15+5, vx: -gameSpeed*0.5});
+            }
+        }
+
+        for(let i=particles.length-1; i>=0; i--){
+            let p = particles[i];
+            p.x += p.vx;
+            if(currentWorld.bgType === 'bubbles') {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            if(p.x + p.r < 0) particles.splice(i, 1);
+        }
+    }
+
+    function changeWorld() {
+        flash.style.opacity = '1';
+        setTimeout(() => {
+            // Si la cola se vació, generar un nuevo ciclo aleatorio de los 4 mundos
+            // garantizando que el primer mundo del nuevo ciclo no sea el mismo que el actual
+            if (worldQueue.length === 0) {
+                worldQueue = generateShuffledCycle(currentWorldIndex);
+            }
+            currentWorldIndex = worldQueue.shift();
+            currentWorld = WORLDS[currentWorldIndex];
+            worldDisplay.innerText = currentWorld.name;
+            particles = [];
+            gameSpeed += 0.3; 
+            
+            setTimeout(() => {
+                flash.style.opacity = '0';
+            }, 300);
+        }, 150);
+    }
+
+    function animate() {
+        if (!isPlaying) return;
+
+        animationId = requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawBackground();
+
+        player.update();
+        player.draw();
+
+        frame++;
+        score += gameSpeed * 0.01;
+        scoreDisplay.innerText = Math.floor(score);
+        
+        let spawnRate = Math.max(50, Math.floor(100 - gameSpeed * 3));
+        if (frame % spawnRate === 0 && portals.length === 0) {
+            spawnObstacle();
+        }
+
+        // Approx 20-25 seconds = 1200 - 1500 frames at 60fps
+        timeSinceLastPortal++;
+        if (timeSinceLastPortal > 1300) {
+            spawnPortal();
+            timeSinceLastPortal = 0;
+        }
+
+        for (let i = 0; i < portals.length; i++) {
+            let p = portals[i];
+            p.x -= gameSpeed;
+            
+            let grad = ctx.createLinearGradient(p.x, 0, p.x + p.width, 0);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            grad.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(p.x, p.y, p.width, p.height);
+
+            if (player.x + player.width > p.x + p.width/2 && !p.triggered) {
+                p.triggered = true;
+                changeWorld();
+            }
+        }
+        portals = portals.filter(p => p.x + p.width > 0);
+
+        for (let i = 0; i < obstacles.length; i++) {
+            let obs = obstacles[i];
+            obs.x -= gameSpeed;
+
+            ctx.fillStyle = obs.type === 'ground' ? currentWorld.groundObsColor : currentWorld.airObsColor;
+            
+            if (currentWorld.bgType === 'bubbles') {
+                if (bubbleImg.complete && bubbleImg.naturalWidth > 0) {
+                    ctx.drawImage(bubbleImg, obs.x, obs.y, obs.width, obs.height);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            } else if (currentWorld.bgType === 'beach') {
+                if (obs.type === 'ground') {
+                    if (castilloImg.complete && castilloImg.naturalWidth > 0) {
+                        ctx.drawImage(castilloImg, obs.x, obs.y, obs.width, obs.height);
+                    } else {
+                        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    }
+                } else {
+                    if (heladoImg.complete && heladoImg.naturalWidth > 0) {
+                        ctx.save();
+                        // Trasladar al centro del obstáculo
+                        ctx.translate(obs.x + obs.width / 2, obs.y + obs.height / 2);
+                        // Rotar 90 grados (en sentido antihorario o -90deg para que la punta apunte hacia la izquierda hacia donde vuela)
+                        ctx.rotate(-Math.PI / 2);
+                        // Al estar rotada 90°, el ancho en el sistema local es obs.height y el alto es obs.width
+                        ctx.drawImage(heladoImg, -obs.height / 2, -obs.width / 2, obs.height, obs.width);
+                        ctx.restore();
+                    } else {
+                        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    }
+                }
+            } else if (currentWorld.bgType === 'glitch') {
+                ctx.fillRect(obs.x + (Math.random()*4-2), obs.y, obs.width, obs.height);
+            } else {
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+            }
+
+            // Hitbox relaxation for better gameplay feel
+            let paddingX = player.width * 0.18;
+            let paddingY = player.height * 0.15;
+
+            let collides = false;
+            if (currentWorld.bgType === 'bubbles') {
+                // Colisión circular precisa con la burbuja
+                const bubbleRadius = (obs.width / 2) * 0.90; // Radio real de la burbuja
+                const bubbleCenterX = obs.x + obs.width / 2;
+                const bubbleCenterY = obs.y + obs.height / 2;
+
+                // Encontrar el punto más cercano de la caja del jugador al centro de la burbuja
+                const playerBoxLeft = player.x + paddingX;
+                const playerBoxRight = player.x + player.width - paddingX;
+                const playerBoxTop = player.y + paddingY;
+                const playerBoxBottom = player.y + player.height - paddingY;
+
+                const closestX = Math.max(playerBoxLeft, Math.min(bubbleCenterX, playerBoxRight));
+                const closestY = Math.max(playerBoxTop, Math.min(bubbleCenterY, playerBoxBottom));
+
+                const distX = bubbleCenterX - closestX;
+                const distY = bubbleCenterY - closestY;
+                collides = (distX * distX + distY * distY) < (bubbleRadius * bubbleRadius);
+            } else {
+                collides = (
+                    player.x + paddingX < obs.x + obs.width &&
+                    player.x + player.width - paddingX > obs.x &&
+                    player.y + paddingY < obs.y + obs.height &&
+                    player.y + player.height - paddingY > obs.y
+                );
+            }
+
+            if (collides) {
+                gameOver();
+            }
+        }
+
+        obstacles = obstacles.filter(obs => obs.x + obs.width > 0);
+    }
+
+    function gameOver() {
+        isPlaying = false;
+        cancelAnimationFrame(animationId);
+        finalScore.innerText = Math.floor(score);
+        gameOverScreen.classList.remove('hidden');
+    }
+
+    window.startGame = initGame;
+
+    function handleInput(e) {
+        if ((e.type === 'keydown' && (e.code === 'Space' || e.code === 'ArrowUp')) || e.type === 'touchstart' || e.type === 'mousedown') {
+            if (e.target.tagName === 'BUTTON') return; 
+            
+            if (isPlaying) {
+                player.jump();
+            }
+            if (e.type !== 'mousedown') e.preventDefault();
+        }
+    }
+
+    window.addEventListener('keydown', handleInput);
+    window.addEventListener('touchstart', handleInput, {passive: false});
+    window.addEventListener('mousedown', handleInput);
+
+</script>
+</body>
+</html>
