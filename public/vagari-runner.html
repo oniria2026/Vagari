@@ -234,6 +234,9 @@
     let timeSinceLastPortal = 0;
     let currentWorld = WORLDS[currentWorldIndex];
 
+    const spriteSheet = new Image();
+    spriteSheet.src = '/assets/sprites-personaje.png';
+
     const player = {
         x: 50,
         y: 0,
@@ -243,15 +246,43 @@
         gravity: window.innerHeight < 600 ? 0.4 : 0.6,
         jumpForce: window.innerHeight < 600 ? -9 : -12,
         grounded: false,
+        currentFrame: 0,
+        frameTimer: 0,
         draw() {
-            ctx.fillStyle = '#ffffff';
-            if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
-                ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
-                ctx.fillRect(this.x + (Math.random()*10 - 5), this.y, this.width, this.height);
+            if (spriteSheet.complete && spriteSheet.naturalWidth > 0) {
+                const frameWidth = spriteSheet.naturalWidth / 4;
+                const frameHeight = spriteSheet.naturalHeight / 2;
+                const col = this.currentFrame % 4;
+                const row = Math.floor(this.currentFrame / 4);
+                const sx = col * frameWidth;
+                const sy = row * frameHeight;
+
+                if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.5;
+                    ctx.drawImage(
+                        spriteSheet,
+                        sx, sy, frameWidth, frameHeight,
+                        this.x + (Math.random()*10 - 5), this.y, this.width, this.height
+                    );
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(
+                        spriteSheet,
+                        sx, sy, frameWidth, frameHeight,
+                        this.x, this.y, this.width, this.height
+                    );
+                }
             } else {
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                ctx.fillStyle = '#000';
-                ctx.fillRect(this.x + this.width * 0.6, this.y + this.height * 0.15, this.width * 0.15, this.height * 0.15);
+                ctx.fillStyle = '#ffffff';
+                if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
+                    ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+                    ctx.fillRect(this.x + (Math.random()*10 - 5), this.y, this.width, this.height);
+                } else {
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(this.x + this.width * 0.6, this.y + this.height * 0.15, this.width * 0.15, this.height * 0.15);
+                }
             }
         },
         update() {
@@ -259,10 +290,17 @@
             if (this.y + this.height < groundY) {
                 this.vy += this.gravity;
                 this.grounded = false;
+                this.currentFrame = 1; // frame estático durante el salto
             } else {
                 this.vy = 0;
                 this.y = groundY - this.height;
                 this.grounded = true;
+                
+                this.frameTimer += gameSpeed;
+                if (this.frameTimer > 25) { 
+                    this.currentFrame = (this.currentFrame + 1) % 8;
+                    this.frameTimer = 0;
+                }
             }
         },
         jump() {
