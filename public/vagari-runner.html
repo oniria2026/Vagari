@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vagari Runner</title>
     <style>
+        @font-face {
+            font-family: 'Naiveer';
+            src: url('./assets/NaiveFont.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -31,37 +39,76 @@
         }
         .header {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 24px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             pointer-events: auto;
+            /* Color #566700 con efecto vidrio Figma: ángulo -45°, refracción/profundidad/escarcha */
+            background: linear-gradient(135deg, rgba(86, 103, 0, 0.88), rgba(86, 103, 0, 0.72));
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+            box-shadow: 
+                inset 1px 1px 2px rgba(255, 255, 255, 0.4),
+                inset -2px -2px 6px rgba(0, 0, 0, 0.25),
+                0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .header-title {
+            font-family: 'Naiveer', sans-serif;
+            text-transform: lowercase;
+            font-size: 38px;
+            letter-spacing: 4px;
+            color: #ffffff;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            user-select: none;
+            text-shadow: 
+                0 1px 2px rgba(255,255,255,0.7),
+                0 3px 12px rgba(0,0,0,0.5);
         }
         .score-container {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            text-align: right;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            text-align: left;
         }
-        .btn-back {
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(5px);
-            border: 2px solid #fff;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: bold;
+        .btn-close-oniria {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #FF94DA;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(255, 148, 218, 0.45);
+            transition: transform 0.15s, background-color 0.2s, box-shadow 0.2s;
+            padding: 0;
+            flex-shrink: 0;
         }
-        .btn-back:hover {
-            background-color: #fff;
-            color: #000;
+        .btn-close-oniria:hover {
+            transform: scale(1.08);
+            background-color: #ff7cd3;
+            box-shadow: 0 4px 14px rgba(255, 148, 218, 0.65);
+        }
+        .btn-close-oniria:active {
+            transform: scale(0.92);
+        }
+        .btn-close-oniria svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ffffff;
+            stroke-width: 3.2;
+            stroke-linecap: round;
         }
         .screen {
             position: absolute;
@@ -117,9 +164,11 @@
         }
         @media (max-width: 600px) {
             h1 { font-size: 32px; }
+            .header-title { font-size: 26px; letter-spacing: 2px; }
             p { font-size: 16px; }
-            .score-container { font-size: 18px; }
-            .btn-back { font-size: 14px; padding: 8px 16px; }
+            .score-container { font-size: 13px; }
+            .btn-close-oniria { width: 36px; height: 36px; }
+            .btn-close-oniria svg { width: 17px; height: 17px; stroke-width: 3.5; }
         }
     </style>
 </head>
@@ -129,11 +178,16 @@
 
 <div id="ui-layer">
     <div class="header">
-        <button class="btn-back" onclick="goBack()">← Volver a Oniria</button>
         <div class="score-container">
             Distancia: <span id="scoreDisplay">0</span>m<br>
-            <span id="worldDisplay" style="font-size: 16px; opacity: 0.8;">Mundo 1</span>
+            <span id="worldDisplay" style="font-size: 14px; opacity: 0.85;">Mundo 1</span>
         </div>
+        <h1 class="header-title">vagari</h1>
+        <button class="btn-close-oniria" onclick="goBack(event)" title="Volver a Oniria" aria-label="Volver a Oniria">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+        </button>
     </div>
 </div>
 
