@@ -237,6 +237,9 @@
     const spriteSheet = new Image();
     spriteSheet.src = './assets/sprites-personaje.png';
 
+    const bubbleImg = new Image();
+    bubbleImg.src = './assets/burbuja.png';
+
     const player = {
         x: 50,
         y: 0,
@@ -360,7 +363,16 @@
             passed: false
         };
 
-        if (type === 'ground') {
+        if (currentWorld.bgType === 'bubbles') {
+            const size = player.height * 0.6;
+            obs.width = size;
+            obs.height = size;
+            if (type === 'ground') {
+                obs.y = groundY - obs.height;
+            } else {
+                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 15;
+            }
+        } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
             obs.height = player.height * (0.5 + Math.random() * 0.5);
             obs.y = groundY - obs.height;
@@ -488,10 +500,14 @@
 
             ctx.fillStyle = obs.type === 'ground' ? currentWorld.groundObsColor : currentWorld.airObsColor;
             
-            if (currentWorld.bgType === 'bubbles' && obs.type === 'ground') {
-                ctx.beginPath();
-                ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
-                ctx.fill();
+            if (currentWorld.bgType === 'bubbles') {
+                if (bubbleImg.complete && bubbleImg.naturalWidth > 0) {
+                    ctx.drawImage(bubbleImg, obs.x, obs.y, obs.width, obs.height);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
+                    ctx.fill();
+                }
             } else if (currentWorld.bgType === 'glitch') {
                 ctx.fillRect(obs.x + (Math.random()*4-2), obs.y, obs.width, obs.height);
             } else {
