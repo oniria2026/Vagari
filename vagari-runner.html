@@ -411,11 +411,11 @@
                 obs.height = castleSize;
                 obs.y = groundY - obs.height;
             } else {
-                // Helado vertical (proporción 847x1868, alto/ancho ~ 2.2)
-                obs.height = player.height * 0.75;
-                obs.width = obs.height * (847 / 1868);
+                // Helado horizontal / de costado (proporción 1868x847, ancho/alto ~ 2.2)
+                obs.width = player.height * 0.75;
+                obs.height = obs.width * (847 / 1868);
                 // Altura aérea: pasa caminando por debajo sin agacharse
-                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 15;
+                obs.y = groundY - player.height - obs.height - 20 - Math.random() * 12;
             }
         } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
@@ -567,7 +567,14 @@
                     }
                 } else {
                     if (heladoImg.complete && heladoImg.naturalWidth > 0) {
-                        ctx.drawImage(heladoImg, obs.x, obs.y, obs.width, obs.height);
+                        ctx.save();
+                        // Trasladar al centro del obstáculo
+                        ctx.translate(obs.x + obs.width / 2, obs.y + obs.height / 2);
+                        // Rotar 90 grados (en sentido antihorario o -90deg para que la punta apunte hacia la izquierda hacia donde vuela)
+                        ctx.rotate(-Math.PI / 2);
+                        // Al estar rotada 90°, el ancho en el sistema local es obs.height y el alto es obs.width
+                        ctx.drawImage(heladoImg, -obs.height / 2, -obs.width / 2, obs.height, obs.width);
+                        ctx.restore();
                     } else {
                         ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
                     }
