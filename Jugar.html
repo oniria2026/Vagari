@@ -163,6 +163,42 @@
         .btn-main:active {
             transform: scale(0.95);
         }
+        .btn-retry {
+            position: relative;
+            background-color: #566700;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            padding: 15px 40px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            transition: transform 0.1s, filter 0.2s;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .btn-retry::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            /* Granulado Figma: 3.3 en x e y (baseFrequency 0.303 ~ 1/3.3), densidad 100%, color #000000 al 25% */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.303' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' fill='%23000000' opacity='0.25'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            mix-blend-mode: multiply;
+            z-index: 1;
+        }
+        .btn-retry span {
+            position: relative;
+            z-index: 2;
+        }
+        .btn-retry:hover {
+            filter: brightness(1.08);
+        }
+        .btn-retry:active {
+            transform: scale(0.95);
+        }
         #flash {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -210,7 +246,7 @@
     <h1>¡Juego Terminado!</h1>
     <p>Distancia recorrida: <span id="finalScore">0</span>m</p>
     <div style="display: flex; gap: 20px;">
-        <button class="btn-main" onclick="startGame()">Reintentar</button>
+        <button class="btn-retry" onclick="startGame()"><span>Reintentar</span></button>
         <button class="btn-back" style="padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
     </div>
 </div>
