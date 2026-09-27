@@ -256,6 +256,12 @@
     const bubbleImg = new Image();
     bubbleImg.src = './assets/burbuja.png';
 
+    const castilloImg = new Image();
+    castilloImg.src = './assets/castillo-arena.png';
+
+    const heladoImg = new Image();
+    heladoImg.src = './assets/helado.png';
+
     const player = {
         x: 50,
         y: 0,
@@ -397,6 +403,20 @@
             } else {
                 obs.y = groundY - player.height - obs.height - 20 - Math.random() * 15;
             }
+        } else if (currentWorld.bgType === 'beach') {
+            if (type === 'ground') {
+                // Castillo de arena (proporción 1:1 ~ 326x325)
+                const castleSize = player.height * 0.65;
+                obs.width = castleSize;
+                obs.height = castleSize;
+                obs.y = groundY - obs.height;
+            } else {
+                // Helado vertical (proporción 847x1868, alto/ancho ~ 2.2)
+                obs.height = player.height * 0.75;
+                obs.width = obs.height * (847 / 1868);
+                // Altura aérea: pasa caminando por debajo sin agacharse
+                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 15;
+            }
         } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
             obs.height = player.height * (0.5 + Math.random() * 0.5);
@@ -532,14 +552,25 @@
             
             if (currentWorld.bgType === 'bubbles') {
                 if (bubbleImg.complete && bubbleImg.naturalWidth > 0) {
-                    // Recorte exacto de la burbuja dentro de burbuja.png (evitando márgenes transparentes)
-                    // La burbuja está centrada entre x: 382..1191 y y: 101..921
-                    const sx = 380, sy = 100, sSize = 820;
-                    ctx.drawImage(bubbleImg, sx, sy, sSize, sSize, obs.x, obs.y, obs.width, obs.height);
+                    ctx.drawImage(bubbleImg, obs.x, obs.y, obs.width, obs.height);
                 } else {
                     ctx.beginPath();
                     ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
                     ctx.fill();
+                }
+            } else if (currentWorld.bgType === 'beach') {
+                if (obs.type === 'ground') {
+                    if (castilloImg.complete && castilloImg.naturalWidth > 0) {
+                        ctx.drawImage(castilloImg, obs.x, obs.y, obs.width, obs.height);
+                    } else {
+                        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    }
+                } else {
+                    if (heladoImg.complete && heladoImg.naturalWidth > 0) {
+                        ctx.drawImage(heladoImg, obs.x, obs.y, obs.width, obs.height);
+                    } else {
+                        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    }
                 }
             } else if (currentWorld.bgType === 'glitch') {
                 ctx.fillRect(obs.x + (Math.random()*4-2), obs.y, obs.width, obs.height);
