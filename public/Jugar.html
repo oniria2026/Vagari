@@ -27,6 +27,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 100;
         }
         .header {
             position: absolute;
@@ -76,10 +77,10 @@
             color: white;
             pointer-events: auto;
             transition: opacity 0.3s;
+            z-index: 50;
         }
         .hidden {
-            opacity: 0;
-            pointer-events: none !important;
+            display: none !important;
         }
         h1 {
             font-size: 48px;
@@ -147,7 +148,7 @@
     <p>Distancia recorrida: <span id="finalScore">0</span>m</p>
     <div style="display: flex; gap: 20px;">
         <button class="btn-main" onclick="startGame()">Reintentar</button>
-        <button class="btn-back" style="pointer-events: auto; padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
+        <button class="btn-back" style="padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
     </div>
 </div>
 
@@ -155,13 +156,11 @@
 
 <script>
     function goBack() {
-        if (window.history.length > 1) {
-            window.close();
-            window.history.back();
-        }
-        setTimeout(() => {
-            window.location.href = '/';
-        }, 300);
+        window.location.href = 'https://oniria2026.github.io/Vagari/';
+    }
+
+    function startGame() {
+        initGame();
     }
 
     const canvas = document.getElementById('gameCanvas');
@@ -250,8 +249,8 @@
     let timeSinceLastPortal = 0;
     let currentWorld = WORLDS[currentWorldIndex];
 
-    // Resolver base de assets dinámicamente según la URL
-    const assetBase = window.location.pathname.endsWith('/Jugar/') ? '../assets/' : './assets/';
+    // Resolver base de assets dinámicamente según la ubicación
+    const assetBase = (window.location.pathname.endsWith('/Jugar') || window.location.pathname.endsWith('/Jugar/')) ? (window.location.pathname.endsWith('/Jugar/') ? '../assets/' : './assets/') : './assets/';
 
     const spriteSheet = new Image();
     spriteSheet.src = assetBase + 'sprites-personaje.png';
@@ -527,7 +526,9 @@
         } else {
             ctx.fillStyle = currentWorld.groundColor;
             ctx.fillRect(0, groundY, width, height - groundY);
-        } else if (currentWorld.bgType === 'glitch') {
+        }
+
+        if (currentWorld.bgType === 'glitch') {
             ctx.fillStyle = 'rgba(0,255,0,0.1)';
             for(let i=0; i<5; i++){
                 ctx.fillRect(Math.random()*width, Math.random()*groundY, Math.random()*100, Math.random()*10);
@@ -705,16 +706,13 @@
         gameOverScreen.classList.remove('hidden');
     }
 
-    window.startGame = initGame;
-
     function handleInput(e) {
+        if (e.target && e.target.closest('button')) return; 
+        if (!isPlaying) return;
+
         if ((e.type === 'keydown' && (e.code === 'Space' || e.code === 'ArrowUp')) || e.type === 'touchstart' || e.type === 'mousedown') {
-            if (e.target.tagName === 'BUTTON') return; 
-            
-            if (isPlaying) {
-                player.jump();
-            }
-            if (e.type !== 'mousedown') e.preventDefault();
+            player.jump();
+            if (e.cancelable && e.type !== 'mousedown') e.preventDefault();
         }
     }
 
