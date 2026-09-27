@@ -262,6 +262,12 @@
     const heladoImg = new Image();
     heladoImg.src = './assets/helado.png';
 
+    const cieloMarImg = new Image();
+    cieloMarImg.src = './assets/cielo-mar.png';
+
+    const sueloHeladoImg = new Image();
+    sueloHeladoImg.src = './assets/suelo-helado.png';
+
     const player = {
         x: 50,
         y: 0,
@@ -443,11 +449,33 @@
     }
 
     function drawBackground() {
-        ctx.fillStyle = currentWorld.bgColor;
-        ctx.fillRect(0, 0, width, height);
+        if (currentWorld.bgType === 'beach' && cieloMarImg.complete && cieloMarImg.naturalWidth > 0) {
+            // Cielo con parallax suave (1774x887)
+            const skyAspect = cieloMarImg.naturalWidth / cieloMarImg.naturalHeight;
+            const skyHeight = groundY;
+            const skyWidth = skyHeight * skyAspect;
+            const skyOffset = (frame * gameSpeed * 0.15) % skyWidth;
+            for (let x = -skyOffset; x < width; x += skyWidth) {
+                ctx.drawImage(cieloMarImg, x, 0, skyWidth, skyHeight);
+            }
+        } else {
+            ctx.fillStyle = currentWorld.bgColor;
+            ctx.fillRect(0, 0, width, height);
+        }
 
-        ctx.fillStyle = currentWorld.groundColor;
-        ctx.fillRect(0, groundY, width, height - groundY);
+        if (currentWorld.bgType === 'beach' && sueloHeladoImg.complete && sueloHeladoImg.naturalWidth > 0) {
+            // Suelo con textura suelo-helado en mosaico animado a la velocidad del suelo
+            const tileSize = Math.min(100, (height - groundY));
+            const groundOffset = (frame * gameSpeed) % tileSize;
+            for (let x = -groundOffset; x < width + tileSize; x += tileSize) {
+                for (let y = groundY; y < height; y += tileSize) {
+                    ctx.drawImage(sueloHeladoImg, x, y, tileSize, tileSize);
+                }
+            }
+        } else {
+            ctx.fillStyle = currentWorld.groundColor;
+            ctx.fillRect(0, groundY, width, height - groundY);
+        }
 
         if (currentWorld.bgType === 'neon') {
             ctx.fillStyle = '#ff0055';
