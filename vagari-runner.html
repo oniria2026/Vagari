@@ -450,12 +450,13 @@
 
     function drawBackground() {
         if (currentWorld.bgType === 'beach' && cieloMarImg.complete && cieloMarImg.naturalWidth > 0) {
-            // Cielo con parallax suave (1774x887)
+            // Cielo con parallax continuo sin costura visible
             const skyAspect = cieloMarImg.naturalWidth / cieloMarImg.naturalHeight;
             const skyHeight = groundY;
-            const skyWidth = skyHeight * skyAspect;
+            const skyWidth = Math.ceil(skyHeight * skyAspect);
             const skyOffset = (frame * gameSpeed * 0.15) % skyWidth;
-            for (let x = -skyOffset; x < width; x += skyWidth) {
+            // Solapar 2px para evitar líneas subpixel entre imágenes consecutivas
+            for (let x = -skyOffset; x < width + skyWidth; x += (skyWidth - 2)) {
                 ctx.drawImage(cieloMarImg, x, 0, skyWidth, skyHeight);
             }
         } else {
@@ -464,13 +465,13 @@
         }
 
         if (currentWorld.bgType === 'beach' && sueloHeladoImg.complete && sueloHeladoImg.naturalWidth > 0) {
-            // Suelo con textura suelo-helado en mosaico animado a la velocidad del suelo
-            const tileSize = Math.min(100, (height - groundY));
-            const groundOffset = (frame * gameSpeed) % tileSize;
-            for (let x = -groundOffset; x < width + tileSize; x += tileSize) {
-                for (let y = groundY; y < height; y += tileSize) {
-                    ctx.drawImage(sueloHeladoImg, x, y, tileSize, tileSize);
-                }
+            // Suelo: Una sola tira en vertical (alto = todo el suelo), repitiéndose únicamente a lo ancho
+            const groundHeight = height - groundY;
+            const tileAspect = sueloHeladoImg.naturalWidth / sueloHeladoImg.naturalHeight;
+            const tileWidth = groundHeight * tileAspect;
+            const groundOffset = (frame * gameSpeed) % tileWidth;
+            for (let x = -groundOffset; x < width + tileWidth; x += tileWidth) {
+                ctx.drawImage(sueloHeladoImg, x, groundY, tileWidth, groundHeight);
             }
         } else {
             ctx.fillStyle = currentWorld.groundColor;
