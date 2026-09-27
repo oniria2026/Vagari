@@ -230,6 +230,22 @@
         }
     ];
 
+    function generateShuffledCycle(excludeFirstIndex) {
+        let indices = [0, 1, 2, 3];
+        // Fisher-Yates shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        // Evitar que el primer mundo del nuevo ciclo sea igual al último del ciclo anterior
+        if (indices[0] === excludeFirstIndex) {
+            const swapWith = 1 + Math.floor(Math.random() * (indices.length - 1));
+            [indices[0], indices[swapWith]] = [indices[swapWith], indices[0]];
+        }
+        return indices;
+    }
+
+    let worldQueue = [];
     let currentWorldIndex = 0;
     let timeSinceLastPortal = 0;
     let currentWorld = WORLDS[currentWorldIndex];
@@ -340,7 +356,10 @@
         score = 0;
         gameSpeed = width < 768 ? 4.5 : 6; 
         frame = 0;
-        currentWorldIndex = 0;
+
+        // Iniciar con un ciclo barajado de los 4 mundos
+        worldQueue = generateShuffledCycle(-1);
+        currentWorldIndex = worldQueue.shift();
         currentWorld = WORLDS[currentWorldIndex];
         timeSinceLastPortal = 0;
         worldDisplay.innerText = currentWorld.name;
@@ -443,7 +462,12 @@
     function changeWorld() {
         flash.style.opacity = '1';
         setTimeout(() => {
-            currentWorldIndex = (currentWorldIndex + 1) % WORLDS.length;
+            // Si la cola se vació, generar un nuevo ciclo aleatorio de los 4 mundos
+            // garantizando que el primer mundo del nuevo ciclo no sea el mismo que el actual
+            if (worldQueue.length === 0) {
+                worldQueue = generateShuffledCycle(currentWorldIndex);
+            }
+            currentWorldIndex = worldQueue.shift();
             currentWorld = WORLDS[currentWorldIndex];
             worldDisplay.innerText = currentWorld.name;
             particles = [];
