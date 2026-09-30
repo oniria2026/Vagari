@@ -242,6 +242,57 @@
         .btn-back:active {
             transform: scale(0.95);
         }
+        .input-player-name {
+            width: 100%;
+            max-width: 280px;
+            box-sizing: border-box;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            border-radius: 22px;
+            padding: 12px 18px;
+            font-size: 16px;
+            color: #ffffff;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-player-name:focus {
+            border-color: #FF94DA;
+            box-shadow: 0 0 12px rgba(255, 148, 218, 0.4);
+        }
+        .input-player-name::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .btn-save-score {
+            background-color: #FF94DA;
+            border: none;
+            color: #24251E;
+            font-weight: 700;
+            padding: 12px 28px;
+            font-size: 16px;
+            border-radius: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 148, 218, 0.45);
+            transition: transform 0.15s, background-color 0.2s, opacity 0.2s;
+        }
+        .btn-save-score:hover {
+            background-color: #ff7cd3;
+            transform: scale(1.04);
+        }
+        .btn-save-score:active {
+            transform: scale(0.96);
+        }
+        .btn-save-score:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .record-status-msg {
+            font-size: 14px;
+            min-height: 20px;
+            margin: 4px 0 10px 0;
+            transition: color 0.3s;
+        }
         #flash {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -286,7 +337,7 @@
     <div id="ui-layer">
         <div class="header">
             <div class="score-container">
-                Distancia: <span id="scoreDisplay">0</span>m<br>
+                Puntos: <span id="scoreDisplay">0</span><br>
                 <span id="worldDisplay" style="font-size: 14px; opacity: 0.85;">Mundo 1</span>
             </div>
             <h1 class="header-title">vagari</h1>
@@ -306,10 +357,21 @@
 
     <div id="gameOverScreen" class="screen hidden">
         <h1>¡Juego Terminado!</h1>
-        <p>Distancia recorrida: <span id="finalScore">0</span>m</p>
-        <div style="display: flex; gap: 20px;">
+        <p style="margin-bottom: 14px;">Puntos obtenidos: <span id="finalScore" style="color: #FF94DA; font-weight: bold; font-size: 24px;">0</span></p>
+
+        <!-- Sección opcional para registrar puntaje en Firebase RTDB -->
+        <div id="recordSection" style="width: 100%; max-width: 320px; display: flex; flex-direction: column; align-items: center; margin-bottom: 22px; padding: 0 16px; box-sizing: border-box;">
+            <p style="font-size: 14px; opacity: 0.85; margin: 0 0 10px 0; text-align: center;">¿Querés registrar tu puntaje en el ranking?</p>
+            <div style="display: flex; gap: 8px; width: 100%; justify-content: center;">
+                <input type="text" id="playerNameInput" class="input-player-name" placeholder="Tu nombre (opcional)" maxlength="20" autocomplete="off" />
+                <button type="button" id="btnSaveScore" class="btn-save-score" onclick="submitScore()">Guardar</button>
+            </div>
+            <div id="recordStatus" class="record-status-msg"></div>
+        </div>
+
+        <div style="display: flex; gap: 16px;">
             <button class="btn-retry" onclick="startGame()"><span>Reintentar</span></button>
-            <button class="btn-back" style="padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
+            <button class="btn-back" style="padding: 15px 36px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
         </div>
     </div>
 
@@ -531,6 +593,7 @@
     let portals = [];
     let groundY = height * 0.75;
     let particles = [];
+    let floatingScores = [];
 
     function initGame() {
         updateDimensions();
@@ -560,6 +623,8 @@
         obstacles = [];
         portals = [];
         particles = [];
+        floatingScores = [];
+        hasSavedCurrentScore = false;
         
         startScreen.classList.add('hidden');
         gameOverScreen.classList.add('hidden');
@@ -576,7 +641,8 @@
             width: 40,
             height: 40,
             type: type,
-            passed: false
+            passed: false,
+            collected: false
         };
 
         if (currentWorld.bgType === 'bubbles') {
@@ -586,7 +652,8 @@
             if (type === 'ground') {
                 obs.y = groundY - obs.height;
             } else {
-                obs.y = groundY - player.height - obs.height - 20 - Math.random() * 15;
+                // Altura para coleccionar saltando (entre 50 y 110 px sobre el suelo)
+                obs.y = groundY - player.height * (0.8 + Math.random() * 0.7);
             }
         } else if (currentWorld.bgType === 'beach') {
             if (type === 'ground') {
@@ -599,20 +666,17 @@
                 // Helado horizontal / de costado (proporción 1868x847, ancho/alto ~ 2.2)
                 obs.width = player.height * 0.75;
                 obs.height = obs.width * (847 / 1868);
-                // Altura aérea: pasa caminando por debajo sin agacharse
-                obs.y = groundY - player.height - obs.height - 20 - Math.random() * 12;
+                // Altura aérea para atraparlo con un salto
+                obs.y = groundY - player.height * (0.85 + Math.random() * 0.6);
             }
         } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
             obs.height = player.height * (0.5 + Math.random() * 0.5);
             obs.y = groundY - obs.height;
         } else {
-            obs.width = player.width * (1 + Math.random() * 0.5);
+            obs.width = player.width * (0.8 + Math.random() * 0.4);
             obs.height = player.height * 0.4;
-            // Height to clear without ducking.
-            // When jumping max height is around groundY - height - jumpForce^2 / 2g.
-            // Safe to pass under: groundY - player.height - (obs.height + small buffer).
-            obs.y = groundY - player.height - obs.height - 15 - Math.random() * 20;
+            obs.y = groundY - player.height * (0.85 + Math.random() * 0.6);
         }
 
         obstacles.push(obs);
@@ -863,18 +927,145 @@
             }
 
             if (collides) {
-                gameOver();
+                if (obs.type === 'air') {
+                    // ¡Es un punto coleccionable!
+                    obs.collected = true;
+                    const bonusPoints = 25;
+                    score += bonusPoints;
+                    scoreDisplay.innerText = Math.floor(score);
+
+                    // Efecto flotante "+25"
+                    floatingScores.push({
+                        text: '+' + bonusPoints,
+                        x: obs.x + obs.width / 2,
+                        y: obs.y,
+                        alpha: 1,
+                        vy: -1.8
+                    });
+
+                    // Partículas de recolección brillante
+                    for (let pIdx = 0; pIdx < 8; pIdx++) {
+                        particles.push({
+                            x: obs.x + obs.width / 2,
+                            y: obs.y + obs.height / 2,
+                            r: Math.random() * 4 + 2,
+                            vx: (Math.random() - 0.5) * 6,
+                            vy: (Math.random() - 0.5) * 6,
+                            color: currentWorld.airObsColor || '#FF94DA'
+                        });
+                    }
+                } else {
+                    // Obstáculo de suelo: causa Game Over
+                    gameOver();
+                    return;
+                }
             }
         }
 
-        obstacles = obstacles.filter(obs => obs.x + obs.width > 0);
+        // Remover obstáculos fuera de pantalla o que ya fueron recolectados
+        obstacles = obstacles.filter(obs => obs.x + obs.width > 0 && !obs.collected);
+
+        // Renderizar y actualizar textos flotantes de puntuación (+25)
+        ctx.save();
+        for (let fi = floatingScores.length - 1; fi >= 0; fi--) {
+            let fs = floatingScores[fi];
+            fs.y += fs.vy;
+            fs.alpha -= 0.025;
+            if (fs.alpha <= 0) {
+                floatingScores.splice(fi, 1);
+                continue;
+            }
+            ctx.globalAlpha = fs.alpha;
+            ctx.font = 'bold 20px "Segoe UI", sans-serif';
+            ctx.fillStyle = '#FF94DA';
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 6;
+            ctx.textAlign = 'center';
+            ctx.fillText(fs.text, fs.x, fs.y);
+        }
+        ctx.restore();
+    }
+
+    // Configuración y envío a Firebase Realtime Database
+    const FIREBASE_DB_URL = 'https://vagari-777-default-rtdb.firebaseio.com';
+    let hasSavedCurrentScore = false;
+
+    function resetRecordUI() {
+        const input = document.getElementById('playerNameInput');
+        const btn = document.getElementById('btnSaveScore');
+        const status = document.getElementById('recordStatus');
+        if (input) {
+            input.value = '';
+            input.disabled = false;
+        }
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'Guardar';
+        }
+        if (status) {
+            status.innerText = '';
+            status.style.color = '#ffffff';
+        }
+        hasSavedCurrentScore = false;
     }
 
     function gameOver() {
         isPlaying = false;
         cancelAnimationFrame(animationId);
-        finalScore.innerText = Math.floor(score);
+        const finalPts = Math.floor(score);
+        finalScore.innerText = finalPts;
+        resetRecordUI();
         gameOverScreen.classList.remove('hidden');
+    }
+
+    async function submitScore() {
+        if (hasSavedCurrentScore) return;
+
+        const input = document.getElementById('playerNameInput');
+        const btn = document.getElementById('btnSaveScore');
+        const status = document.getElementById('recordStatus');
+
+        const playerName = (input && input.value.trim()) ? input.value.trim() : 'Viajero Anónimo';
+        const finalPts = Math.floor(score);
+
+        btn.disabled = true;
+        input.disabled = true;
+        btn.innerText = 'Guardando...';
+        status.style.color = '#F1EEE7';
+        status.innerText = 'Registrando puntuación...';
+
+        try {
+            const payload = {
+                nombre: playerName,
+                puntos: finalPts,
+                mundo: currentWorld ? currentWorld.name : 'Mundo 1',
+                fecha: new Date().toISOString()
+            };
+
+            const response = await fetch(`${FIREBASE_DB_URL}/scores.json`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                hasSavedCurrentScore = true;
+                btn.innerText = '¡Listo!';
+                status.style.color = '#FF94DA';
+                status.innerText = '¡Puntaje registrado con éxito!';
+            } else {
+                throw new Error('Error al conectar con la base de datos');
+            }
+        } catch (err) {
+            console.error('Error guardando puntaje en Firebase:', err);
+            btn.disabled = false;
+            input.disabled = false;
+            btn.innerText = 'Reintentar';
+            status.style.color = '#ff6b6b';
+            status.innerText = 'No se pudo guardar. Podés volver a intentar o salir.';
+        }
     }
 
     function handleInput(e) {
