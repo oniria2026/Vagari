@@ -412,14 +412,11 @@ export default function InicioTelefono({ onOpenApp }) {
                 {/* Centro idéntico a la pantalla de inicio del juego, sin botón comenzar y diciendo cargando */}
                 <div className="flex-1 flex flex-col justify-center items-center p-6 text-center z-10 bg-black/70">
                   <h1 className="text-3xl sm:text-4xl font-bold mb-3 tracking-wide drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] text-white">
-                    viajando entre mundos
+                    Portales Oniricos
                   </h1>
                   <p className="text-base sm:text-lg text-white/90 max-w-[320px] mb-6 leading-relaxed">
-                    solo toca la pantalla para saltar
+                    Cargando...
                   </p>
-                  <div className="text-white/80 text-sm font-semibold tracking-widest uppercase animate-pulse">
-                    cargando...
-                  </div>
                 </div>
               </div>
             ) : (
