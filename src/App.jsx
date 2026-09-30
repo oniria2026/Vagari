@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Portada from './components/Portada'
 import InicioTelefono from './components/InicioTelefono'
 
@@ -11,6 +11,32 @@ function App() {
     }
     return 'portada'
   })
+
+  // Activar pantalla completa en cualquier pantalla al primer toque/interacción
+  useEffect(() => {
+    const triggerFullscreen = () => {
+      try {
+        const docEl = document.documentElement;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          if (docEl.requestFullscreen) {
+            docEl.requestFullscreen().catch(() => {});
+          } else if (docEl.webkitRequestFullscreen) {
+            docEl.webkitRequestFullscreen();
+          }
+        }
+      } catch (e) {
+        // Ignorar si el navegador no lo soporta
+      }
+    };
+
+    window.addEventListener('touchstart', triggerFullscreen, { passive: true });
+    window.addEventListener('click', triggerFullscreen, { passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', triggerFullscreen);
+      window.removeEventListener('click', triggerFullscreen);
+    };
+  }, []);
 
   const handleOpenApp = (appId) => {
     if (appId === 'dia') {
