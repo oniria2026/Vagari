@@ -9,6 +9,7 @@ import juegoApp from '../assets/juego-app.png';
 import logoOniria from '../assets/logo-oniria.svg';
 import cardImg from '../assets/card.webp';
 import fondoFormulario from '../assets/fondo-formulario.png';
+import fondoMapa from '../assets/fondo-mapa.png';
 import mapaImg from '../assets/mapa.webp';
 
 // Símbolos para la card del día
@@ -461,11 +462,12 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                 </div>
               </div>
             ) : activeApp.id === 'mapa' ? (
-              /* Pantalla de Mapa Onírico con fade de colores del formulario, mapa y contador del próximo vagari */
+              /* Pantalla de Mapa Onírico con degradado vertical de arriba hacia abajo, mapa y contador */
               <div
                 className="relative w-full h-full flex flex-col justify-between overflow-y-auto bg-cover bg-no-repeat bg-top select-none touch-pan-y"
                 style={{
-                  backgroundImage: `url(${fondoFormulario})`,
+                  backgroundImage: `url(${fondoMapa})`,
+                  backgroundSize: '100% 100%',
                 }}
               >
                 {/* Header de vagari con una X blanca sobre un círculo rosa a la derecha para volver */}
@@ -630,7 +632,8 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
               <div
                 className="relative w-full h-full flex flex-col justify-between overflow-y-auto bg-cover bg-no-repeat bg-top select-none touch-pan-y"
                 style={{
-                  backgroundImage: `url(${fondoFormulario})`,
+                  backgroundImage: `url(${fondoMapa})`,
+                  backgroundSize: '100% 100%',
                 }}
               >
                 {/* Header de vagari con botón X idéntico al del mapa */}
