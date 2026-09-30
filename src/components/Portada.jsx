@@ -78,7 +78,7 @@ export default function Portada({ onExplorar }) {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
-              className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
+              className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
             >
               <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
                 vagari
