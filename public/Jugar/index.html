@@ -522,7 +522,7 @@
     <div id="rankingModal" class="hidden">
         <div class="ranking-card">
             <div class="ranking-header">
-                <h3 class="ranking-title">Ranking Onírico</h3>
+                <h3 class="ranking-title">Top 10 Onírico</h3>
                 <button class="ranking-close" onclick="closeRankingModal()" title="Cerrar" aria-label="Cerrar">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width: 18px; height: 18px;">
                         <path d="M18 6L6 18M6 6l12 12" />
@@ -1270,8 +1270,8 @@
                 ...data[key]
             })).sort((a, b) => (Number(b.puntos) || 0) - (Number(a.puntos) || 0));
 
-            // Tomar los mejores 50
-            const topScores = scoresList.slice(0, 50);
+            // Tomar los mejores 10
+            const topScores = scoresList.slice(0, 10);
 
             if (topScores.length === 0) {
                 container.innerHTML = '<div class="ranking-empty">Aún no hay puntuaciones registradas.</div>';
