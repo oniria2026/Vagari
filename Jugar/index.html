@@ -851,11 +851,11 @@
         const groundOffset = (player.visualOffsetY || (player.height * 0.10));
         if (currentWorld.bgType === 'bubbles') {
             if (type === 'ground') {
-                // Piedra obstáculo en el suelo (1:1), alineada visualmente a la misma profundidad del personaje
-                const stoneSize = player.height * 0.65;
+                // Piedra obstáculo en el suelo (1:1), bajada más para que no quede visualmente alta
+                const stoneSize = player.height * 0.60;
                 obs.width = stoneSize;
                 obs.height = stoneSize;
-                obs.y = groundY - obs.height + groundOffset;
+                obs.y = groundY - obs.height + groundOffset + (player.height * 0.16);
             } else {
                 // Burbuja en el aire (coleccionable +25)
                 const bubbleSize = player.height * 0.60;
@@ -1050,7 +1050,7 @@
             currentWorld = WORLDS[currentWorldIndex];
             worldDisplay.innerText = currentWorld.name;
             particles = [];
-            gameSpeed += 0.8; // Aumentar velocidad notablemente en cada cambio de mundo 
+            gameSpeed += 1.2; // Aumentar velocidad +1.2 en cada cambio de mundo 
             
             setTimeout(() => {
                 flash.style.opacity = '0';
