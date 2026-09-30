@@ -408,7 +408,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
             }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className={`fixed z-50 overflow-hidden shadow-2xl flex flex-col ${
-              activeApp.id === 'desafio' ? 'bg-[#0d0d0d]' : 'bg-[#24251E]'
+              activeApp.id === 'desafio' ? 'bg-[#0d0d0d]' : (activeApp.id === 'mapa' || activeApp.id === 'dia') ? 'bg-transparent' : 'bg-[#24251E]'
             }`}
           >
             {activeApp.id === 'desafio' ? (
@@ -462,12 +462,13 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                 </div>
               </div>
             ) : activeApp.id === 'mapa' ? (
-              /* Pantalla de Mapa Onírico con degradado vertical de arriba hacia abajo, mapa y contador */
+              /* Pantalla de Mapa Onírico con fondo fondo-mapa.png cubriendo toda la pantalla, mapa y contador */
               <div
-                className="relative w-full h-full flex flex-col justify-between overflow-y-auto bg-cover bg-no-repeat bg-top select-none touch-pan-y"
+                className="relative w-full h-full flex flex-col justify-between overflow-hidden bg-cover bg-center bg-no-repeat select-none"
                 style={{
                   backgroundImage: `url(${fondoMapa})`,
-                  backgroundSize: '100% 100%',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                 }}
               >
                 {/* Header de vagari con una X blanca sobre un círculo rosa a la derecha para volver */}
