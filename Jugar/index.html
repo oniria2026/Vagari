@@ -848,13 +848,14 @@
             collected: false
         };
 
+        const groundOffset = (player.visualOffsetY || (player.height * 0.10));
         if (currentWorld.bgType === 'bubbles') {
             if (type === 'ground') {
-                // Piedra obstáculo en el suelo (1:1)
+                // Piedra obstáculo en el suelo (1:1), alineada visualmente a la misma profundidad del personaje
                 const stoneSize = player.height * 0.65;
                 obs.width = stoneSize;
                 obs.height = stoneSize;
-                obs.y = groundY - obs.height;
+                obs.y = groundY - obs.height + groundOffset;
             } else {
                 // Burbuja en el aire (coleccionable +25)
                 const bubbleSize = player.height * 0.60;
@@ -868,7 +869,7 @@
                 const castleSize = player.height * 0.65;
                 obs.width = castleSize;
                 obs.height = castleSize;
-                obs.y = groundY - obs.height;
+                obs.y = groundY - obs.height + groundOffset;
             } else {
                 // Helado horizontal / de costado (proporción 1868x847, ancho/alto ~ 2.2)
                 obs.width = player.height * 0.75;
@@ -878,11 +879,11 @@
             }
         } else if (currentWorld.bgType === 'neon') {
             if (type === 'ground') {
-                // Basura obstáculo en el suelo (1:1)
+                // Basura obstáculo en el suelo (1:1), alineada visualmente a la misma profundidad del personaje
                 const trashSize = player.height * 0.65;
                 obs.width = trashSize;
                 obs.height = trashSize;
-                obs.y = groundY - obs.height;
+                obs.y = groundY - obs.height + groundOffset;
             } else {
                 // Estrella puntos coleccionable en el aire (1:1)
                 const starSize = player.height * 0.55;
@@ -892,11 +893,11 @@
             }
         } else if (currentWorld.bgType === 'glitch') {
             if (type === 'ground') {
-                // Glitch obstáculo en el suelo (1:1)
+                // Glitch obstáculo en el suelo (1:1), alineado visualmente
                 const glitchSize = player.height * 0.65;
                 obs.width = glitchSize;
                 obs.height = glitchSize;
-                obs.y = groundY - obs.height;
+                obs.y = groundY - obs.height + groundOffset;
             } else {
                 // Glitch puntos coleccionable en el aire (538x464 ~ 1.16 ratio)
                 obs.height = player.height * 0.55;
@@ -906,7 +907,7 @@
         } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
             obs.height = player.height * (0.5 + Math.random() * 0.5);
-            obs.y = groundY - obs.height;
+            obs.y = groundY - obs.height + groundOffset;
         } else {
             obs.width = player.width * (0.8 + Math.random() * 0.4);
             obs.height = player.height * 0.4;
@@ -1049,7 +1050,7 @@
             currentWorld = WORLDS[currentWorldIndex];
             worldDisplay.innerText = currentWorld.name;
             particles = [];
-            gameSpeed += 0.3; 
+            gameSpeed += 0.8; // Aumentar velocidad notablemente en cada cambio de mundo 
             
             setTimeout(() => {
                 flash.style.opacity = '0';
