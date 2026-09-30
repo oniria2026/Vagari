@@ -285,7 +285,9 @@
 
 <script>
     function goBack() {
-        window.location.href = 'https://oniria2026.github.io/Vagari/';
+        const isGhPages = window.location.hostname.includes('github.io');
+        const baseUrl = isGhPages ? 'https://oniria2026.github.io/Vagari/' : './';
+        window.location.href = baseUrl + '?screen=telefono';
     }
 
     function startGame() {
