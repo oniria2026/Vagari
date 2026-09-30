@@ -10,7 +10,7 @@
     <style>
         @font-face {
             font-family: 'Naiveer';
-            src: url('./assets/NaiveFont.woff2') format('woff2');
+            src: url('../assets/NaiveFont.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -489,7 +489,7 @@
     let currentWorld = WORLDS[currentWorldIndex];
 
     // Resolver base de assets dinámicamente según la ubicación
-    const assetBase = (window.location.pathname.endsWith('/Jugar') || window.location.pathname.endsWith('/Jugar/')) ? (window.location.pathname.endsWith('/Jugar/') ? '../assets/' : './assets/') : './assets/';
+    const assetBase = window.location.pathname.includes('/Jugar') ? '../assets/' : './assets/';
 
     const spriteSheet = new Image();
     spriteSheet.src = assetBase + 'sprites-personaje.png';
