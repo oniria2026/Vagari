@@ -3,8 +3,14 @@ import Portada from './components/Portada'
 import InicioTelefono from './components/InicioTelefono'
 
 function App() {
-  // 'portada' | 'telefono'
-  const [currentScreen, setCurrentScreen] = useState('portada')
+  // Inicializar en 'telefono' si la URL tiene ?screen=telefono o si se guardó en la sesión
+  const [currentScreen, setCurrentScreen] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('screen') === 'telefono') {
+      return 'telefono'
+    }
+    return 'portada'
+  })
 
   const handleOpenApp = (appId) => {
     if (appId === 'dia') {

@@ -9,6 +9,19 @@ export default function Portada({ onExplorar }) {
   const handleExplorar = () => {
     if (isPlaying) return;
     setIsPlaying(true);
+
+    // Intentar activar pantalla completa nativa para ocultar barras del navegador en el móvil
+    try {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {});
+      } else if (docEl.webkitRequestFullscreen) {
+        docEl.webkitRequestFullscreen();
+      }
+    } catch (e) {
+      // Ignorar si el navegador bloquea fullscreen automático
+    }
+
     if (videoRef.current) {
       videoRef.current.play().catch((err) => {
         console.error('Error al reproducir el video:', err);
