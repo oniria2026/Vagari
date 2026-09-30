@@ -87,7 +87,7 @@ export default function Portada({ onExplorar }) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
-                style={{ top: '40%' }}
+                style={{ top: '45%' }}
                 className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
               >
                 <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
@@ -103,7 +103,7 @@ export default function Portada({ onExplorar }) {
                 type="button"
                 onClick={handleExplorar}
                 style={{ 
-                  top: '65%',
+                  top: '62%',
                   boxShadow: '0px 7px 28.3px rgba(255, 148, 218, 0.45)' 
                 }}
                 className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition duration-200 text-white font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto shadow-lg"
