@@ -23,8 +23,23 @@ export default function Portada({ onExplorar }) {
     onExplorar();
   };
 
+  const handleScreenClick = () => {
+    // Si ya arrancó la animación, al volver a tocar la pantalla se saltea directo a la siguiente
+    if (isPlaying) {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      onExplorar();
+    }
+  };
+
   return (
-    <div className="relative w-full h-[100svh] min-h-screen bg-black overflow-hidden flex flex-col items-center select-none">
+    <div
+      onClick={handleScreenClick}
+      className={`relative w-full h-[100svh] min-h-screen bg-black overflow-hidden flex flex-col items-center select-none ${
+        isPlaying ? 'cursor-pointer' : ''
+      }`}
+    >
       {/* Video de fondo: pausado en el primer frame hasta hacer clic en Explorar */}
       <video
         ref={videoRef}
@@ -45,18 +60,6 @@ export default function Portada({ onExplorar }) {
             transition={{ duration: 0.5, ease: 'easeInOut' }}
             className="absolute inset-0 w-full h-full flex flex-col items-center pointer-events-none z-10"
           >
-            {/* Arriba a la izquierda: grupo oniria */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="absolute top-8 left-6 sm:top-10 sm:left-8 pointer-events-auto"
-            >
-              <span className="font-naiveer text-xl sm:text-2xl text-[#F1EEE7] tracking-widest drop-shadow-md">
-                grupo oniria
-              </span>
-            </motion.div>
-
             {/* Centro de la pantalla: vagari justo arriba del botón */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -76,8 +79,8 @@ export default function Portada({ onExplorar }) {
               transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
               type="button"
               onClick={handleExplorar}
-              style={{ boxShadow: '0px 7px 28.3px #566700' }}
-              className="absolute top-[64%] -translate-y-1/2 bg-[#F1EEE7] hover:bg-[#e5e1d5] active:scale-95 transition duration-200 text-[#566700] font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto"
+              style={{ boxShadow: '0px 7px 28.3px rgba(255, 148, 218, 0.45)' }}
+              className="absolute top-[64%] -translate-y-1/2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition duration-200 text-white font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto shadow-lg"
             >
               Explorar
             </motion.button>
