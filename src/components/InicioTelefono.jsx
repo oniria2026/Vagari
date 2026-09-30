@@ -300,8 +300,8 @@ export default function InicioTelefono({ onOpenApp }) {
             onClick={(e) => handleAppClick('dia', simboloDia.name, cardImg, e)}
             className="flex flex-col items-center gap-1.5 cursor-pointer focus:outline-none group active:scale-95 transition-transform"
           >
-            <div className="relative w-[68px] h-[68px] sm:w-[74px] sm:h-[74px] rounded-2xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform flex items-center justify-center p-2 bg-[#1b1c17]/60">
-              <img src={cardImg} alt="Card Frame" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="relative w-[68px] h-[68px] sm:w-[74px] sm:h-[74px] flex items-center justify-center group-hover:scale-105 transition-transform">
+              <img src={cardImg} alt="Card" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
               <img src={simboloDia.src} alt={simboloDia.name} className="relative z-10 w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow" />
             </div>
             <span className="text-white text-xs sm:text-sm font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] capitalize">
@@ -616,31 +616,33 @@ export default function InicioTelefono({ onOpenApp }) {
                   </button>
                 </div>
 
-                {/* Centro: Card estilo mockup de Figma con halo suave azulado/rosado */}
+                {/* Centro: Card estilo mockup de Figma usando card.webp sin bordes agregados */}
                 <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9, y: 15 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.1 }}
-                    className="relative w-full max-w-[340px] aspect-[4/5] rounded-[36px] p-8 flex flex-col items-center justify-between text-center overflow-hidden"
-                    style={{
-                      background: 'radial-gradient(130% 120% at 50% 10%, #efa4dc 0%, #b869b2 55%, #7e3a89 100%)',
-                      boxShadow: '0 0 35px 8px rgba(78, 140, 255, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -2px 6px rgba(0, 0, 0, 0.25)',
-                      border: '1px solid rgba(255, 255, 255, 0.5)',
-                    }}
+                    className="relative w-full max-w-[340px] aspect-square p-8 flex flex-col items-center justify-between text-center"
                   >
+                    {/* Fondo con card.webp original sin bordes */}
+                    <img
+                      src={cardImg}
+                      alt="Card"
+                      className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
+                    />
+
                     {/* Parte superior: Nombre del símbolo en tipografía Naiveer */}
-                    <div className="flex-1 flex items-center justify-center w-full">
+                    <div className="relative z-10 flex-1 flex items-center justify-center w-full">
                       <span className="font-naiveer text-[#F1EEE7] text-6xl sm:text-7xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
                         {simboloDia.name}
                       </span>
                     </div>
 
                     {/* Guión / Línea separadora a lo largo */}
-                    <div className="w-full h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
+                    <div className="relative z-10 w-[85%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
 
                     {/* Parte inferior: Texto descriptivo */}
-                    <div className="flex-1 flex items-center justify-center w-full">
+                    <div className="relative z-10 flex-1 flex items-center justify-center w-full px-2">
                       <p className="text-white text-lg sm:text-xl font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
                         Este es tu símbolo y representa{' '}
                         <strong className="font-bold text-white">
