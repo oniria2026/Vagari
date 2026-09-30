@@ -511,99 +511,115 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                   </button>
                 </div>
 
-                {/* Contenido principal: Título Mapa Onírico más chico y bajado, Mapa centrado, Contador y Footer */}
-                <div className="flex-1 flex flex-col items-center justify-between px-6 pt-4 pb-4 w-full max-w-[380px] mx-auto text-center z-10 min-h-0">
-                  {/* Título: mapa onirico más chico, en rosa #FF94DA y con margen superior para bajarlo */}
-                  <motion.h2
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="font-naiveer text-[#FF94DA] text-2xl sm:text-3xl tracking-wide mt-2 mb-3 drop-shadow-[0_2px_8px_rgba(255,148,218,0.35)]"
-                  >
-                    mapa onírico
-                  </motion.h2>
+                {/* Contenido principal: Título centrado entre header y mapa, Mapa en centro, y Próximo Vagari con font-naiveer centrado entre mapa y footer */}
+                <div className="flex-1 flex flex-col items-center justify-between w-full select-none z-10 min-h-0">
+                  {/* Espacio superior: Título mapa onírico a la misma distancia entre header y mapa */}
+                  <div className="flex-1 flex items-center justify-center w-full px-6">
+                    <motion.h2
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="font-naiveer text-[#FF94DA] text-2xl sm:text-3xl tracking-wide drop-shadow-[0_2px_8px_rgba(255,148,218,0.35)] m-0"
+                    >
+                      mapa onírico
+                    </motion.h2>
+                  </div>
 
-                  {/* Mapa en el centro con tamaño equilibrado */}
+                  {/* Mapa en el centro */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
-                    className="w-full relative flex items-center justify-center my-auto"
+                    className="w-full max-w-[360px] px-6 relative flex items-center justify-center shrink-0"
                   >
                     <img
                       src={mapaImg}
                       alt="Mapa Onírico"
-                      className="w-full h-auto max-h-[260px] sm:max-h-[290px] object-contain drop-shadow-2xl"
+                      className="w-full h-auto max-h-[250px] sm:max-h-[270px] object-contain drop-shadow-2xl"
                     />
                   </motion.div>
 
-                  {/* Contador del próximo Vagari debajo del mapa con margen consistente */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: 0.2 }}
-                    className="w-full flex flex-col items-center mt-3 mb-4"
-                  >
-                    <span className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-2 drop-shadow">
-                      próximo vagari en:
-                    </span>
+                  {/* Espacio inferior: Próximo Vagari (con font-naiveer) y contador centrado entre mapa y footer */}
+                  <div className="flex-1 flex flex-col items-center justify-center w-full max-w-[380px] px-6">
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: 0.2 }}
+                      className="w-full flex flex-col items-center"
+                    >
+                      <span className="font-naiveer text-white text-lg sm:text-xl tracking-wider mb-2.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
+                        próximo vagari en
+                      </span>
 
-                    {/* Bloques de días, horas, minutos y segundos */}
-                    <div className="grid grid-cols-4 gap-2.5 w-full">
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                        <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
-                          {String(timeLeft.dias).padStart(2, '0')}
-                        </span>
-                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                          días
-                        </span>
+                      {/* Bloques de días, horas, minutos y segundos */}
+                      <div className="grid grid-cols-4 gap-2.5 w-full">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                            {String(timeLeft.dias).padStart(2, '0')}
+                          </span>
+                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                            días
+                          </span>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                            {String(timeLeft.horas).padStart(2, '0')}
+                          </span>
+                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                            horas
+                          </span>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                            {String(timeLeft.minutos).padStart(2, '0')}
+                          </span>
+                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                            min
+                          </span>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                            {String(timeLeft.segundos).padStart(2, '0')}
+                          </span>
+                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                            seg
+                          </span>
+                        </div>
                       </div>
+                    </motion.div>
+                  </div>
+                </div>
 
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                        <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
-                          {String(timeLeft.horas).padStart(2, '0')}
-                        </span>
-                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                          horas
-                        </span>
-                      </div>
+                {/* Footer exactamente igual al del formulario (con fondo #566700, logo Oniria a la izq y redes a la der) */}
+                <div className="w-full bg-[#566700] px-6 py-4 flex items-center justify-between shrink-0 shadow-[0_-4px_16px_rgba(0,0,0,0.15)] z-20">
+                  {/* Logo Oniria a la izquierda */}
+                  <div className="flex items-center">
+                    <img
+                      src={logoOniria}
+                      alt="Oniria"
+                      className="w-11 h-11 object-contain drop-shadow"
+                    />
+                  </div>
 
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                        <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
-                          {String(timeLeft.minutos).padStart(2, '0')}
-                        </span>
-                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                          min
-                        </span>
-                      </div>
-
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                        <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
-                          {String(timeLeft.segundos).padStart(2, '0')}
-                        </span>
-                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                          seg
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Footer alineado con redes sociales */}
-                  <div className="w-full flex items-center justify-center gap-3 pt-2 pb-1 border-t border-white/10">
-                    <span className="text-[#F1EEE7]/70 text-xs font-normal">
+                  {/* A la derecha: "seguinos en:" y los logos de Instagram y TikTok centrados */}
+                  <div className="flex flex-col items-center gap-1.5 text-[#F1EEE7]">
+                    <span className="text-xs font-semibold tracking-wider text-[#F1EEE7]/90 uppercase text-center">
                       seguinos en:
                     </span>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center gap-3">
                       {/* Instagram */}
                       <a
                         href="https://instagram.com/somos.oniria"
                         target="_blank"
                         rel="noreferrer"
-                        className="w-6 h-6 flex items-center justify-center text-[#F1EEE7] hover:text-[#FF94DA] active:scale-95 transition"
+                        className="w-7 h-7 flex items-center justify-center text-[#F1EEE7] hover:text-[#FF94DA] active:scale-95 transition"
                         title="Instagram @somos.oniria"
                         aria-label="Instagram somos.oniria"
                       >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
                           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                           <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -615,11 +631,11 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                         href="https://tiktok.com/@somos.oniria"
                         target="_blank"
                         rel="noreferrer"
-                        className="w-6 h-6 flex items-center justify-center text-[#F1EEE7] hover:text-[#FF94DA] active:scale-95 transition"
+                        className="w-7 h-7 flex items-center justify-center text-[#F1EEE7] hover:text-[#FF94DA] active:scale-95 transition"
                         title="TikTok @somos.oniria"
                         aria-label="TikTok somos.oniria"
                       >
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                           <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.89 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.32 0 .62.06.9.16V9.45a6.37 6.37 0 0 0-.9-.07A6.34 6.34 0 0 0 3 15.72a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.05a8.28 8.28 0 0 0 3.91 1.05v-3.41z"/>
                         </svg>
                       </a>
