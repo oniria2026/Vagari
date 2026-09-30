@@ -701,6 +701,15 @@
     const sueloNeonImg = new Image();
     sueloNeonImg.src = assetBase + 'suelo-neon-v2.jpg';
 
+    const piedraImg = new Image();
+    piedraImg.src = assetBase + 'piedra-obstaculo.png';
+
+    const basuraImg = new Image();
+    basuraImg.src = assetBase + 'basura-obstaculo.png';
+
+    const glitchObstaculoImg = new Image();
+    glitchObstaculoImg.src = assetBase + 'glitch-obstaculo.png';
+
     const player = {
         x: 50,
         y: 0,
@@ -834,13 +843,17 @@
         };
 
         if (currentWorld.bgType === 'bubbles') {
-            const size = player.height * 0.65;
-            obs.width = size;
-            obs.height = size;
             if (type === 'ground') {
+                // Piedra obstáculo en el suelo (1:1)
+                const stoneSize = player.height * 0.65;
+                obs.width = stoneSize;
+                obs.height = stoneSize;
                 obs.y = groundY - obs.height;
             } else {
-                // Altura original: el jugador pasa caminando por debajo sin tocarlo, debe saltar para agarrarlo
+                // Burbuja en el aire (coleccionable +25)
+                const bubbleSize = player.height * 0.60;
+                obs.width = bubbleSize;
+                obs.height = bubbleSize;
                 obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (currentWorld.bgType === 'beach') {
@@ -855,6 +868,34 @@
                 obs.width = player.height * 0.75;
                 obs.height = obs.width * (847 / 1868);
                 // Altura aérea original: requiere saltar para atraparlo
+                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
+            }
+        } else if (currentWorld.bgType === 'neon') {
+            if (type === 'ground') {
+                // Basura obstáculo en el suelo (1:1)
+                const trashSize = player.height * 0.65;
+                obs.width = trashSize;
+                obs.height = trashSize;
+                obs.y = groundY - obs.height;
+            } else {
+                // Coleccionable neón aéreo
+                const neonAirSize = player.height * 0.50;
+                obs.width = neonAirSize;
+                obs.height = neonAirSize;
+                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
+            }
+        } else if (currentWorld.bgType === 'glitch') {
+            if (type === 'ground') {
+                // Glitch obstáculo en el suelo (1:1)
+                const glitchSize = player.height * 0.65;
+                obs.width = glitchSize;
+                obs.height = glitchSize;
+                obs.y = groundY - obs.height;
+            } else {
+                // Coleccionable glitch aéreo
+                const glitchAirSize = player.height * 0.45;
+                obs.width = glitchAirSize;
+                obs.height = glitchAirSize;
                 obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (type === 'ground') {
@@ -1063,12 +1104,20 @@
             ctx.fillStyle = obs.type === 'ground' ? currentWorld.groundObsColor : currentWorld.airObsColor;
             
             if (currentWorld.bgType === 'bubbles') {
-                if (bubbleImg.complete && bubbleImg.naturalWidth > 0) {
-                    ctx.drawImage(bubbleImg, obs.x, obs.y, obs.width, obs.height);
+                if (obs.type === 'ground') {
+                    if (piedraImg.complete && piedraImg.naturalWidth > 0) {
+                        ctx.drawImage(piedraImg, obs.x, obs.y, obs.width, obs.height);
+                    } else {
+                        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    }
                 } else {
-                    ctx.beginPath();
-                    ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
-                    ctx.fill();
+                    if (bubbleImg.complete && bubbleImg.naturalWidth > 0) {
+                        ctx.drawImage(bubbleImg, obs.x, obs.y, obs.width, obs.height);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(obs.x + obs.width/2, obs.y + obs.height/2, obs.width/2, 0, Math.PI*2);
+                        ctx.fill();
+                    }
                 }
             } else if (currentWorld.bgType === 'beach') {
                 if (obs.type === 'ground') {
@@ -1091,8 +1140,83 @@
                         ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
                     }
                 }
+            } else if (currentWorld.bgType === 'neon') {
+                if (obs.type === 'ground') {
+                    if (basuraImg.complete && basuraImg.naturalWidth > 0) {
+                        ctx.drawImage(basuraImg, obs.x, obs.y, obs.width, obs.height);
+                    } else {
+                        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    }
+                } else {
+                    // Orbe neón brillante
+                    ctx.save();
+                    ctx.shadowColor = '#00ffcc';
+                    ctx.shadowBlur = 12;
+                    ctx.fillStyle = '#00ffcc';
+                    ctx.beginPath();
+                    ctx.arc(obs.x + obs.width / 2, obs.y + obs.height / 2, obs.width / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
             } else if (currentWorld.bgType === 'glitch') {
-                ctx.fillRect(obs.x + (Math.random()*4-2), obs.y, obs.width, obs.height);
+                if (obs.type === 'ground') {
+                    if (glitchObstaculoImg.complete && glitchObstaculoImg.naturalWidth > 0) {
+                        ctx.save();
+
+                        // 1. Desfase cromático (RGB Split / Chromatic Aberration) intermitente
+                        if (Math.random() > 0.3) {
+                            ctx.save();
+                            ctx.globalAlpha = 0.55;
+                            // Desfase cian
+                            ctx.drawImage(
+                                glitchObstaculoImg,
+                                obs.x + (Math.random() * 8 - 4),
+                                obs.y,
+                                obs.width,
+                                obs.height
+                            );
+                            ctx.restore();
+
+                            ctx.save();
+                            ctx.globalAlpha = 0.45;
+                            // Desfase magenta
+                            ctx.drawImage(
+                                glitchObstaculoImg,
+                                obs.x + (Math.random() * 8 - 4),
+                                obs.y + (Math.random() * 4 - 2),
+                                obs.width,
+                                obs.height
+                            );
+                            ctx.restore();
+                        }
+
+                        // 2. Imagen principal con micro-temblor glitch
+                        const jitterX = (Math.random() > 0.6) ? (Math.random() * 6 - 3) : 0;
+                        const jitterY = (Math.random() > 0.7) ? (Math.random() * 4 - 2) : 0;
+                        ctx.drawImage(glitchObstaculoImg, obs.x + jitterX, obs.y + jitterY, obs.width, obs.height);
+
+                        // 3. Franjas cortadas digitales (Scanlines / Slice Glitch)
+                        if (Math.random() > 0.4) {
+                            ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 0, 255, 0.8)' : 'rgba(0, 255, 255, 0.8)';
+                            const sliceH = Math.random() * (obs.height * 0.25) + 3;
+                            const sliceY = obs.y + Math.random() * (obs.height - sliceH);
+                            const sliceShift = (Math.random() - 0.5) * 14;
+                            ctx.fillRect(obs.x + sliceShift, sliceY, obs.width, sliceH);
+                        }
+
+                        ctx.restore();
+                    } else {
+                        ctx.fillRect(obs.x + (Math.random()*4-2), obs.y, obs.width, obs.height);
+                    }
+                } else {
+                    // Coleccionable aéreo en el mundo glitch
+                    ctx.save();
+                    ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+                    ctx.shadowColor = ctx.fillStyle;
+                    ctx.shadowBlur = 8;
+                    ctx.fillRect(obs.x + (Math.random() * 4 - 2), obs.y, obs.width, obs.height);
+                    ctx.restore();
+                }
             } else {
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
             }
@@ -1102,7 +1226,7 @@
             let paddingY = player.height * 0.15;
 
             let collides = false;
-            if (currentWorld.bgType === 'bubbles') {
+            if (currentWorld.bgType === 'bubbles' && obs.type === 'air') {
                 // Colisión circular precisa con la burbuja
                 const bubbleRadius = (obs.width / 2) * 0.90; // Radio real de la burbuja
                 const bubbleCenterX = obs.x + obs.width / 2;
