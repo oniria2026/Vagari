@@ -56,7 +56,7 @@ export default function Portada({ onExplorar }) {
       {/* Video de fondo: pausado en el primer frame hasta hacer clic en Explorar */}
       <video
         ref={videoRef}
-        src={animacionBienvenida}
+        src={`${animacionBienvenida}#t=0.001`}
         preload="auto"
         muted
         playsInline

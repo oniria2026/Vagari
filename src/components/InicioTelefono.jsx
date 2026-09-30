@@ -707,14 +707,18 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                   >
                     <motion.div
                       className="w-full h-full relative"
-                      style={{ transformStyle: 'preserve-3d' }}
+                      style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
                       animate={{ rotateY: isFlippedCard ? 180 : 0 }}
                       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     >
                       {/* Cara A (Dorso con texto según diseño Figma) */}
                       <div
                         className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between text-center"
-                        style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transform: 'rotateY(0deg)'
+                        }}
                       >
                         <img
                           src={cardImg}
