@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./oniria.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <script>
+      // Redirige rutas de GitHub Pages SPA (como /Vagari/Inicio) hacia index.html con parámetro de ruta
+      const path = window.location.pathname;
+      const base = '/Vagari/';
+      if (path.startsWith(base)) {
+        const subpath = path.slice(base.length).replace(/\/$/, '');
+        window.location.replace(base + '?p=' + encodeURIComponent(subpath) + window.location.hash);
+      }
+    </script>
+    <title>Vagari</title>
+  </head>
+  <body>
+  </body>
+</html>
