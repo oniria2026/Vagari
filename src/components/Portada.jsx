@@ -49,57 +49,67 @@ export default function Portada({ onExplorar }) {
   return (
     <div
       onClick={handleScreenClick}
-      className={`relative w-full h-full flex flex-col items-center select-none bg-black overflow-hidden ${
+      className={`relative w-full h-full flex flex-col items-center justify-center select-none bg-black overflow-hidden ${
         isPlaying ? 'cursor-pointer' : ''
       }`}
+      style={{ containerType: 'size' }}
     >
-      {/* Video de fondo: pausado en el primer frame hasta hacer clic en Explorar */}
-      <video
-        ref={videoRef}
-        src={`${animacionBienvenida}#t=0.001`}
-        preload="auto"
-        muted
-        playsInline
-        onEnded={handleVideoEnded}
-        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
-      />
+      {/* Contenedor que mantiene exactamente el aspect ratio 9:16 del video y emula object-cover */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        style={{
+          width: 'max(100cqw, calc(100cqh * (9 / 16)))',
+          height: 'max(100cqh, calc(100cqw * (16 / 9)))'
+        }}
+      >
+        {/* Video de fondo */}
+        <video
+          ref={videoRef}
+          src={`${animacionBienvenida}#t=0.001`}
+          preload="auto"
+          muted
+          playsInline
+          onEnded={handleVideoEnded}
+          className="absolute inset-0 w-full h-full object-fill z-0"
+        />
 
-      {/* Elementos UI que se desvanecen cuando comienza la animación */}
-      <AnimatePresence>
-        {!isPlaying && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="absolute inset-0 w-full h-full flex flex-col items-center pointer-events-none z-10"
-          >
-            {/* Centro de la pantalla: vagari un poco más arriba y tamaño moderado */}
+        {/* Elementos UI */}
+        <AnimatePresence>
+          {!isPlaying && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
-              className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className="absolute inset-0 w-full h-full z-10"
             >
-              <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
-                vagari
-              </h1>
-            </motion.div>
+              {/* Vagari text - anclado al contenedor 9:16 */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
+                className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
+              >
+                <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
+                  vagari
+                </h1>
+              </motion.div>
 
-            {/* Botón Explorar posicionado debajo del centro geométrico */}
-            <motion.button
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-              type="button"
-              onClick={handleExplorar}
-              style={{ boxShadow: '0px 7px 28.3px rgba(255, 148, 218, 0.45)' }}
-              className="absolute top-[64%] -translate-y-1/2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition duration-200 text-white font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto shadow-lg"
-            >
-              Explorar
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {/* Botón Explorar - anclado al contenedor 9:16 */}
+              <motion.button
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+                type="button"
+                onClick={handleExplorar}
+                style={{ boxShadow: '0px 7px 28.3px rgba(255, 148, 218, 0.45)' }}
+                className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition duration-200 text-white font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto shadow-lg"
+              >
+                Explorar
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
