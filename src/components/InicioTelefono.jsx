@@ -55,6 +55,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
     return null;
   });
   const [isClosing, setIsClosing] = useState(false);
+  const [isFlippedCard, setIsFlippedCard] = useState(false);
 
   // Formulario deslizable desde abajo estilo cajón de apps
   const [showDrawer, setShowDrawer] = useState(false);
@@ -589,35 +590,40 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                 </div>
               </div>
             ) : activeApp.id === 'dia' ? (
-              /* Popup pantalla de Símbolo con efecto teléfono */
-              <div className="relative w-full h-full flex flex-col justify-between overflow-hidden bg-[#1c1d18] select-none">
-                {/* Header de vagari con botón X para volver */}
+              /* Popup pantalla de Símbolo con efecto teléfono, mismo fondo y header que Mapa */
+              <div
+                className="relative w-full h-full flex flex-col justify-between overflow-y-auto bg-cover bg-no-repeat bg-top select-none touch-pan-y"
+                style={{
+                  backgroundImage: `url(${fondoFormulario})`,
+                }}
+              >
+                {/* Header de vagari con botón X idéntico al del mapa */}
                 <div
                   className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20 shrink-0"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    backdropFilter: 'blur(16px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.06) 100%)',
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)',
                     borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-                    boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.25)',
+                    boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.12)',
                   }}
                 >
                   <div className="w-10 h-10 pointer-events-none opacity-0" />
                   <h1
-                    className="font-naiveer text-[32px] sm:text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
+                    className="font-naiveer text-[36px] sm:text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
                     style={{
-                      color: 'rgba(241, 238, 231, 0.20)',
-                      background: 'linear-gradient(160deg, rgba(241, 238, 231, 0.45) 0%, rgba(241, 238, 231, 0.10) 45%, rgba(241, 238, 231, 0.25) 100%)',
+                      color: 'transparent',
+                      WebkitTextStroke: '1.2px rgba(255, 255, 255, 0.85)',
+                      background: 'linear-gradient(160deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%)',
                       WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      WebkitTextStroke: '1px rgba(241, 238, 231, 0.40)',
+                      filter: 'drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.4))',
                     }}
                   >
                     vagari
                   </h1>
                   <button
                     onClick={handleCloseApp}
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FF94DA] flex items-center justify-center cursor-pointer shadow-md text-white transition active:scale-95"
+                    className="w-10 h-10 rounded-full bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-92 transition shadow-[0_3px_10px_rgba(255,148,218,0.45)] flex items-center justify-center cursor-pointer text-white"
                     title="Volver"
                     aria-label="Volver"
                   >
@@ -627,46 +633,85 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                   </button>
                 </div>
 
-                {/* Centro: Card estilo mockup de Figma usando card.webp sin bordes agregados */}
-                <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 15 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="relative w-full max-w-[340px] aspect-square p-8 flex flex-col items-center justify-between text-center"
+                {/* Centro: Card volteable 3D al hacer click */}
+                <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10 my-auto">
+                  <div
+                    className="relative w-full max-w-[340px] aspect-square cursor-pointer select-none"
+                    style={{ perspective: 1200 }}
+                    onClick={() => setIsFlippedCard(prev => !prev)}
                   >
-                    {/* Fondo con card.webp original sin bordes */}
-                    <img
-                      src={cardImg}
-                      alt="Card"
-                      className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                    />
+                    <motion.div
+                      className="w-full h-full relative"
+                      style={{ transformStyle: 'preserve-3d' }}
+                      animate={{ rotateY: isFlippedCard ? 180 : 0 }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {/* Cara A (Dorso con texto según diseño Figma) */}
+                      <div
+                        className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between text-center"
+                        style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                      >
+                        <img
+                          src={cardImg}
+                          alt="Card Frame"
+                          className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
+                        />
 
-                    {/* Parte superior: Nombre del símbolo en tipografía Naiveer */}
-                    <div className="relative z-10 flex-1 flex items-center justify-center w-full">
-                      <span className="font-naiveer text-[#F1EEE7] text-6xl sm:text-7xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
-                        {simboloDia.name}
-                      </span>
-                    </div>
+                        {/* Parte superior: Nombre del símbolo en tipografía Naiveer */}
+                        <div className="relative z-10 flex-1 flex items-center justify-center w-full">
+                          <span className="font-naiveer text-[#F1EEE7] text-6xl sm:text-7xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+                            {simboloDia.name}
+                          </span>
+                        </div>
 
-                    {/* Guión / Línea separadora a lo largo */}
-                    <div className="relative z-10 w-[85%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
+                        {/* Guión / Línea separadora a lo largo */}
+                        <div className="relative z-10 w-[85%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
 
-                    {/* Parte inferior: Texto descriptivo */}
-                    <div className="relative z-10 flex-1 flex items-center justify-center w-full px-2">
-                      <p className="text-white text-lg sm:text-xl font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-                        Este es tu símbolo y representa{' '}
-                        <strong className="font-bold text-white">
-                          {simboloDia.keyword}
-                        </strong>{' '}
-                        en todas sus formas.
-                      </p>
-                    </div>
-                  </motion.div>
+                        {/* Parte inferior: Texto descriptivo */}
+                        <div className="relative z-10 flex-1 flex items-center justify-center w-full px-2">
+                          <p className="text-white text-lg sm:text-xl font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                            Este es tu símbolo y representa{' '}
+                            <strong className="font-bold text-white">
+                              {simboloDia.keyword}
+                            </strong>{' '}
+                            en todas sus formas.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Cara B (Frente con el Logo del Símbolo) */}
+                      <div
+                        className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-center text-center"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)'
+                        }}
+                      >
+                        <img
+                          src={cardImg}
+                          alt="Card Frame"
+                          className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
+                        />
+
+                        {/* Logo del símbolo en el centro */}
+                        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+                          <img
+                            src={simboloDia.src}
+                            alt={simboloDia.name}
+                            className="w-36 h-36 sm:w-40 sm:h-40 object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:scale-105"
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                  <span className="text-white/70 text-xs mt-3 uppercase tracking-wider font-medium drop-shadow">
+                    toca la carta para girar
+                  </span>
                 </div>
 
                 {/* Espaciador inferior */}
-                <div className="h-6" />
+                <div className="h-4" />
               </div>
             ) : null}
           </motion.div>
