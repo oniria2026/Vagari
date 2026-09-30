@@ -828,18 +828,18 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
             </svg>
           </motion.div>
 
-          {/* Botón con flechita abajo a la derecha para abrir el formulario */}
+          {/* Botón con flechita abajo a la derecha para abrir el formulario (apuntando hacia arriba, mismo tamaño que el del formulario) */}
           <motion.button
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             whileTap={{ scale: 0.92 }}
             onClick={() => setShowDrawer(true)}
-            className="absolute bottom-4 right-5 z-30 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition flex items-center justify-center cursor-pointer text-white shadow-lg backdrop-blur-md border border-white/20"
+            className="absolute bottom-4 right-5 z-30 w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition flex items-center justify-center cursor-pointer text-white shadow-md backdrop-blur-md border border-white/20"
             title="Abrir formulario"
             aria-label="Abrir formulario"
           >
-            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[2.5] stroke-linecap-round">
-              <path d="M19 9l-7 7-7-7" />
+            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[2.5] stroke-linecap-round stroke-linejoin-round">
+              <path d="M5 15l7-7 7 7" />
             </svg>
           </motion.button>
         </>
