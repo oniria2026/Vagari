@@ -41,7 +41,7 @@ const CARDS_DIA = [
   { name: 'espiral', src: espiral, texto: 'la evolución y el cambio', keyword: 'evolución y el cambio' },
 ];
 
-export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
+export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBack }) {
   const containerRef = useRef(null);
 
   // Símbolo asignado
@@ -462,10 +462,19 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
 
                 {/* Centro idéntico a la pantalla de inicio del juego, sin botón comenzar y diciendo cargando */}
                 <div className="flex-1 flex flex-col justify-center items-center p-6 text-center z-10 bg-black/70">
-                  <h1 className="text-3xl sm:text-4xl font-bold mb-3 tracking-wide drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] text-white">
-                    Portales Oniricos
+                  <h1
+                    className="font-naiveer text-3xl sm:text-4xl mb-3 tracking-wide select-none text-center"
+                    style={{
+                      color: 'transparent',
+                      WebkitTextStroke: '1.2px rgba(255, 255, 255, 0.9)',
+                      background: 'linear-gradient(160deg, rgba(255, 255, 255, 0.3) 0%, transparent 60%)',
+                      WebkitBackgroundClip: 'text',
+                      filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4))',
+                    }}
+                  >
+                    portales oníricos
                   </h1>
-                  <p className="text-base sm:text-lg text-white/90 max-w-[320px] mb-6 leading-relaxed">
+                  <p className="text-base sm:text-lg text-[#F1EEE7] font-medium max-w-[320px] mb-6 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
                     Cargando...
                   </p>
                 </div>
@@ -521,80 +530,91 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                   </button>
                 </div>
 
-                {/* Contenido principal: Título, Mapa y Contador distribuidos uniformemente */}
-                <div className="flex-1 flex flex-col items-center justify-evenly w-full select-none z-10 min-h-0 py-2">
+                {/* Contenido principal: Título, Mapa y Contador distribuidos uniformemente con safe padding */}
+                <div className="flex-1 flex flex-col items-center justify-evenly w-full select-none z-10 min-h-0 py-1 px-2">
                   {/* Título mapa onírico */}
-                  <div className="w-full px-6 flex justify-center">
+                  <div className="w-full px-4 flex justify-center shrink-0">
                     <motion.h2
                       initial={{ opacity: 0, y: -6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4 }}
-                      className="font-naiveer text-[#FF94DA] text-2xl sm:text-3xl tracking-wide drop-shadow-[0_2px_8px_rgba(255,148,218,0.35)] m-0"
+                      className="font-naiveer text-[#FF94DA] text-xl sm:text-2xl md:text-3xl tracking-wide drop-shadow-[0_2px_8px_rgba(255,148,218,0.35)] m-0"
                     >
                       mapa onírico
                     </motion.h2>
                   </div>
 
-                  {/* Mapa */}
+                  {/* Mapa clickeable que redirige a Google Maps */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
-                    className="w-full max-w-[360px] px-6 flex justify-center shrink-0"
+                    className="w-full max-w-[320px] sm:max-w-[360px] px-4 flex flex-col items-center justify-center shrink-0"
                   >
-                    <img
-                      src={mapaImg}
-                      alt="Mapa Onírico"
-                      className="w-full h-auto max-h-[250px] sm:max-h-[270px] object-contain drop-shadow-2xl"
-                    />
+                    <a
+                      href="https://maps.google.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer active:scale-95 transition-transform flex flex-col items-center group"
+                      title="Abrir en Google Maps"
+                    >
+                      <img
+                        src={mapaImg}
+                        alt="Mapa Onírico"
+                        className="w-full h-auto max-h-[175px] sm:max-h-[220px] md:max-h-[250px] object-contain drop-shadow-2xl group-hover:scale-[1.02] transition-transform duration-200"
+                      />
+                    </a>
+                    <span className="text-white/70 text-xs mt-2 uppercase tracking-wider font-medium drop-shadow">
+                      toca el mapa para viajar
+                    </span>
                   </motion.div>
 
                   {/* Próximo Vagari con contador */}
-                  <div className="w-full max-w-[380px] px-6 flex justify-center">
+                  <div className="w-full max-w-[340px] sm:max-w-[380px] px-4 flex justify-center shrink-0">
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.45, delay: 0.2 }}
                       className="w-full flex flex-col items-center"
                     >
-                      <span className="font-naiveer text-white text-lg sm:text-xl tracking-wider mb-2.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
+                      <span className="font-naiveer text-white text-base sm:text-lg md:text-xl tracking-wider mb-1.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
                         próximo vagari en
                       </span>
 
                       {/* Bloques de días, horas, minutos y segundos */}
-                      <div className="grid grid-cols-4 gap-2.5 w-full">
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                      <div className="grid grid-cols-4 gap-2 w-full">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
                             {String(timeLeft.dias).padStart(2, '0')}
                           </span>
-                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
                             días
                           </span>
                         </div>
 
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
                             {String(timeLeft.horas).padStart(2, '0')}
                           </span>
-                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
                             horas
                           </span>
                         </div>
 
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
                             {String(timeLeft.minutos).padStart(2, '0')}
                           </span>
-                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
                             min
                           </span>
                         </div>
 
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-lg sm:text-xl text-[#FF94DA] drop-shadow">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
                             {String(timeLeft.segundos).padStart(2, '0')}
                           </span>
-                          <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
                             seg
                           </span>
                         </div>
@@ -604,7 +624,10 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                 </div>
 
                 {/* Footer exactamente igual al del formulario (con fondo #566700, logo Oniria a la izq y redes a la der) */}
-                <div className="w-full bg-[#566700] px-6 py-4 flex items-center justify-between shrink-0 shadow-[0_-4px_16px_rgba(0,0,0,0.15)] z-20">
+                <div 
+                  className="w-full bg-[#566700] px-6 py-2.5 sm:py-3.5 flex items-center justify-between shrink-0 shadow-[0_-4px_16px_rgba(0,0,0,0.15)] z-20"
+                  style={{ paddingBottom: 'calc(0.65rem + env(safe-area-inset-bottom, 0px))' }}
+                >
                   {/* Logo Oniria a la izquierda */}
                   <div className="flex items-center">
                     <img
@@ -791,18 +814,35 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
 
       {/* Indicador inferior sutil de deslizar para el formulario */}
       {!activeApp && !showDrawer && (
-        <motion.div
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: [0.3, 0.8, 0.3], y: [0, -4, 0] }}
-          transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-          onClick={() => setShowDrawer(true)}
-          className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer pointer-events-auto"
-        >
-          <div className="w-10 h-1 rounded-full bg-white/60 mb-1" />
-          <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 stroke-white/70 stroke-[2.5] stroke-linecap-round">
-            <path d="M7 10l5 5 5-5" />
-          </svg>
-        </motion.div>
+        <>
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: [0.3, 0.8, 0.3], y: [0, -4, 0] }}
+            transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
+            onClick={() => setShowDrawer(true)}
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer pointer-events-auto"
+          >
+            <div className="w-10 h-1 rounded-full bg-white/60 mb-1" />
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 stroke-white/70 stroke-[2.5] stroke-linecap-round">
+              <path d="M7 10l5 5 5-5" />
+            </svg>
+          </motion.div>
+
+          {/* Botón con flechita abajo a la derecha para abrir el formulario */}
+          <motion.button
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={() => setShowDrawer(true)}
+            className="absolute bottom-4 right-5 z-30 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition flex items-center justify-center cursor-pointer text-white shadow-lg backdrop-blur-md border border-white/20"
+            title="Abrir formulario"
+            aria-label="Abrir formulario"
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[2.5] stroke-linecap-round">
+              <path d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.button>
+        </>
       )}
 
       {/* Cajón / Pantalla de Formulario deslizable desde abajo estilo todas las aplicaciones */}
