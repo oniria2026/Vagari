@@ -657,25 +657,27 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                           className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
                         />
 
-                        {/* Parte superior: Nombre del símbolo en tipografía Naiveer */}
+                        {/* Parte superior: Nombre del símbolo en tipografía Naiveer achicado */}
                         <div className="relative z-10 flex-1 flex items-center justify-center w-full">
-                          <span className="font-naiveer text-[#F1EEE7] text-6xl sm:text-7xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+                          <span className="font-naiveer text-[#F1EEE7] text-4xl sm:text-5xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
                             {simboloDia.name}
                           </span>
                         </div>
 
                         {/* Guión / Línea separadora a lo largo */}
-                        <div className="relative z-10 w-[85%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
+                        <div className="relative z-10 w-[88%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
 
-                        {/* Parte inferior: Texto descriptivo */}
-                        <div className="relative z-10 flex-1 flex items-center justify-center w-full px-2">
-                          <p className="text-white text-lg sm:text-xl font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-                            Este es tu símbolo y representa{' '}
-                            <strong className="font-bold text-white">
-                              {simboloDia.keyword}
-                            </strong>{' '}
-                            en todas sus formas.
-                          </p>
+                        {/* Parte inferior: Texto descriptivo alineado a la izquierda */}
+                        <div className="relative z-10 flex-1 flex items-center justify-start w-full px-5 text-left">
+                          {simboloDia.name === 'dia' ? (
+                            <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                              Este es tu símbolo y representa la <strong className="font-bold text-white">luz del sol</strong> en todas sus formas.
+                            </p>
+                          ) : (
+                            <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                              Este es tu símbolo y representa
+                            </p>
+                          )}
                         </div>
                       </div>
 
