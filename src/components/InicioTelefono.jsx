@@ -413,16 +413,14 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
             {activeApp.id === 'desafio' ? (
               /* Pantalla de carga con la misma estética exacta que la del juego */
               <div className="relative w-full h-full flex flex-col justify-between bg-black text-white overflow-hidden select-none">
-                {/* Header idéntico al de Jugar.html */}
+                {/* Header idéntico al del Home */}
                 <div
-                  className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20"
+                  className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20 shrink-0 border-b border-white/15"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    backdropFilter: 'blur(16px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
-                    boxShadow: 'inset 1px 1px 2px rgba(255, 255, 255, 0.35), inset -2px -2px 6px rgba(0, 0, 0, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25)',
-                    backgroundColor: '#566700',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.06) 100%)',
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)',
+                    boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.12)',
                   }}
                 >
                   <div className="text-left font-bold text-xs sm:text-sm text-white drop-shadow">
@@ -430,20 +428,20 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                     <span className="text-xs opacity-85">Mundo 1</span>
                   </div>
                   <h1
-                    className="font-naiveer text-[32px] sm:text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
+                    className="font-naiveer text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
                     style={{
-                      color: 'rgba(241, 238, 231, 0.20)',
-                      background: 'linear-gradient(160deg, rgba(241, 238, 231, 0.45) 0%, rgba(241, 238, 231, 0.10) 45%, rgba(241, 238, 231, 0.25) 100%)',
+                      color: 'transparent',
+                      WebkitTextStroke: '1.2px rgba(255, 255, 255, 0.85)',
+                      background: 'linear-gradient(160deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%)',
                       WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      WebkitTextStroke: '1px rgba(241, 238, 231, 0.40)',
+                      filter: 'drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.4))',
                     }}
                   >
                     vagari
                   </h1>
                   <button
                     onClick={handleCloseApp}
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FF94DA] flex items-center justify-center cursor-pointer shadow-md text-white transition active:scale-95"
+                    className="w-10 h-10 rounded-full bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-92 transition shadow-[0_3px_10px_rgba(255,148,218,0.45)] flex items-center justify-center cursor-pointer text-white"
                     title="Volver"
                   >
                     <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[3.2] stroke-linecap-round">
