@@ -101,8 +101,11 @@ export default function Portada({ onExplorar }) {
                 transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
                 type="button"
                 onClick={handleExplorar}
-                style={{ boxShadow: '0px 7px 28.3px rgba(255, 148, 218, 0.45)' }}
-                className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition duration-200 text-white font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto shadow-lg"
+                style={{ 
+                  top: '55%',
+                  boxShadow: '0px 7px 28.3px rgba(255, 148, 218, 0.45)' 
+                }}
+                className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition duration-200 text-white font-semibold text-lg px-12 py-4 rounded-full cursor-pointer tracking-wider pointer-events-auto shadow-lg"
               >
                 Explorar
               </motion.button>
