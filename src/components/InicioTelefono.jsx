@@ -24,6 +24,7 @@ import aire from '../assets/aire.svg';
 import agua from '../assets/agua.svg';
 import color from '../assets/color.svg';
 import dia from '../assets/dia.svg';
+import espiral from '../assets/espiral.svg';
 
 const CARDS_DIA = [
   { name: 'mixto', src: mixto, texto: 'la dualidad y el equilibrio', keyword: 'dualidad y el equilibrio' },
@@ -37,6 +38,7 @@ const CARDS_DIA = [
   { name: 'agua', src: agua, texto: 'la fluidez y la calma', keyword: 'fluidez y la calma' },
   { name: 'color', src: color, texto: 'la creatividad y la diversidad', keyword: 'creatividad y la diversidad' },
   { name: 'dia', src: dia, texto: 'la luz del sol', keyword: 'luz del sol' },
+  { name: 'espiral', src: espiral, texto: 'la evolución y el cambio', keyword: 'evolución y el cambio' },
 ];
 
 export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
