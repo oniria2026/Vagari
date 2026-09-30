@@ -25,20 +25,24 @@ import color from '../assets/color.svg';
 import dia from '../assets/dia.svg';
 
 const CARDS_DIA = [
-  { name: 'mixto', src: mixto },
-  { name: 'monocromo', src: monocromo },
-  { name: 'fuego', src: fuego },
-  { name: 'noche', src: noche },
-  { name: 'organico', src: organico },
-  { name: 'tecnologico', src: tecnologico },
-  { name: 'tierra', src: tierra },
-  { name: 'aire', src: aire },
-  { name: 'agua', src: agua },
-  { name: 'color', src: color },
-  { name: 'dia', src: dia },
+  { name: 'mixto', src: mixto, texto: 'la dualidad y el equilibrio', keyword: 'dualidad y el equilibrio' },
+  { name: 'monocromo', src: monocromo, texto: 'la simplicidad y la elegancia', keyword: 'simplicidad y la elegancia' },
+  { name: 'fuego', src: fuego, texto: 'la energía y la pasión', keyword: 'energía y la pasión' },
+  { name: 'noche', src: noche, texto: 'la calma y el misterio', keyword: 'calma y el misterio' },
+  { name: 'organico', src: organico, texto: 'la vida y la naturaleza', keyword: 'vida y la naturaleza' },
+  { name: 'tecnologico', src: tecnologico, texto: 'la innovación y el futuro', keyword: 'innovación y el futuro' },
+  { name: 'tierra', src: tierra, texto: 'la estabilidad y el arraigo', keyword: 'estabilidad y el arraigo' },
+  { name: 'aire', src: aire, texto: 'la libertad y el movimiento', keyword: 'libertad y el movimiento' },
+  { name: 'agua', src: agua, texto: 'la fluidez y la calma', keyword: 'fluidez y la calma' },
+  { name: 'color', src: color, texto: 'la creatividad y la diversidad', keyword: 'creatividad y la diversidad' },
+  { name: 'dia', src: dia, texto: 'la luz del sol', keyword: 'luz del sol' },
 ];
 
 export default function InicioTelefono({ onOpenApp }) {
+  // Símbolo asignado
+  const [simboloDia] = useState(() => {
+    return CARDS_DIA[Math.floor(Math.random() * CARDS_DIA.length)];
+  });
   // Guarda el id y las coordenadas del icono pulsado para expandirse desde ahí
   const [activeApp, setActiveApp] = useState(null); // { id, name, icon, rect }
   const [isClosing, setIsClosing] = useState(false);
@@ -161,19 +165,8 @@ export default function InicioTelefono({ onOpenApp }) {
     }
   };
 
-  // Estado para el popup de la Card del Día
-  const [cardDia, setCardDia] = useState(null);
-  const [isFlippedCard, setIsFlippedCard] = useState(false);
 
   const handleAppClick = (id, name, icon, e) => {
-    // Si pulsa "Día", no abre una app completa sino el popup de Card del Día
-    if (id === 'dia') {
-      const randomCard = CARDS_DIA[Math.floor(Math.random() * CARDS_DIA.length)];
-      setCardDia(randomCard);
-      setIsFlippedCard(false);
-      return;
-    }
-
     const rect = e.currentTarget.getBoundingClientRect();
     const appData = {
       id,
@@ -296,7 +289,7 @@ export default function InicioTelefono({ onOpenApp }) {
           </motion.div>
         </div>
 
-        {/* Fila 1: App Día alineada a la izquierda */}
+        {/* Fila 1: App Card/Símbolo alineada a la izquierda */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -304,14 +297,15 @@ export default function InicioTelefono({ onOpenApp }) {
           className="flex flex-col items-start w-fit"
         >
           <button
-            onClick={(e) => handleAppClick('dia', 'Día', diaApp, e)}
+            onClick={(e) => handleAppClick('dia', simboloDia.name, cardImg, e)}
             className="flex flex-col items-center gap-1.5 cursor-pointer focus:outline-none group active:scale-95 transition-transform"
           >
-            <div className="w-[68px] h-[68px] sm:w-[74px] sm:h-[74px] rounded-2xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform">
-              <img src={diaApp} alt="Día" className="w-full h-full object-cover" />
+            <div className="relative w-[68px] h-[68px] sm:w-[74px] sm:h-[74px] rounded-2xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform flex items-center justify-center p-2 bg-[#1b1c17]/60">
+              <img src={cardImg} alt="Card Frame" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={simboloDia.src} alt={simboloDia.name} className="relative z-10 w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow" />
             </div>
-            <span className="text-white text-xs sm:text-sm font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-              Día
+            <span className="text-white text-xs sm:text-sm font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] capitalize">
+              {simboloDia.name}
             </span>
           </button>
         </motion.div>
@@ -583,6 +577,84 @@ export default function InicioTelefono({ onOpenApp }) {
                   </motion.div>
                 </div>
               </div>
+            ) : activeApp.id === 'dia' ? (
+              /* Popup pantalla de Símbolo con efecto teléfono */
+              <div className="relative w-full h-full flex flex-col justify-between overflow-hidden bg-[#1c1d18] select-none">
+                {/* Header de vagari con botón X para volver */}
+                <div
+                  className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20 shrink-0"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    backdropFilter: 'blur(16px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                    boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.25)',
+                  }}
+                >
+                  <div className="w-10 h-10 pointer-events-none opacity-0" />
+                  <h1
+                    className="font-naiveer text-[32px] sm:text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
+                    style={{
+                      color: 'rgba(241, 238, 231, 0.20)',
+                      background: 'linear-gradient(160deg, rgba(241, 238, 231, 0.45) 0%, rgba(241, 238, 231, 0.10) 45%, rgba(241, 238, 231, 0.25) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      WebkitTextStroke: '1px rgba(241, 238, 231, 0.40)',
+                    }}
+                  >
+                    vagari
+                  </h1>
+                  <button
+                    onClick={handleCloseApp}
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FF94DA] flex items-center justify-center cursor-pointer shadow-md text-white transition active:scale-95"
+                    title="Volver"
+                    aria-label="Volver"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[3.2] stroke-linecap-round">
+                      <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Centro: Card estilo mockup de Figma con halo suave azulado/rosado */}
+                <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="relative w-full max-w-[340px] aspect-[4/5] rounded-[36px] p-8 flex flex-col items-center justify-between text-center overflow-hidden"
+                    style={{
+                      background: 'radial-gradient(130% 120% at 50% 10%, #efa4dc 0%, #b869b2 55%, #7e3a89 100%)',
+                      boxShadow: '0 0 35px 8px rgba(78, 140, 255, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -2px 6px rgba(0, 0, 0, 0.25)',
+                      border: '1px solid rgba(255, 255, 255, 0.5)',
+                    }}
+                  >
+                    {/* Parte superior: Nombre del símbolo en tipografía Naiveer */}
+                    <div className="flex-1 flex items-center justify-center w-full">
+                      <span className="font-naiveer text-[#F1EEE7] text-6xl sm:text-7xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+                        {simboloDia.name}
+                      </span>
+                    </div>
+
+                    {/* Guión / Línea separadora a lo largo */}
+                    <div className="w-full h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
+
+                    {/* Parte inferior: Texto descriptivo */}
+                    <div className="flex-1 flex items-center justify-center w-full">
+                      <p className="text-white text-lg sm:text-xl font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                        Este es tu símbolo y representa{' '}
+                        <strong className="font-bold text-white">
+                          {simboloDia.keyword}
+                        </strong>{' '}
+                        en todas sus formas.
+                      </p>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Espaciador inferior */}
+                <div className="h-6" />
+              </div>
             ) : null}
           </motion.div>
         )}
@@ -787,107 +859,6 @@ export default function InicioTelefono({ onOpenApp }) {
         )}
       </AnimatePresence>
 
-      {/* Popup interactivo de la Card del Día */}
-      <AnimatePresence>
-        {cardDia && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.85, y: 20 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-[320px] flex flex-col items-center text-center"
-            >
-              {/* Botón cerrar arriba a la derecha */}
-              <button
-                onClick={() => setCardDia(null)}
-                className="absolute -top-3 -right-2 z-20 w-9 h-9 rounded-full bg-white/20 hover:bg-white/35 active:scale-90 transition flex items-center justify-center cursor-pointer text-white"
-                title="Cerrar"
-                aria-label="Cerrar"
-              >
-                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[2.5] stroke-linecap-round">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-
-              <h3 className="font-naiveer text-[#FF94DA] text-3xl mb-1 drop-shadow-md">
-                tu mundo de hoy
-              </h3>
-              <p className="text-white/80 text-xs mb-5 drop-shadow">
-                Toca la carta para revelarla
-              </p>
-
-              {/* Card interactiva volteable 3D */}
-              <div
-                className="relative w-60 h-60 cursor-pointer select-none"
-                style={{ perspective: 1000 }}
-                onClick={() => setIsFlippedCard(!isFlippedCard)}
-              >
-                <motion.div
-                  className="w-full h-full relative"
-                  style={{ transformStyle: 'preserve-3d' }}
-                  animate={{ rotateY: isFlippedCard ? 180 : 0 }}
-                  transition={{ duration: 0.55, ease: 'easeInOut' }}
-                >
-                  {/* Frente con símbolo */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center p-6"
-                    style={{ backfaceVisibility: 'hidden' }}
-                  >
-                    <img
-                      src={cardImg}
-                      alt="Card Frame"
-                      className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                    />
-                    <img
-                      src={cardDia.src}
-                      alt={cardDia.name}
-                      className="relative z-10 w-28 h-28 object-contain drop-shadow-lg transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Dorso con nombre del símbolo */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center p-6"
-                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                  >
-                    <img
-                      src={cardImg}
-                      alt="Card Frame Dorso"
-                      className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                    />
-                    <div
-                      className={`relative z-10 font-naiveer text-[#F1EEE7] tracking-widest drop-shadow-md text-center ${
-                        cardDia.name.length > 10 ? 'text-xl' : (cardDia.name.length > 7 ? 'text-2xl' : 'text-4xl')
-                      }`}
-                    >
-                      {cardDia.name}
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Texto indicativo con el resultado que tocó */}
-              <div className="mt-5 flex flex-col items-center">
-                <span className="text-white/60 text-xs uppercase tracking-wider mb-1">
-                  resultado
-                </span>
-                <span className="font-naiveer text-[#F1EEE7] text-2xl tracking-wider capitalize">
-                  {cardDia.name}
-                </span>
-              </div>
-
-              {/* Botón cerrar inferior */}
-              <button
-                onClick={() => setCardDia(null)}
-                className="mt-6 bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition text-[#24251E] font-semibold px-8 py-2.5 rounded-full text-sm tracking-wider shadow-lg cursor-pointer"
-              >
-                Cerrar
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
