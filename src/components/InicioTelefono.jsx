@@ -9,7 +9,7 @@ import juegoApp from '../assets/juego-app.png';
 import logoOniria from '../assets/logo-oniria.svg';
 import cardImg from '../assets/card.webp';
 import fondoFormulario from '../assets/fondo-formulario.png';
-import fondoMapa from '../assets/fondo-mapa.png';
+import fondoMapa from '../assets/fondoMapa.webp';
 import mapaImg from '../assets/mapa.webp';
 
 // Símbolos para la card del día
