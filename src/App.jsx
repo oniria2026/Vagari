@@ -46,8 +46,8 @@ function App() {
       // Próximamente pantalla / sección de Mapa
       console.log('Abrir Mapa')
     } else if (appId === 'desafio') {
-      // Redirigir al minijuego Vagari Runner
-      window.location.href = './Jugar.html'
+      // Redirigir al minijuego en /Jugar/
+      window.location.href = './Jugar/';
     }
   }
 
