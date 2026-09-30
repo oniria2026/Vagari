@@ -710,6 +710,12 @@
     const glitchObstaculoImg = new Image();
     glitchObstaculoImg.src = assetBase + 'glitch-obstaculo.png';
 
+    const estrellaPuntosImg = new Image();
+    estrellaPuntosImg.src = assetBase + 'estrella-puntos.png';
+
+    const glitchPuntosImg = new Image();
+    glitchPuntosImg.src = assetBase + 'glitch-puntos.png';
+
     const player = {
         x: 50,
         y: 0,
@@ -878,10 +884,10 @@
                 obs.height = trashSize;
                 obs.y = groundY - obs.height;
             } else {
-                // Coleccionable neón aéreo
-                const neonAirSize = player.height * 0.50;
-                obs.width = neonAirSize;
-                obs.height = neonAirSize;
+                // Estrella puntos coleccionable en el aire (1:1)
+                const starSize = player.height * 0.55;
+                obs.width = starSize;
+                obs.height = starSize;
                 obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (currentWorld.bgType === 'glitch') {
@@ -892,10 +898,9 @@
                 obs.height = glitchSize;
                 obs.y = groundY - obs.height;
             } else {
-                // Coleccionable glitch aéreo
-                const glitchAirSize = player.height * 0.45;
-                obs.width = glitchAirSize;
-                obs.height = glitchAirSize;
+                // Glitch puntos coleccionable en el aire (538x464 ~ 1.16 ratio)
+                obs.height = player.height * 0.55;
+                obs.width = obs.height * (538 / 464);
                 obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (type === 'ground') {
@@ -1148,15 +1153,23 @@
                         ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
                     }
                 } else {
-                    // Orbe neón brillante
-                    ctx.save();
-                    ctx.shadowColor = '#00ffcc';
-                    ctx.shadowBlur = 12;
-                    ctx.fillStyle = '#00ffcc';
-                    ctx.beginPath();
-                    ctx.arc(obs.x + obs.width / 2, obs.y + obs.height / 2, obs.width / 2, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
+                    // Estrella puntos coleccionable con brillo neón
+                    if (estrellaPuntosImg.complete && estrellaPuntosImg.naturalWidth > 0) {
+                        ctx.save();
+                        ctx.shadowColor = '#00ffcc';
+                        ctx.shadowBlur = 14;
+                        ctx.drawImage(estrellaPuntosImg, obs.x, obs.y, obs.width, obs.height);
+                        ctx.restore();
+                    } else {
+                        ctx.save();
+                        ctx.shadowColor = '#00ffcc';
+                        ctx.shadowBlur = 12;
+                        ctx.fillStyle = '#00ffcc';
+                        ctx.beginPath();
+                        ctx.arc(obs.x + obs.width / 2, obs.y + obs.height / 2, obs.width / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+                    }
                 }
             } else if (currentWorld.bgType === 'glitch') {
                 if (obs.type === 'ground') {
@@ -1209,13 +1222,25 @@
                         ctx.fillRect(obs.x + (Math.random()*4-2), obs.y, obs.width, obs.height);
                     }
                 } else {
-                    // Coleccionable aéreo en el mundo glitch
-                    ctx.save();
-                    ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
-                    ctx.shadowColor = ctx.fillStyle;
-                    ctx.shadowBlur = 8;
-                    ctx.fillRect(obs.x + (Math.random() * 4 - 2), obs.y, obs.width, obs.height);
-                    ctx.restore();
+                    // Glitch puntos coleccionable aéreo con efecto de fluctuación
+                    if (glitchPuntosImg.complete && glitchPuntosImg.naturalWidth > 0) {
+                        ctx.save();
+                        if (Math.random() > 0.35) {
+                            ctx.save();
+                            ctx.globalAlpha = 0.5;
+                            ctx.drawImage(glitchPuntosImg, obs.x + (Math.random() * 6 - 3), obs.y + (Math.random() * 2 - 1), obs.width, obs.height);
+                            ctx.restore();
+                        }
+                        ctx.drawImage(glitchPuntosImg, obs.x, obs.y, obs.width, obs.height);
+                        ctx.restore();
+                    } else {
+                        ctx.save();
+                        ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+                        ctx.shadowColor = ctx.fillStyle;
+                        ctx.shadowBlur = 8;
+                        ctx.fillRect(obs.x + (Math.random() * 4 - 2), obs.y, obs.width, obs.height);
+                        ctx.restore();
+                    }
                 }
             } else {
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
