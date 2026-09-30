@@ -110,7 +110,7 @@ function App() {
   };
 
   return (
-    <div className="fixed inset-0 w-full h-[100dvh] md:relative md:min-h-screen bg-[#0d0d0d] flex items-center justify-center overflow-hidden md:overflow-x-hidden md:p-4">
+    <div className="fixed inset-0 w-full h-[100vh] md:relative md:min-h-screen bg-[#0d0d0d] flex items-center justify-center overflow-hidden md:overflow-x-hidden md:p-4">
       <div className="w-full h-full max-w-[430px] md:h-[90vh] md:max-h-[880px] md:aspect-[9/16] overflow-hidden shadow-2xl relative bg-black md:rounded-[40px] md:border md:border-white/10 flex flex-col">
         {route.screen === 'portada' && (
           <Portada onExplorar={handleExplorar} />
