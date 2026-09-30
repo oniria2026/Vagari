@@ -636,8 +636,7 @@
         animate();
     }
 
-    function spawnObstacle() {
-        const type = Math.random() > 0.5 ? 'ground' : 'air';
+    function createSingleObstacle(type) {
         let obs = {
             x: width,
             y: 0,
@@ -655,8 +654,8 @@
             if (type === 'ground') {
                 obs.y = groundY - obs.height;
             } else {
-                // Altura para coleccionar saltando (entre 50 y 110 px sobre el suelo)
-                obs.y = groundY - player.height * (0.8 + Math.random() * 0.7);
+                // Altura original: el jugador pasa caminando por debajo sin tocarlo, debe saltar para agarrarlo
+                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (currentWorld.bgType === 'beach') {
             if (type === 'ground') {
@@ -669,8 +668,8 @@
                 // Helado horizontal / de costado (proporción 1868x847, ancho/alto ~ 2.2)
                 obs.width = player.height * 0.75;
                 obs.height = obs.width * (847 / 1868);
-                // Altura aérea para atraparlo con un salto
-                obs.y = groundY - player.height * (0.85 + Math.random() * 0.6);
+                // Altura aérea original: requiere saltar para atraparlo
+                obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (type === 'ground') {
             obs.width = player.width * (0.8 + Math.random() * 0.5);
@@ -679,10 +678,25 @@
         } else {
             obs.width = player.width * (0.8 + Math.random() * 0.4);
             obs.height = player.height * 0.4;
-            obs.y = groundY - player.height * (0.85 + Math.random() * 0.6);
+            obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
         }
 
-        obstacles.push(obs);
+        return obs;
+    }
+
+    function spawnObstacle() {
+        const roll = Math.random();
+        // 35% ambos a la vez (obstáculo en tierra y recompensa en el aire sobre él o cerca)
+        // 35% solo obstáculo de suelo
+        // 30% solo recompensa en el aire
+        if (roll < 0.35) {
+            obstacles.push(createSingleObstacle('ground'));
+            obstacles.push(createSingleObstacle('air'));
+        } else if (roll < 0.70) {
+            obstacles.push(createSingleObstacle('ground'));
+        } else {
+            obstacles.push(createSingleObstacle('air'));
+        }
     }
 
     function spawnPortal() {
