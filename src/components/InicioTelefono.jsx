@@ -512,28 +512,28 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                 </div>
 
                 {/* Contenido principal: Título Mapa Onírico, el Mapa interactivo/gráfico y el Contador del próximo Vagari */}
-                <div className="flex-1 flex flex-col items-center justify-center px-6 py-4 my-auto w-full max-w-[380px] mx-auto text-center z-10">
-                  {/* Título: mapa onirico */}
+                <div className="flex-1 flex flex-col items-center justify-start px-6 pt-2 pb-6 w-full max-w-[380px] mx-auto text-center z-10">
+                  {/* Título: mapa onirico más arriba y en el rosa #FF94DA */}
                   <motion.h2
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="font-naiveer text-[#F1EEE7] text-4xl sm:text-5xl tracking-wide mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+                    className="font-naiveer text-[#FF94DA] text-4xl sm:text-5xl tracking-wide mb-4 mt-1 drop-shadow-[0_2px_10px_rgba(255,148,218,0.35)]"
                   >
                     mapa onírico
                   </motion.h2>
 
-                  {/* Contenedor del Mapa con borde vítreo */}
+                  {/* Mapa sin bordes, del tamaño del contenedor anterior */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
-                    className="w-full relative rounded-3xl overflow-hidden border border-white/25 shadow-[0_8px_32px_rgba(0,0,0,0.35)] bg-black/20 backdrop-blur-sm mb-5 p-2"
+                    className="w-full relative flex items-center justify-center mb-5"
                   >
                     <img
                       src={mapaImg}
                       alt="Mapa Onírico"
-                      className="w-full h-auto max-h-[300px] object-contain rounded-2xl drop-shadow-md"
+                      className="w-full h-auto max-h-[320px] object-contain drop-shadow-2xl"
                     />
                   </motion.div>
 
