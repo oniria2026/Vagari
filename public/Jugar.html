@@ -19,9 +19,22 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #000;
+            background-color: #0d0d0d;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             touch-action: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #game-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 430px;
+            height: 100%;
+            max-height: 932px;
+            background-color: #000;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
         canvas {
             display: block;
@@ -237,51 +250,71 @@
             pointer-events: none;
             transition: opacity 0.5s;
         }
-        @media (max-width: 600px) {
-            h1 { font-size: 32px; }
-            .header-title { font-size: 26px; letter-spacing: 2px; }
-            p { font-size: 16px; }
-            .score-container { font-size: 13px; }
-            .btn-close-oniria { width: 36px; height: 36px; }
-            .btn-close-oniria svg { width: 17px; height: 17px; stroke-width: 3.5; }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 0 10px #fff;
+        }
+        .header-title {
+            font-size: 28px;
+            letter-spacing: 0px;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .score-container {
+            font-size: 13px;
+        }
+        .btn-close-oniria {
+            width: 36px;
+            height: 36px;
+        }
+        .btn-close-oniria svg {
+            width: 17px;
+            height: 17px;
+            stroke-width: 3.5;
         }
     </style>
 </head>
 <body>
+<div id="game-wrapper">
+    <canvas id="gameCanvas"></canvas>
 
-<canvas id="gameCanvas"></canvas>
-
-<div id="ui-layer">
-    <div class="header">
-        <div class="score-container">
-            Distancia: <span id="scoreDisplay">0</span>m<br>
-            <span id="worldDisplay" style="font-size: 14px; opacity: 0.85;">Mundo 1</span>
+    <div id="ui-layer">
+        <div class="header">
+            <div class="score-container">
+                Distancia: <span id="scoreDisplay">0</span>m<br>
+                <span id="worldDisplay" style="font-size: 14px; opacity: 0.85;">Mundo 1</span>
+            </div>
+            <h1 class="header-title">vagari</h1>
+            <button class="btn-close-oniria" onclick="goBack(event)" title="Volver a Oniria" aria-label="Volver a Oniria">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
         </div>
-        <h1 class="header-title">vagari</h1>
-        <button class="btn-close-oniria" onclick="goBack(event)" title="Volver a Oniria" aria-label="Volver a Oniria">
-            <svg viewBox="0 0 24 24" fill="none">
-                <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-        </button>
     </div>
-</div>
 
-<div id="startScreen" class="screen">
-    <h1>Vagari Runner</h1>
-    <p>Toca la pantalla o usa la Barra Espaciadora para saltar.</p>
-    <button class="btn-retry" onclick="startGame()"><span>Comenzar</span></button>
-</div>
-
-<div id="gameOverScreen" class="screen hidden">
-    <h1>¡Juego Terminado!</h1>
-    <p>Distancia recorrida: <span id="finalScore">0</span>m</p>
-    <div style="display: flex; gap: 20px;">
-        <button class="btn-retry" onclick="startGame()"><span>Reintentar</span></button>
-        <button class="btn-back" style="padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
+    <div id="startScreen" class="screen">
+        <h1>Vagari Runner</h1>
+        <p>Toca la pantalla o usa la Barra Espaciadora para saltar.</p>
+        <button class="btn-retry" onclick="startGame()"><span>Comenzar</span></button>
     </div>
-</div>
 
-<div id="flash"></div>
+    <div id="gameOverScreen" class="screen hidden">
+        <h1>¡Juego Terminado!</h1>
+        <p>Distancia recorrida: <span id="finalScore">0</span>m</p>
+        <div style="display: flex; gap: 20px;">
+            <button class="btn-retry" onclick="startGame()"><span>Reintentar</span></button>
+            <button class="btn-back" style="padding: 15px 40px; border-radius: 50px; font-size: 20px;" onclick="goBack()">Volver</button>
+        </div>
+    </div>
+
+    <div id="flash"></div>
+</div>
 
 <script>
     function goBack() {
@@ -308,16 +341,26 @@
     let gameSpeed = 5;
     let frame = 0;
     
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    const wrapper = document.getElementById('game-wrapper');
+    let width = wrapper ? wrapper.clientWidth : window.innerWidth;
+    let height = wrapper ? wrapper.clientHeight : window.innerHeight;
     canvas.width = width;
     canvas.height = height;
 
-    window.addEventListener('resize', () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
+    function updateDimensions() {
+        if (wrapper) {
+            width = wrapper.clientWidth;
+            height = wrapper.clientHeight;
+        } else {
+            width = window.innerWidth;
+            height = window.innerHeight;
+        }
         canvas.width = width;
         canvas.height = height;
+    }
+
+    window.addEventListener('resize', () => {
+        updateDimensions();
         if (!isPlaying && !gameOverScreen.classList.contains('hidden')) {
              groundY = height * 0.75;
         }
@@ -488,10 +531,7 @@
     let particles = [];
 
     function initGame() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
+        updateDimensions();
         groundY = height * 0.75;
         
         // Proporción basada en el sprite original (ancho y alto equilibrados)
@@ -503,7 +543,7 @@
         player.jumpForce = height < 600 ? -9 : -12;
 
         score = 0;
-        gameSpeed = width < 768 ? 4.5 : 6; 
+        gameSpeed = 4.5; 
         frame = 0;
 
         // Iniciar con un ciclo barajado de los 4 mundos
