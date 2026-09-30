@@ -521,10 +521,10 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                   </button>
                 </div>
 
-                {/* Contenido principal: Título centrado entre header y mapa, Mapa en centro, y Próximo Vagari con font-naiveer centrado entre mapa y footer */}
-                <div className="flex-1 flex flex-col items-center justify-between w-full select-none z-10 min-h-0">
-                  {/* Espacio superior: Título mapa onírico a la misma distancia entre header y mapa */}
-                  <div className="flex-1 flex items-center justify-center w-full px-6">
+                {/* Contenido principal: Título, Mapa y Contador distribuidos uniformemente */}
+                <div className="flex-1 flex flex-col items-center justify-evenly w-full select-none z-10 min-h-0 py-2">
+                  {/* Título mapa onírico */}
+                  <div className="w-full px-6 flex justify-center">
                     <motion.h2
                       initial={{ opacity: 0, y: -6 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -535,12 +535,12 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                     </motion.h2>
                   </div>
 
-                  {/* Mapa en el centro */}
+                  {/* Mapa */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
-                    className="w-full max-w-[360px] px-6 relative flex items-center justify-center shrink-0"
+                    className="w-full max-w-[360px] px-6 flex justify-center shrink-0"
                   >
                     <img
                       src={mapaImg}
@@ -549,8 +549,8 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
                     />
                   </motion.div>
 
-                  {/* Espacio inferior: Próximo Vagari (con font-naiveer) y contador centrado entre mapa y footer */}
-                  <div className="flex-1 flex flex-col items-center justify-center w-full max-w-[380px] px-6">
+                  {/* Próximo Vagari con contador */}
+                  <div className="w-full max-w-[380px] px-6 flex justify-center">
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
