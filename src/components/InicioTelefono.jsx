@@ -38,13 +38,22 @@ const CARDS_DIA = [
   { name: 'dia', src: dia, texto: 'la luz del sol', keyword: 'luz del sol' },
 ];
 
-export default function InicioTelefono({ onOpenApp }) {
+export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
   // Símbolo asignado
   const [simboloDia] = useState(() => {
     return CARDS_DIA[Math.floor(Math.random() * CARDS_DIA.length)];
   });
+
   // Guarda el id y las coordenadas del icono pulsado para expandirse desde ahí
-  const [activeApp, setActiveApp] = useState(null); // { id, name, icon, rect }
+  const [activeApp, setActiveApp] = useState(() => {
+    if (initialApp === 'mapa') {
+      return { id: 'mapa', name: 'Mapa', icon: mapaApp, rect: { top: 0, left: 0, width: '100%', height: '100%' } };
+    }
+    if (initialApp === 'simbolo' || initialApp === 'dia') {
+      return { id: 'dia', name: 'Símbolo', icon: cardImg, rect: { top: 0, left: 0, width: '100%', height: '100%' } };
+    }
+    return null;
+  });
   const [isClosing, setIsClosing] = useState(false);
 
   // Formulario deslizable desde abajo estilo cajón de apps
@@ -181,18 +190,20 @@ export default function InicioTelefono({ onOpenApp }) {
     };
     setActiveApp(appData);
 
-    // Si la app es desafío, esperar la animación de apertura y navegar a Jugar.html
-    if (id === 'desafio') {
+    if (id === 'dia') {
+      if (onOpenApp) onOpenApp('simbolo');
+    } else if (id === 'mapa') {
+      if (onOpenApp) onOpenApp('mapa');
+    } else if (id === 'desafio') {
       setTimeout(() => {
         if (onOpenApp) onOpenApp('desafio');
       }, 450);
-    } else {
-      if (onOpenApp) onOpenApp(id);
     }
   };
 
   const handleCloseApp = () => {
     setIsClosing(true);
+    if (onCloseApp) onCloseApp();
     setTimeout(() => {
       setActiveApp(null);
       setIsClosing(false);
