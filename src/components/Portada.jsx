@@ -49,7 +49,7 @@ export default function Portada({ onExplorar }) {
   return (
     <div
       onClick={handleScreenClick}
-      className={`relative w-full h-[100svh] min-h-screen bg-black overflow-hidden flex flex-col items-center select-none ${
+      className={`relative w-full h-full flex flex-col items-center select-none bg-black overflow-hidden ${
         isPlaying ? 'cursor-pointer' : ''
       }`}
     >

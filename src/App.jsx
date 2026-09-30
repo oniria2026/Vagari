@@ -110,22 +110,24 @@ function App() {
   };
 
   return (
-    <div className="max-w-[430px] mx-auto w-full min-h-screen overflow-x-hidden shadow-2xl relative bg-white">
-      {route.screen === 'portada' && (
-        <Portada onExplorar={handleExplorar} />
-      )}
+    <div className="w-full min-h-screen bg-[#0d0d0d] flex items-center justify-center overflow-x-hidden md:p-4">
+      <div className="w-full max-w-[430px] h-[100svh] md:h-[90vh] md:max-h-[880px] md:aspect-[9/16] overflow-hidden shadow-2xl relative bg-black md:rounded-[40px] md:border md:border-white/10 flex flex-col">
+        {route.screen === 'portada' && (
+          <Portada onExplorar={handleExplorar} />
+        )}
 
-      {route.screen === 'telefono' && (
-        <InicioTelefono
-          initialApp={route.app}
-          onOpenApp={handleOpenApp}
-          onCloseApp={handleCloseApp}
-          onBack={() => {
-            updateBrowserUrl('');
-            setRoute({ screen: 'portada', app: null });
-          }}
-        />
-      )}
+        {route.screen === 'telefono' && (
+          <InicioTelefono
+            initialApp={route.app}
+            onOpenApp={handleOpenApp}
+            onCloseApp={handleCloseApp}
+            onBack={() => {
+              updateBrowserUrl('');
+              setRoute({ screen: 'portada', app: null });
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

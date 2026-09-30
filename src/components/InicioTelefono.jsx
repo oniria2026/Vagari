@@ -40,6 +40,8 @@ const CARDS_DIA = [
 ];
 
 export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
+  const containerRef = useRef(null);
+
   // Símbolo asignado
   const [simboloDia] = useState(() => {
     return CARDS_DIA[Math.floor(Math.random() * CARDS_DIA.length)];
@@ -178,16 +180,20 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
 
 
   const handleAppClick = (id, name, icon, e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+    const iconRect = e.currentTarget.getBoundingClientRect();
+    const containerRect = containerRef.current
+      ? containerRef.current.getBoundingClientRect()
+      : { top: 0, left: 0 };
+
     const appData = {
       id,
       name,
       icon,
       rect: {
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height,
+        top: iconRect.top - containerRect.top,
+        left: iconRect.left - containerRect.left,
+        width: iconRect.width,
+        height: iconRect.height,
       },
     };
     setActiveApp(appData);
@@ -238,10 +244,11 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
 
   return (
     <div
+      ref={containerRef}
       onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative w-full h-[100svh] min-h-screen bg-cover bg-center bg-no-repeat overflow-hidden flex flex-col select-none overscroll-none touch-none"
+      className="relative w-full h-full bg-cover bg-center bg-no-repeat overflow-hidden flex flex-col select-none overscroll-none touch-none"
       style={{ backgroundImage: `url(${fondoInicio})`, overscrollBehavior: 'none' }}
     >
       {/* Header sutil y traslúcido con efecto vidrio fino */}
@@ -407,7 +414,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
               borderRadius: '24px',
             }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed z-50 overflow-hidden shadow-2xl flex flex-col ${
+            className={`absolute inset-0 z-50 overflow-hidden shadow-2xl flex flex-col ${
               activeApp.id === 'desafio' ? 'bg-[#0d0d0d]' : (activeApp.id === 'mapa' || activeApp.id === 'dia') ? 'bg-transparent' : 'bg-[#24251E]'
             }`}
           >
@@ -804,7 +811,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
             onTouchStart={handleDrawerTouchStart}
             onTouchEnd={handleDrawerTouchEnd}
             ref={drawerRef}
-            className="fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto overscroll-contain touch-pan-y bg-cover bg-no-repeat bg-top"
+            className="absolute inset-0 z-40 flex flex-col justify-between overflow-y-auto overscroll-contain touch-pan-y bg-cover bg-no-repeat bg-top"
             style={{
               backgroundImage: `url(${fondoFormulario})`,
               overscrollBehavior: 'contain',
@@ -949,7 +956,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp }) {
 
             {/* Modal de Agradecimiento */}
             {showModal && (
-              <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+              <div className="absolute inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
