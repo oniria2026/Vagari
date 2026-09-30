@@ -9,6 +9,7 @@ import juegoApp from '../assets/juego-app.png';
 import logoOniria from '../assets/logo-oniria.svg';
 import cardImg from '../assets/card.webp';
 import fondoFormulario from '../assets/fondo-formulario.png';
+import mapaImg from '../assets/mapa.webp';
 
 // Símbolos para la card del día
 import mixto from '../assets/mixto.svg';
@@ -49,6 +50,42 @@ export default function InicioTelefono({ onOpenApp }) {
   // Formspree y modal de éxito
   const [state, handleSubmit] = useForm('xdekovjd');
   const [showModal, setShowModal] = useState(false);
+
+  // Contador para el próximo Vagari (días, horas, minutos, segundos)
+  const [timeLeft, setTimeLeft] = useState({
+    dias: 0,
+    horas: 0,
+    minutos: 0,
+    segundos: 0,
+  });
+
+  useEffect(() => {
+    // Fecha objetivo del próximo Vagari (ej: 7 días dinámicos o fecha específica)
+    // Usamos una fecha consistente que se renueva o apunta al próximo evento
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 12);
+    targetDate.setHours(20, 0, 0, 0);
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const difference = targetDate.getTime() - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          dias: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutos: Math.floor((difference / 1000 / 60) % 60),
+          segundos: Math.floor((difference / 1000) % 60),
+        });
+      } else {
+        setTimeLeft({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (state.succeeded) {
@@ -419,59 +456,134 @@ export default function InicioTelefono({ onOpenApp }) {
                   </p>
                 </div>
               </div>
-            ) : (
-              <>
-                {/* Cabecera superior de la aplicación abierta */}
-                <div className="w-full px-6 py-4 flex items-center justify-between border-b border-white/10 bg-black/20 backdrop-blur-md">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl overflow-hidden shadow">
-                      <img src={activeApp.icon} alt="" className="w-full h-full object-cover" />
-                    </div>
-                    <span className="text-white font-medium text-lg tracking-wide">
-                      {activeApp.name}
-                    </span>
-                  </div>
+            ) : activeApp.id === 'mapa' ? (
+              /* Pantalla de Mapa Onírico con fade de colores del formulario, mapa y contador del próximo vagari */
+              <div
+                className="relative w-full h-full flex flex-col justify-between overflow-y-auto bg-cover bg-no-repeat bg-top select-none touch-pan-y"
+                style={{
+                  backgroundImage: `url(${fondoFormulario})`,
+                }}
+              >
+                {/* Header de vagari con una X blanca sobre un círculo rosa a la derecha para volver */}
+                <div
+                  className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20 shrink-0"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.06) 100%)',
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                    boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.12)',
+                  }}
+                >
+                  {/* Espaciador izquierdo para centrar el título */}
+                  <div className="w-10 h-10 pointer-events-none opacity-0" />
 
-                  {/* Botón Volver / Cerrar app */}
+                  {/* Título vagari idéntico al header general */}
+                  <h1
+                    className="font-naiveer text-[36px] sm:text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
+                    style={{
+                      color: 'transparent',
+                      WebkitTextStroke: '1.2px rgba(255, 255, 255, 0.85)',
+                      background: 'linear-gradient(160deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%)',
+                      WebkitBackgroundClip: 'text',
+                      filter: 'drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.4))',
+                    }}
+                  >
+                    vagari
+                  </h1>
+
+                  {/* X blanca sobre círculo rosa para volver */}
                   <button
                     onClick={handleCloseApp}
-                    className="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition flex items-center justify-center cursor-pointer text-white"
-                    title="Cerrar aplicación"
+                    className="w-10 h-10 rounded-full bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-92 transition shadow-[0_3px_10px_rgba(255,148,218,0.45)] flex items-center justify-center cursor-pointer text-white"
+                    title="Volver"
+                    aria-label="Volver"
                   >
-                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[2.5] stroke-linecap-round">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[3.2] stroke-linecap-round">
                       <path d="M18 6L6 18M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
 
-                {/* Contenido interior provisional de la app mientras se cargan los módulos */}
-                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-white">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.15, duration: 0.3 }}
-                    className="flex flex-col items-center"
+                {/* Contenido principal: Título Mapa Onírico, el Mapa interactivo/gráfico y el Contador del próximo Vagari */}
+                <div className="flex-1 flex flex-col items-center justify-center px-6 py-4 my-auto w-full max-w-[380px] mx-auto text-center z-10">
+                  {/* Título: mapa onirico */}
+                  <motion.h2
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="font-naiveer text-[#F1EEE7] text-4xl sm:text-5xl tracking-wide mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                   >
-                    <div className="w-20 h-20 rounded-3xl overflow-hidden mb-6 shadow-2xl">
-                      <img src={activeApp.icon} alt="" className="w-full h-full object-cover" />
-                    </div>
-                    <h2 className="font-naiveer text-4xl text-[#FF94DA] mb-3">
-                      {activeApp.name}
-                    </h2>
-                    <p className="text-white/70 text-sm max-w-[260px] leading-relaxed mb-8">
-                      Próximamente disponible en Oniria.
-                    </p>
+                    mapa onírico
+                  </motion.h2>
 
-                    <button
-                      onClick={handleCloseApp}
-                      className="bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-95 transition px-8 py-3 rounded-full text-white font-semibold text-sm shadow-lg cursor-pointer"
-                    >
-                      Volver al inicio
-                    </button>
+                  {/* Contenedor del Mapa con borde vítreo */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.45, delay: 0.1 }}
+                    className="w-full relative rounded-3xl overflow-hidden border border-white/25 shadow-[0_8px_32px_rgba(0,0,0,0.35)] bg-black/20 backdrop-blur-sm mb-5 p-2"
+                  >
+                    <img
+                      src={mapaImg}
+                      alt="Mapa Onírico"
+                      className="w-full h-auto max-h-[300px] object-contain rounded-2xl drop-shadow-md"
+                    />
+                  </motion.div>
+
+                  {/* Contador del próximo Vagari debajo del mapa */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: 0.2 }}
+                    className="w-full flex flex-col items-center"
+                  >
+                    <span className="text-white/80 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-2 drop-shadow">
+                      próximo vagari en:
+                    </span>
+
+                    {/* Bloques de días, horas, minutos y segundos */}
+                    <div className="grid grid-cols-4 gap-2.5 w-full">
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                        <span className="font-bold text-xl sm:text-2xl text-[#FF94DA] drop-shadow">
+                          {String(timeLeft.dias).padStart(2, '0')}
+                        </span>
+                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          días
+                        </span>
+                      </div>
+
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                        <span className="font-bold text-xl sm:text-2xl text-[#FF94DA] drop-shadow">
+                          {String(timeLeft.horas).padStart(2, '0')}
+                        </span>
+                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          horas
+                        </span>
+                      </div>
+
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                        <span className="font-bold text-xl sm:text-2xl text-[#FF94DA] drop-shadow">
+                          {String(timeLeft.minutos).padStart(2, '0')}
+                        </span>
+                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          min
+                        </span>
+                      </div>
+
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-1 flex flex-col items-center shadow-lg">
+                        <span className="font-bold text-xl sm:text-2xl text-[#FF94DA] drop-shadow">
+                          {String(timeLeft.segundos).padStart(2, '0')}
+                        </span>
+                        <span className="text-[10px] sm:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                          seg
+                        </span>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
-              </>
-            )}
+              </div>
+            ) : null}
           </motion.div>
         )}
       </AnimatePresence>
