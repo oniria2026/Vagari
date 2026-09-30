@@ -73,14 +73,14 @@ export default function Portada({ onExplorar }) {
             transition={{ duration: 0.5, ease: 'easeInOut' }}
             className="absolute inset-0 w-full h-full flex flex-col items-center pointer-events-none z-10"
           >
-            {/* Centro de la pantalla: vagari justo arriba del botón */}
+            {/* Centro de la pantalla: vagari un poco más arriba y tamaño moderado */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
-              className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
+              className="absolute top-[43%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
             >
-              <h1 className="font-naiveer text-[4.25rem] sm:text-7xl md:text-8xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
+              <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
                 vagari
               </h1>
             </motion.div>
