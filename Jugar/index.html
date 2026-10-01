@@ -699,7 +699,13 @@
     cieloNeonImg.src = assetBase + 'cielo-neon.jpeg';
 
     const sueloNeonImg = new Image();
-    sueloNeonImg.src = assetBase + 'suelo-neon-v2.jpg';
+    sueloNeonImg.src = assetBase + 'suelo-neon.jpg';
+
+    const cieloGlitchImg = new Image();
+    cieloGlitchImg.src = assetBase + 'cielo-glitch.jpg';
+
+    const sueloGlitchImg = new Image();
+    sueloGlitchImg.src = assetBase + 'suelo-glitch.jpg';
 
     const piedraImg = new Image();
     piedraImg.src = assetBase + 'piedra-obstaculo.png';
@@ -1004,6 +1010,32 @@
             for (let x = -skyOffset; x < width + skyWidth; x += (skyWidth - 2)) {
                 ctx.drawImage(cieloNeonImg, x, 0, skyWidth, skyHeight);
             }
+        } else if (currentWorld.bgType === 'glitch' && cieloGlitchImg.complete && cieloGlitchImg.naturalWidth > 0) {
+            // Cielo Glitch con parallax continuo y efecto glitch
+            const skyAspect = cieloGlitchImg.naturalWidth / cieloGlitchImg.naturalHeight;
+            const skyHeight = groundY;
+            const skyWidth = Math.ceil(skyHeight * skyAspect);
+            const skyOffset = (frame * gameSpeed * 0.15) % skyWidth;
+            for (let x = -skyOffset; x < width + skyWidth; x += (skyWidth - 2)) {
+                ctx.drawImage(cieloGlitchImg, x, 0, skyWidth, skyHeight);
+            }
+
+            // Efecto glitch dinámico (desplazamiento de franjas y distorsión cromática)
+            if (Math.random() < 0.45) {
+                const slices = Math.floor(Math.random() * 3) + 1;
+                for (let s = 0; s < slices; s++) {
+                    const sliceY = Math.random() * (groundY - 30);
+                    const sliceH = Math.random() * 26 + 6;
+                    const shiftX = (Math.random() - 0.5) * 28;
+                    ctx.drawImage(canvas, 0, sliceY, width, sliceH, shiftX, sliceY, width, sliceH);
+                    
+                    if (Math.random() < 0.6) {
+                        const colors = ['rgba(0, 255, 255, 0.22)', 'rgba(255, 0, 255, 0.22)', 'rgba(57, 255, 20, 0.18)'];
+                        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                        ctx.fillRect(0, sliceY, width, sliceH);
+                    }
+                }
+            }
         } else {
             ctx.fillStyle = currentWorld.bgColor;
             ctx.fillRect(0, 0, width, height);
@@ -1051,15 +1083,39 @@
                 ctx.restore();
                 tileIndex++;
             }
+        } else if (currentWorld.bgType === 'glitch' && sueloGlitchImg.complete && sueloGlitchImg.naturalWidth > 0) {
+            // Suelo Glitch: Tira única vertical que se repite de forma continua sin costura
+            const groundHeight = height - groundY;
+            const tileAspect = sueloGlitchImg.naturalWidth / sueloGlitchImg.naturalHeight;
+            const tileWidth = Math.ceil(groundHeight * tileAspect);
+            const cycleWidth = tileWidth * 2;
+            const groundOffset = (frame * gameSpeed) % cycleWidth;
+
+            let tileIndex = 0;
+            for (let x = -groundOffset; x < width + tileWidth * 2; x += (tileWidth - 1)) {
+                ctx.save();
+                if (tileIndex % 2 === 1) {
+                    ctx.translate(x + tileWidth, groundY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(sueloGlitchImg, 0, 0, tileWidth, groundHeight);
+                } else {
+                    ctx.drawImage(sueloGlitchImg, x, groundY, tileWidth, groundHeight);
+                }
+                ctx.restore();
+                tileIndex++;
+            }
         } else {
             ctx.fillStyle = currentWorld.groundColor;
             ctx.fillRect(0, groundY, width, height - groundY);
         }
 
         if (currentWorld.bgType === 'glitch') {
-            ctx.fillStyle = 'rgba(0,255,0,0.1)';
-            for(let i=0; i<5; i++){
-                ctx.fillRect(Math.random()*width, Math.random()*groundY, Math.random()*100, Math.random()*10);
+            if (Math.random() < 0.6) {
+                const glitchColors = ['rgba(0,255,255,0.22)', 'rgba(255,0,255,0.22)', 'rgba(255,255,255,0.3)', 'rgba(57,255,20,0.2)'];
+                for(let i=0; i<4; i++){
+                    ctx.fillStyle = glitchColors[Math.floor(Math.random() * glitchColors.length)];
+                    ctx.fillRect(Math.random()*width, Math.random()*groundY, Math.random()*120 + 20, Math.random()*6 + 2);
+                }
             }
         } else if (currentWorld.bgType === 'bubbles') {
             if (frame % 20 === 0) {
