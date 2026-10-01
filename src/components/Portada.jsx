@@ -6,9 +6,28 @@ export default function Portada({ onExplorar }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const handleExplorar = () => {
+  const handleExplorar = (e) => {
+    if (e) e.stopPropagation();
     if (isPlaying) return;
     setIsPlaying(true);
+
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.volume = 1;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Reproducción con sonido no permitida por el navegador, reintentando con fallback:', err);
+          videoRef.current.muted = true;
+          videoRef.current.play().catch((playErr) => {
+            console.error('Error al reproducir el video:', playErr);
+            onExplorar();
+          });
+        });
+      }
+    } else {
+      onExplorar();
+    }
 
     // Intentar activar pantalla completa nativa para ocultar barras del navegador en el móvil
     try {
@@ -20,15 +39,6 @@ export default function Portada({ onExplorar }) {
       }
     } catch (e) {
       // Ignorar si el navegador bloquea fullscreen automático
-    }
-
-    if (videoRef.current) {
-      videoRef.current.play().catch((err) => {
-        console.error('Error al reproducir el video:', err);
-        onExplorar();
-      });
-    } else {
-      onExplorar();
     }
   };
 
@@ -67,7 +77,6 @@ export default function Portada({ onExplorar }) {
           ref={videoRef}
           src={`${animacionBienvenida}#t=0.001`}
           preload="auto"
-          muted
           playsInline
           onEnded={handleVideoEnded}
           className="absolute inset-0 w-full h-full object-fill z-0"
