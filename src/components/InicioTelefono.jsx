@@ -549,19 +549,19 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, delay: 0.1 }}
-                    className="w-full max-w-[320px] sm:max-w-[360px] px-4 flex flex-col items-center justify-center shrink-0"
+                    className="w-full max-w-[380px] sm:max-w-[400px] px-3 sm:px-4 flex flex-col items-center justify-center shrink-0"
                   >
                     <a
                       href="https://maps.google.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="cursor-pointer active:scale-95 transition-transform flex flex-col items-center group"
+                      className="cursor-pointer active:scale-95 transition-transform flex flex-col items-center group w-full"
                       title="Abrir en Google Maps"
                     >
                       <img
                         src={mapaImg}
                         alt="Mapa Onírico"
-                        className="w-full h-auto max-h-[175px] sm:max-h-[220px] md:max-h-[250px] object-contain drop-shadow-2xl group-hover:scale-[1.02] transition-transform duration-200"
+                        className="w-full h-auto max-h-[310px] sm:max-h-[350px] md:max-h-[370px] object-contain drop-shadow-2xl group-hover:scale-[1.02] transition-transform duration-200"
                       />
                     </a>
                     <span className="text-white/70 text-xs mt-2 uppercase tracking-wider font-medium drop-shadow">
