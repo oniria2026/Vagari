@@ -99,7 +99,7 @@ export default function Portada({ onExplorar }) {
                 style={{ top: '40%' }}
                 className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 text-center pointer-events-none"
               >
-                <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-[#F1EEE7] tracking-wider drop-shadow-2xl whitespace-nowrap">
+                <h1 className="font-naiveer text-5xl sm:text-6xl md:text-7xl text-black tracking-wider drop-shadow-md whitespace-nowrap">
                   vagari
                 </h1>
               </motion.div>
