@@ -726,6 +726,9 @@
     const sfxGameOver = new Audio(assetBase + 'gameover.mp3');
     sfxGameOver.preload = 'auto';
 
+    const sfxJump = new Audio(assetBase + 'jump.mp3');
+    sfxJump.preload = 'auto';
+
     function playSound(type) {
         try {
             if (type === 'coin') {
@@ -740,6 +743,10 @@
                 sfxGameOver.currentTime = 0;
                 sfxGameOver.volume = 0.85;
                 sfxGameOver.play().catch(() => {});
+            } else if (type === 'jump') {
+                const s = sfxJump.cloneNode();
+                s.volume = 0.65;
+                s.play().catch(() => {});
             }
         } catch (e) {
             console.warn('Audio playback error:', e);
@@ -819,6 +826,7 @@
             if (this.grounded) {
                 this.vy = this.jumpForce;
                 this.grounded = false;
+                playSound('jump');
             }
         }
     };
