@@ -716,6 +716,36 @@
     const glitchPuntosImg = new Image();
     glitchPuntosImg.src = assetBase + 'glitch-puntos.png';
 
+    // Sonidos del juego
+    const sfxTransition = new Audio(assetBase + 'transicion.mp3');
+    sfxTransition.preload = 'auto';
+
+    const sfxCoin = new Audio(assetBase + 'coin.mp3');
+    sfxCoin.preload = 'auto';
+
+    const sfxGameOver = new Audio(assetBase + 'gameover.mp3');
+    sfxGameOver.preload = 'auto';
+
+    function playSound(type) {
+        try {
+            if (type === 'coin') {
+                const s = sfxCoin.cloneNode();
+                s.volume = 0.7;
+                s.play().catch(() => {});
+            } else if (type === 'transition') {
+                sfxTransition.currentTime = 0;
+                sfxTransition.volume = 0.8;
+                sfxTransition.play().catch(() => {});
+            } else if (type === 'gameover') {
+                sfxGameOver.currentTime = 0;
+                sfxGameOver.volume = 0.85;
+                sfxGameOver.play().catch(() => {});
+            }
+        } catch (e) {
+            console.warn('Audio playback error:', e);
+        }
+    }
+
     const player = {
         x: 50,
         y: 0,
@@ -833,6 +863,11 @@
         startScreen.classList.add('hidden');
         gameOverScreen.classList.add('hidden');
         
+        if (sfxGameOver) {
+            sfxGameOver.pause();
+            sfxGameOver.currentTime = 0;
+        }
+
         isPlaying = true;
         animate();
     }
@@ -1039,6 +1074,7 @@
     }
 
     function changeWorld() {
+        playSound('transition');
         flash.style.opacity = '1';
         setTimeout(() => {
             // Si la cola se vació, generar un nuevo ciclo aleatorio de los 4 mundos
@@ -1283,6 +1319,7 @@
                 if (obs.type === 'air') {
                     // ¡Es un punto coleccionable!
                     obs.collected = true;
+                    playSound('coin');
                     const bonusPoints = 25;
                     score += bonusPoints;
                     scoreDisplay.innerText = Math.floor(score);
@@ -1365,6 +1402,7 @@
     function gameOver() {
         isPlaying = false;
         cancelAnimationFrame(animationId);
+        playSound('gameover');
         const finalPts = Math.floor(score);
         finalScore.innerText = finalPts;
         resetRecordUI();
