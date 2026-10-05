@@ -2,6 +2,21 @@ import { useState, useEffect } from 'react'
 import Portada from './components/Portada'
 import InicioTelefono from './components/InicioTelefono'
 
+// Precarga inmediata de assets pesados para que estén listos antes de abrirlos
+import fondoFormulario from './assets/fondo-formulario.png'
+import fondoMapa from './assets/fondoMapa.webp'
+import mapaImg from './assets/mapa.webp'
+import cardImg from './assets/card.webp'
+import fondoInicio from './assets/fondo-inicio.png'
+
+const ASSETS_TO_PRELOAD = [
+  fondoFormulario,
+  fondoMapa,
+  mapaImg,
+  cardImg,
+  fondoInicio
+];
+
 function getInitialRoute() {
   const path = window.location.pathname.toLowerCase();
   const params = new URLSearchParams(window.location.search);
@@ -39,6 +54,17 @@ function updateBrowserUrl(subpath) {
 
 function App() {
   const [route, setRoute] = useState(getInitialRoute);
+
+  // Precargar e instanciar en memoria las imágenes de fondo, mapa y card
+  useEffect(() => {
+    ASSETS_TO_PRELOAD.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      if (img.decode) {
+        img.decode().catch(() => {});
+      }
+    });
+  }, []);
 
   // Sincronizar ruta inicial si venía con parámetro de SPA redirect
   useEffect(() => {

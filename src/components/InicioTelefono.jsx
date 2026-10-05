@@ -1028,6 +1028,14 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
         )}
       </AnimatePresence>
 
+      {/* Precarga física en el DOM para asegurar caché inmediata en GPU/navegador */}
+      <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+        <img src={fondoFormulario} alt="preload-form" loading="eager" fetchPriority="high" />
+        <img src={fondoMapa} alt="preload-mapa-bg" loading="eager" fetchPriority="high" />
+        <img src={mapaImg} alt="preload-mapa" loading="eager" fetchPriority="high" />
+        <img src={cardImg} alt="preload-card" loading="eager" fetchPriority="high" />
+      </div>
+
     </div>
   );
 }
