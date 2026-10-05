@@ -61,15 +61,8 @@
         }
         canvas {
             display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-        }
-        #fgCanvas {
-            pointer-events: none;
-            z-index: 10;
         }
         #ui-layer {
             position: absolute;
@@ -509,7 +502,6 @@
 <body>
 <div id="game-wrapper">
     <canvas id="gameCanvas"></canvas>
-    <canvas id="fgCanvas"></canvas>
 
     <div id="ui-layer">
         <div class="header">
@@ -587,85 +579,8 @@
     }
 
     const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
     
-    // Configuración de renderizado: Canvas 2D offscreen + WebGL con shader Ojo de Pez (Fisheye)
-    const offscreenCanvas = document.createElement('canvas');
-    const ctx = offscreenCanvas.getContext('2d', { alpha: false });
-
-    let gl = null;
-    let fisheyePrg = null;
-    let fisheyeTex = null;
-    let fisheyeBuffer = null;
-    let aPosLocation = -1;
-    let uTexLocation = null;
-    let uStrengthLocation = null;
-    let uAspectLocation = null;
-
-    try {
-        gl = canvas.getContext('webgl', { alpha: false, depth: false, antialias: false, preserveDrawingBuffer: false });
-        if (gl) {
-            const vsSource = 'attribute vec2 a_pos; varying vec2 v_uv; void main(){ v_uv = vec2((a_pos.x + 1.0) * 0.5, (1.0 - a_pos.y) * 0.5); gl_Position = vec4(a_pos, 0.0, 1.0); }';
-            const fsSource = [
-                'precision mediump float;',
-                'varying vec2 v_uv;',
-                'uniform sampler2D u_tex;',
-                'uniform float u_strength;',
-                'uniform vec2 u_aspect;',
-                'void main(){',
-                '    vec2 uv = v_uv;',
-                '    vec2 p = (uv - 0.5) * u_aspect;',
-                '    float r = length(p);',
-                '    float bind = length(0.5 * u_aspect);',
-                '    float factor = 1.0 + u_strength * (r * r) / (bind * bind);',
-                '    vec2 distUV = (p * factor) / u_aspect + 0.5;',
-                '    if (distUV.x >= 0.0 && distUV.x <= 1.0 && distUV.y >= 0.0 && distUV.y <= 1.0) {',
-                '        gl_FragColor = texture2D(u_tex, distUV);',
-                '    } else {',
-                '        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);',
-                '    }',
-                '}'
-            ].join('\n');
-
-            function compileShader(type, src) {
-                const s = gl.createShader(type);
-                gl.shaderSource(s, src);
-                gl.compileShader(s);
-                return s;
-            }
-
-            fisheyePrg = gl.createProgram();
-            gl.attachShader(fisheyePrg, compileShader(gl.VERTEX_SHADER, vsSource));
-            gl.attachShader(fisheyePrg, compileShader(gl.FRAGMENT_SHADER, fsSource));
-            gl.linkProgram(fisheyePrg);
-
-            fisheyeBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, fisheyeBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                -1, -1,
-                 1, -1,
-                -1,  1,
-                -1,  1,
-                 1, -1,
-                 1,  1
-            ]), gl.STATIC_DRAW);
-
-            fisheyeTex = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, fisheyeTex);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-
-            aPosLocation = gl.getAttribLocation(fisheyePrg, 'a_pos');
-            uTexLocation = gl.getUniformLocation(fisheyePrg, 'u_tex');
-            uStrengthLocation = gl.getUniformLocation(fisheyePrg, 'u_strength');
-            uAspectLocation = gl.getUniformLocation(fisheyePrg, 'u_aspect');
-        }
-    } catch (e) {
-        console.warn('WebGL Fisheye no disponible, usando fallback 2D:', e);
-        gl = null;
-    }
-
     const startScreen = document.getElementById('startScreen');
     const gameOverScreen = document.getElementById('gameOverScreen');
     const scoreDisplay = document.getElementById('scoreDisplay');
@@ -684,36 +599,6 @@
     let height = wrapper ? wrapper.clientHeight : window.innerHeight;
     canvas.width = width;
     canvas.height = height;
-    offscreenCanvas.width = width;
-    offscreenCanvas.height = height;
-
-    const fgCanvas = document.getElementById('fgCanvas');
-    const fgCtx = fgCanvas ? fgCanvas.getContext('2d') : null;
-
-    function renderFisheye() {
-        if (!gl || !fisheyePrg) return;
-        try {
-            gl.viewport(0, 0, width, height);
-            gl.useProgram(fisheyePrg);
-
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, fisheyeTex);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, offscreenCanvas);
-            gl.uniform1i(uTexLocation, 0);
-            gl.uniform1f(uStrengthLocation, 0.28); // Curvatura equilibrada de lente ojo de pez
-            gl.uniform2f(uAspectLocation, width / height, 1.0);
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, fisheyeBuffer);
-            gl.enableVertexAttribArray(aPosLocation);
-            gl.vertexAttribPointer(aPosLocation, 2, gl.FLOAT, false, 0, 0);
-
-            gl.drawArrays(gl.TRIANGLES, 0, 6);
-        } catch (e) {
-            // Si por seguridad del navegador (ej. abrir index.html directamente con protocolo file://) no permite texImage2D
-            console.warn('Fisheye pass fallback:', e);
-            gl = null;
-        }
-    }
 
     function updateDimensions() {
         if (wrapper) {
@@ -725,12 +610,6 @@
         }
         canvas.width = width;
         canvas.height = height;
-        offscreenCanvas.width = width;
-        offscreenCanvas.height = height;
-        if (fgCanvas) {
-            fgCanvas.width = width;
-            fgCanvas.height = height;
-        }
     }
 
     window.addEventListener('resize', () => {
@@ -897,7 +776,7 @@
         grounded: false,
         currentFrame: 0,
         frameTimer: 0,
-        draw(targetCtx = ctx) {
+        draw() {
             if (spriteSheet.complete && spriteSheet.naturalWidth > 0) {
                 const frameWidth = spriteSheet.naturalWidth / 4;
                 const frameHeight = spriteSheet.naturalHeight / 2;
@@ -909,31 +788,31 @@
                 const drawY = this.y + (this.visualOffsetY || 0);
 
                 if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
-                    targetCtx.save();
-                    targetCtx.globalAlpha = 0.5;
-                    targetCtx.drawImage(
+                    ctx.save();
+                    ctx.globalAlpha = 0.5;
+                    ctx.drawImage(
                         spriteSheet,
                         sx, sy, frameWidth, frameHeight,
                         this.x + (Math.random()*10 - 5), drawY, this.width, this.height
                     );
-                    targetCtx.restore();
+                    ctx.restore();
                 } else {
-                    targetCtx.drawImage(
+                    ctx.drawImage(
                         spriteSheet,
                         sx, sy, frameWidth, frameHeight,
                         this.x, drawY, this.width, this.height
                     );
                 }
             } else {
-                targetCtx.fillStyle = '#ffffff';
+                ctx.fillStyle = '#ffffff';
                 const drawY = this.y + (this.visualOffsetY || 0);
                 if (currentWorld.bgType === 'glitch' && Math.random() > 0.8) {
-                    targetCtx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
-                    targetCtx.fillRect(this.x + (Math.random()*10 - 5), drawY, this.width, this.height);
+                    ctx.fillStyle = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+                    ctx.fillRect(this.x + (Math.random()*10 - 5), drawY, this.width, this.height);
                 } else {
-                    targetCtx.fillRect(this.x, drawY, this.width, this.height);
-                    targetCtx.fillStyle = '#000';
-                    targetCtx.fillRect(this.x + this.width * 0.6, drawY + this.height * 0.15, this.width * 0.15, this.height * 0.15);
+                    ctx.fillRect(this.x, drawY, this.width, this.height);
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(this.x + this.width * 0.6, drawY + this.height * 0.15, this.width * 0.15, this.height * 0.15);
                 }
             }
         },
@@ -1277,7 +1156,6 @@
                     ctx.fillStyle = glitchColors[Math.floor(Math.random() * glitchColors.length)];
                     ctx.fillRect(Math.random()*width, Math.random()*groundY, Math.random()*120 + 20, Math.random()*6 + 2);
                 }
-            }
         }
 
         for (let i = particles.length - 1; i >= 0; i--) {
@@ -1319,11 +1197,12 @@
         if (!isPlaying) return;
 
         animationId = requestAnimationFrame(animate);
-        ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         drawBackground();
 
         player.update();
+        player.draw();
 
         frame++;
         score += gameSpeed * 0.01;
@@ -1575,45 +1454,25 @@
         // Remover obstáculos fuera de pantalla o que ya fueron recolectados
         obstacles = obstacles.filter(obs => obs.x + obs.width > 0 && !obs.collected);
 
-        // Renderizar el fondo y los obstáculos con el lente de ojo de pez en gameCanvas
-        if (gl) {
-            renderFisheye();
-        } else {
-            // Fallback 2D si WebGL no está disponible
-            const target2D = canvas.getContext('2d');
-            if (target2D) {
-                target2D.clearRect(0, 0, width, height);
-                target2D.drawImage(offscreenCanvas, 0, 0);
+        // Renderizar y actualizar textos flotantes de puntuación (+25)
+        ctx.save();
+        for (let fi = floatingScores.length - 1; fi >= 0; fi--) {
+            let fs = floatingScores[fi];
+            fs.y += fs.vy;
+            fs.alpha -= 0.025;
+            if (fs.alpha <= 0) {
+                floatingScores.splice(fi, 1);
+                continue;
             }
+            ctx.globalAlpha = fs.alpha;
+            ctx.font = 'bold 20px "Segoe UI", sans-serif';
+            ctx.fillStyle = '#FF94DA';
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 6;
+            ctx.textAlign = 'center';
+            ctx.fillText(fs.text, fs.x, fs.y);
         }
-
-        // Capa superior no deformada: el personaje y los textos de interfaz/puntuación
-        if (fgCtx) {
-            fgCtx.clearRect(0, 0, width, height);
-            player.draw(fgCtx);
-
-            // Renderizar y actualizar textos flotantes de puntuación (+25) de forma nítida y sin distorsión
-            fgCtx.save();
-            for (let fi = floatingScores.length - 1; fi >= 0; fi--) {
-                let fs = floatingScores[fi];
-                fs.y += fs.vy;
-                fs.alpha -= 0.025;
-                if (fs.alpha <= 0) {
-                    floatingScores.splice(fi, 1);
-                    continue;
-                }
-                fgCtx.globalAlpha = fs.alpha;
-                fgCtx.font = 'bold 20px "Segoe UI", sans-serif';
-                fgCtx.fillStyle = '#FF94DA';
-                fgCtx.shadowColor = 'rgba(0,0,0,0.8)';
-                fgCtx.shadowBlur = 6;
-                fgCtx.textAlign = 'center';
-                fgCtx.fillText(fs.text, fs.x, fs.y);
-            }
-            fgCtx.restore();
-        } else {
-            player.draw(ctx);
-        }
+        ctx.restore();
     }
 
     // Configuración y envío a Firebase Realtime Database
