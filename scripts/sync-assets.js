@@ -25,9 +25,11 @@ const gameAssets = [
   'cielo-mar.png',
   'cielo-neon.jpeg',
   'cielo-glitch.jpg',
+  'cielo-burbujas.jpg',
   'suelo-helado.png',
   'suelo-neon.jpg',
   'suelo-glitch.jpg',
+  'suelo-burbujas.jpg',
   'sprites-personaje.png',
   'sprites-personaje-v2.png'
 ];

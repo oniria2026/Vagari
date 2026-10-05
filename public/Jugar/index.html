@@ -707,6 +707,12 @@
     const sueloGlitchImg = new Image();
     sueloGlitchImg.src = assetBase + 'suelo-glitch.jpg';
 
+    const cieloBurbujasImg = new Image();
+    cieloBurbujasImg.src = assetBase + 'cielo-burbujas.jpg';
+
+    const sueloBurbujasImg = new Image();
+    sueloBurbujasImg.src = assetBase + 'suelo-burbujas.jpg';
+
     const piedraImg = new Image();
     piedraImg.src = assetBase + 'piedra-obstaculo.png';
 
@@ -900,11 +906,11 @@
         const groundOffset = (player.visualOffsetY || (player.height * 0.10));
         if (currentWorld.bgType === 'bubbles') {
             if (type === 'ground') {
-                // Piedra obstáculo en el suelo (1:1), bajada más para que no quede visualmente alta
-                const stoneSize = player.height * 0.60;
-                obs.width = stoneSize;
-                obs.height = stoneSize;
-                obs.y = groundY - obs.height + groundOffset + (player.height * 0.16);
+                // Piedra obstáculo en el suelo con proporción natural (442x269, sin estirarse)
+                const stoneHeight = player.height * 0.50;
+                obs.height = stoneHeight;
+                obs.width = stoneHeight * (442 / 269);
+                obs.y = groundY - obs.height + groundOffset;
             } else {
                 // Burbuja en el aire (coleccionable +25)
                 const bubbleSize = player.height * 0.60;
@@ -1036,6 +1042,15 @@
                     }
                 }
             }
+        } else if (currentWorld.bgType === 'bubbles' && cieloBurbujasImg.complete && cieloBurbujasImg.naturalWidth > 0) {
+            // Cielo Burbujas con parallax continuo
+            const skyAspect = cieloBurbujasImg.naturalWidth / cieloBurbujasImg.naturalHeight;
+            const skyHeight = groundY;
+            const skyWidth = Math.ceil(skyHeight * skyAspect);
+            const skyOffset = (frame * gameSpeed * 0.15) % skyWidth;
+            for (let x = -skyOffset; x < width + skyWidth; x += (skyWidth - 2)) {
+                ctx.drawImage(cieloBurbujasImg, x, 0, skyWidth, skyHeight);
+            }
         } else {
             ctx.fillStyle = currentWorld.bgColor;
             ctx.fillRect(0, 0, width, height);
@@ -1100,6 +1115,27 @@
                     ctx.drawImage(sueloGlitchImg, 0, 0, tileWidth, groundHeight);
                 } else {
                     ctx.drawImage(sueloGlitchImg, x, groundY, tileWidth, groundHeight);
+                }
+                ctx.restore();
+                tileIndex++;
+            }
+        } else if (currentWorld.bgType === 'bubbles' && sueloBurbujasImg.complete && sueloBurbujasImg.naturalWidth > 0) {
+            // Suelo Burbujas: Tira única vertical que se repite de forma continua sin costura
+            const groundHeight = height - groundY;
+            const tileAspect = sueloBurbujasImg.naturalWidth / sueloBurbujasImg.naturalHeight;
+            const tileWidth = Math.ceil(groundHeight * tileAspect);
+            const cycleWidth = tileWidth * 2;
+            const groundOffset = (frame * gameSpeed) % cycleWidth;
+
+            let tileIndex = 0;
+            for (let x = -groundOffset; x < width + tileWidth * 2; x += (tileWidth - 1)) {
+                ctx.save();
+                if (tileIndex % 2 === 1) {
+                    ctx.translate(x + tileWidth, groundY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(sueloBurbujasImg, 0, 0, tileWidth, groundHeight);
+                } else {
+                    ctx.drawImage(sueloBurbujasImg, x, groundY, tileWidth, groundHeight);
                 }
                 ctx.restore();
                 tileIndex++;
