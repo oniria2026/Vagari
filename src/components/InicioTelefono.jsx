@@ -423,22 +423,36 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
             {activeApp.id === 'desafio' ? (
               /* Pantalla de carga con la misma estética exacta que la del juego */
               <div className="relative w-full h-full flex flex-col justify-between bg-black text-white overflow-hidden select-none">
-                {/* Header idéntico al del Home */}
+                {/* Header idéntico al del juego Vagari Runner */}
                 <div
-                  className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20 shrink-0 border-b border-white/15"
+                  className="w-full box-border px-6 py-3 flex justify-between items-center relative z-20 shrink-0 select-none overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.06) 100%)',
-                    backdropFilter: 'blur(6px)',
-                    WebkitBackdropFilter: 'blur(6px)',
-                    boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.12)',
+                    position: 'relative',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02))',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    backdropFilter: 'blur(16px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+                    boxShadow: 'inset 1px 1px 2px rgba(255, 255, 255, 0.35), inset -2px -2px 6px rgba(0, 0, 0, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25)',
+                    isolation: 'isolate',
                   }}
                 >
-                  <div className="text-left font-bold text-xs sm:text-sm text-white drop-shadow">
-                    Puntos: 0<br />
-                    <span className="text-xs opacity-85">Mundo 1</span>
+                  {/* Capa detrás del header: #566700 100% con ruido 3.3 en xy, densidad 100%, color 000000 25% */}
+                  <div
+                    className="absolute inset-0 pointer-events-none -z-10"
+                    style={{
+                      backgroundColor: '#566700',
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.303' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' fill='%23000000' opacity='0.25'/%3E%3C/svg%3E")`,
+                      backgroundRepeat: 'repeat',
+                    }}
+                  />
+
+                  <div className="text-left font-bold text-[18px] text-white drop-shadow-[1px_1px_3px_rgba(0,0,0,0.6)] leading-tight">
+                    Puntos: <span className="font-bold">0</span><br />
+                    <span className="text-[14px] font-normal opacity-85">Mundo 1</span>
                   </div>
                   <h1
-                    className="font-naiveer text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
+                    className="font-naiveer lowercase text-[38px] tracking-[0px] m-0 select-none text-center absolute left-1/2 -translate-x-1/2"
                     style={{
                       color: 'transparent',
                       WebkitTextStroke: '1.2px rgba(255, 255, 255, 0.85)',
@@ -451,10 +465,10 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                   </h1>
                   <button
                     onClick={handleCloseApp}
-                    className="w-10 h-10 rounded-full bg-[#FF94DA] hover:bg-[#ff7fd2] active:scale-92 transition shadow-[0_3px_10px_rgba(255,148,218,0.45)] flex items-center justify-center cursor-pointer text-white"
+                    className="w-[42px] h-[42px] rounded-full bg-[#FF94DA] hover:bg-[#ff7cd3] hover:scale-105 active:scale-92 transition shadow-[0_3px_10px_rgba(255,148,218,0.45)] flex items-center justify-center cursor-pointer text-white shrink-0"
                     title="Volver"
                   >
-                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 stroke-white stroke-[3.2] stroke-linecap-round">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-[20px] h-[20px] stroke-white stroke-[3.2] stroke-linecap-round">
                       <path d="M18 6L6 18M6 6l12 12" />
                     </svg>
                   </button>
