@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sync-assets": "node scripts/sync-assets.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "build": "vite build",
+    "build": "node scripts/sync-assets.js && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
