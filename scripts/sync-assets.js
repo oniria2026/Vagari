@@ -34,7 +34,6 @@ const gameAssets = [
 
 // Mapeos de nombres de src a public
 const mappings = {
-  'sprites-personaje-v2.png': 'sprites-personaje.png',
   'transicion-v2.mp3': 'transicion.mp3'
 };
 
