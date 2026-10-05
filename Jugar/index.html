@@ -1156,24 +1156,19 @@
                     ctx.fillStyle = glitchColors[Math.floor(Math.random() * glitchColors.length)];
                     ctx.fillRect(Math.random()*width, Math.random()*groundY, Math.random()*120 + 20, Math.random()*6 + 2);
                 }
-            }
-        } else if (currentWorld.bgType === 'bubbles') {
-            if (frame % 20 === 0) {
-                particles.push({x: width, y: Math.random()*groundY, r: Math.random()*15+5, vx: -gameSpeed*0.5});
-            }
         }
 
-        for(let i=particles.length-1; i>=0; i--){
+        for (let i = particles.length - 1; i >= 0; i--) {
             let p = particles[i];
             p.x += p.vx;
-            if(currentWorld.bgType === 'bubbles') {
+            p.y = (p.y || 0) + (p.vy || 0);
+            if (p.color) {
+                ctx.fillStyle = p.color;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
             }
-            if(p.x + p.r < 0) particles.splice(i, 1);
+            if (p.x + (p.r || 0) < 0 || p.x > width + 50 || p.y < -50 || p.y > height + 50) particles.splice(i, 1);
         }
     }
 
