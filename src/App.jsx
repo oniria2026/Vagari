@@ -14,7 +14,7 @@ const ASSETS_TO_PRELOAD = [
   fondoMapa,
   mapaImg,
   cardImg,
-  fondoIniciof
+  fondoInicio
 ];
 
 function getInitialRoute() {
