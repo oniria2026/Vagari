@@ -137,7 +137,7 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
             text-align: left;
         }
-        .btn-close-oniria {
+        .btn-pause-oniria {
             width: 42px;
             height: 42px;
             border-radius: 50%;
@@ -152,20 +152,18 @@
             padding: 0;
             flex-shrink: 0;
         }
-        .btn-close-oniria:hover {
+        .btn-pause-oniria:hover {
             transform: scale(1.08);
             background-color: #ff7cd3;
             box-shadow: 0 4px 14px rgba(255, 148, 218, 0.65);
         }
-        .btn-close-oniria:active {
+        .btn-pause-oniria:active {
             transform: scale(0.92);
         }
-        .btn-close-oniria svg {
+        .btn-pause-oniria svg {
             width: 20px;
             height: 20px;
-            stroke: #ffffff;
-            stroke-width: 3.2;
-            stroke-linecap: round;
+            fill: #ffffff;
         }
         .screen {
             position: absolute;
@@ -495,14 +493,13 @@
         .score-container {
             font-size: 13px;
         }
-        .btn-close-oniria {
+        .btn-pause-oniria {
             width: 36px;
             height: 36px;
         }
-        .btn-close-oniria svg {
+        .btn-pause-oniria svg {
             width: 17px;
             height: 17px;
-            stroke-width: 3.5;
         }
     </style>
 </head>
@@ -518,11 +515,21 @@
                 <span id="worldDisplay" style="font-size: 14px; opacity: 0.85;">Mundo 1</span>
             </div>
             <h1 class="header-title">vagari</h1>
-            <button class="btn-close-oniria" onclick="goBack(event)" title="Volver a Oniria" aria-label="Volver a Oniria">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12" />
+            <button id="btnPause" class="btn-pause-oniria" onclick="togglePause(event)" title="Pausar juego" aria-label="Pausar juego">
+                <svg id="iconPause" viewBox="0 0 24 24">
+                    <rect x="6" y="5" width="4" height="14" rx="1" />
+                    <rect x="14" y="5" width="4" height="14" rx="1" />
                 </svg>
             </button>
+        </div>
+    </div>
+
+    <div id="pauseScreen" class="screen hidden">
+        <h1>Juego Pausado</h1>
+        <p>Tomate un respiro.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center;">
+            <button class="btn-retry" onclick="resumeGame()"><span>Continuar</span></button>
+            <button class="btn-back" style="padding: 13px 30px; border-radius: 50px; font-size: 18px;" onclick="goBack()">Volver</button>
         </div>
     </div>
 
@@ -576,8 +583,55 @@
 </div>
 
 <script>
+    let isPaused = false;
+
     function goBack() {
-        window.location.href = '../Inicio';
+        // En GitHub Pages y local, redirigir a la pantalla de Inicio del teléfono
+        const isGhPages = window.location.hostname.includes('github.io');
+        const baseUrl = isGhPages ? 'https://oniria2026.github.io/Vagari/?p=Inicio' : '/?p=Inicio';
+        window.location.href = baseUrl;
+    }
+
+    function togglePause(e) {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        if (!isPlaying && !isPaused) return;
+
+        if (isPaused) {
+            resumeGame();
+        } else {
+            pauseGame();
+        }
+    }
+
+    function pauseGame() {
+        if (!isPlaying || isPaused) return;
+        isPaused = true;
+        cancelAnimationFrame(animationId);
+        const pauseScreen = document.getElementById('pauseScreen');
+        if (pauseScreen) pauseScreen.classList.remove('hidden');
+        const iconPause = document.getElementById('iconPause');
+        if (iconPause) {
+            iconPause.innerHTML = '<polygon points="7,5 19,12 7,19" fill="#ffffff" />';
+        }
+    }
+
+    function resumeGame(e) {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        if (!isPaused) return;
+        isPaused = false;
+        const pauseScreen = document.getElementById('pauseScreen');
+        if (pauseScreen) pauseScreen.classList.add('hidden');
+        const iconPause = document.getElementById('iconPause');
+        if (iconPause) {
+            iconPause.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" />';
+        }
+        animate();
     }
 
     function startGame() {
@@ -999,6 +1053,13 @@
         
         startScreen.classList.add('hidden');
         gameOverScreen.classList.add('hidden');
+        const pauseScreenEl = document.getElementById('pauseScreen');
+        if (pauseScreenEl) pauseScreenEl.classList.add('hidden');
+        const iconPauseEl = document.getElementById('iconPause');
+        if (iconPauseEl) {
+            iconPauseEl.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" />';
+        }
+        isPaused = false;
         
         if (sfxGameOver) {
             sfxGameOver.pause();
@@ -1638,6 +1699,9 @@
 
     function gameOver() {
         isPlaying = false;
+        isPaused = false;
+        const pauseScreenEl = document.getElementById('pauseScreen');
+        if (pauseScreenEl) pauseScreenEl.classList.add('hidden');
         cancelAnimationFrame(animationId);
         playSound('gameover');
         const finalPts = Math.floor(score);
@@ -1792,7 +1856,7 @@
         if (e.target && e.target.closest('button')) return; 
         ensureFullscreen();
 
-        if (!isPlaying) return;
+        if (!isPlaying || isPaused) return;
 
         if ((e.type === 'keydown' && (e.code === 'Space' || e.code === 'ArrowUp')) || e.type === 'touchstart' || e.type === 'mousedown') {
             player.jump();
