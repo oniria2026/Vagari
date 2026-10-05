@@ -615,12 +615,10 @@
                 '    float r = length(p);',
                 '    float bind = length(0.5 * u_aspect);',
                 '    float factor = 1.0 + u_strength * (r * r) / (bind * bind);',
-                '    vec2 distUV = (p * factor) / u_aspect + 0.5;',
-                '    if (distUV.x >= 0.0 && distUV.x <= 1.0 && distUV.y >= 0.0 && distUV.y <= 1.0) {',
-                '        gl_FragColor = texture2D(u_tex, distUV);',
-                '    } else {',
-                '        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);',
-                '    }',
+                '    // Dividimos por (1.0 + u_strength) para expandir la imagen y eliminar los bordes negros',
+                '    vec2 distUV = (p * factor) / (1.0 + u_strength) / u_aspect + 0.5;',
+                '    distUV = clamp(distUV, 0.0, 1.0);',
+                '    gl_FragColor = texture2D(u_tex, distUV);',
                 '}'
             ].join('\n');
 
