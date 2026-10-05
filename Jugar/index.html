@@ -696,7 +696,7 @@
             gl.bindTexture(gl.TEXTURE_2D, fisheyeTex);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, offscreenCanvas);
             gl.uniform1i(uTexLocation, 0);
-            gl.uniform1f(uStrengthLocation, 0.9); // Curvatura más pronunciada de lente ojo de pez (antes 0.28)
+            gl.uniform1f(uStrengthLocation, 0.8); // Curvatura solicitada por el usuario (0.8)
             gl.uniform2f(uAspectLocation, width / height, 1.0);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, fisheyeBuffer);
@@ -1317,6 +1317,7 @@
         drawBackground();
 
         player.update();
+        player.draw(ctx);
 
         frame++;
         score += gameSpeed * 0.01;
@@ -1586,10 +1587,9 @@
             }
         }
 
-        // Capa superior no deformada: el personaje y los textos de interfaz/puntuación
+        // Capa superior de interfaz: textos flotantes de puntuación (+25)
         if (fgCtx) {
             fgCtx.clearRect(0, 0, width, height);
-            player.draw(fgCtx);
 
             // Renderizar y actualizar textos flotantes de puntuación (+25) de forma nítida y sin distorsión
             fgCtx.save();
@@ -1610,8 +1610,6 @@
                 fgCtx.fillText(fs.text, fs.x, fs.y);
             }
             fgCtx.restore();
-        } else {
-            player.draw(ctx);
         }
     }
 
