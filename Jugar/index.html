@@ -904,10 +904,13 @@
         };
 
         const groundOffset = (player.visualOffsetY || (player.height * 0.10));
+        // Variación de tamaño proporcional (entre 0.85 y 1.25): algunos más chicos y otros un poco más grandes
+        const scaleFactor = 0.85 + Math.random() * 0.40;
+
         if (currentWorld.bgType === 'bubbles') {
             if (type === 'ground') {
                 // Piedra obstáculo en el suelo con proporción natural (442x269, sin estirarse)
-                const stoneHeight = player.height * 0.50;
+                const stoneHeight = player.height * 0.50 * scaleFactor;
                 obs.height = stoneHeight;
                 obs.width = stoneHeight * (442 / 269);
                 obs.y = groundY - obs.height + groundOffset;
@@ -920,8 +923,8 @@
             }
         } else if (currentWorld.bgType === 'beach') {
             if (type === 'ground') {
-                // Castillo de arena (proporción 1:1 ~ 326x325)
-                const castleSize = player.height * 0.65;
+                // Castillo de arena (proporción 1:1 ~ 326x325) con variación proporcional
+                const castleSize = player.height * 0.65 * scaleFactor;
                 obs.width = castleSize;
                 obs.height = castleSize;
                 obs.y = groundY - obs.height + groundOffset;
@@ -934,8 +937,8 @@
             }
         } else if (currentWorld.bgType === 'neon') {
             if (type === 'ground') {
-                // Basura obstáculo en el suelo (1:1), alineada visualmente a la misma profundidad del personaje
-                const trashSize = player.height * 0.65;
+                // Basura obstáculo en el suelo (1:1) con variación proporcional
+                const trashSize = player.height * 0.65 * scaleFactor;
                 obs.width = trashSize;
                 obs.height = trashSize;
                 obs.y = groundY - obs.height + groundOffset;
@@ -948,8 +951,8 @@
             }
         } else if (currentWorld.bgType === 'glitch') {
             if (type === 'ground') {
-                // Glitch obstáculo en el suelo (1:1), alineado visualmente
-                const glitchSize = player.height * 0.65;
+                // Glitch obstáculo en el suelo (1:1) con variación proporcional
+                const glitchSize = player.height * 0.65 * scaleFactor;
                 obs.width = glitchSize;
                 obs.height = glitchSize;
                 obs.y = groundY - obs.height + groundOffset;
@@ -960,8 +963,9 @@
                 obs.y = groundY - player.height - obs.height - 18 - Math.random() * 12;
             }
         } else if (type === 'ground') {
-            obs.width = player.width * (0.8 + Math.random() * 0.5);
-            obs.height = player.height * (0.5 + Math.random() * 0.5);
+            const baseSize = player.height * 0.55 * scaleFactor;
+            obs.width = baseSize;
+            obs.height = baseSize;
             obs.y = groundY - obs.height + groundOffset;
         } else {
             obs.width = player.width * (0.8 + Math.random() * 0.4);
