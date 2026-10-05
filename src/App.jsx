@@ -26,7 +26,7 @@ function getInitialRoute() {
   if (path.includes('/mapa') || pParam === 'mapa') {
     return { screen: 'telefono', app: 'mapa' };
   }
-  if (path.includes('/desafio') || pParam === 'desafio' || path.includes('/jugar')) {
+  if (path.includes('/desafio') || pParam === 'desafio') {
     return { screen: 'telefono', app: 'desafio' };
   }
   if (path.includes('/simbolo') || pParam === 'simbolo') {
@@ -39,8 +39,7 @@ function getInitialRoute() {
 }
 
 function getBaseUrl() {
-  const isGhPages = window.location.hostname.includes('github.io');
-  return isGhPages ? '/Vagari/' : '/';
+  return import.meta.env.BASE_URL;
 }
 
 function updateBrowserUrl(subpath) {
@@ -119,9 +118,9 @@ function App() {
       updateBrowserUrl('Mapa');
     } else if (appId === 'desafio') {
       updateBrowserUrl('Desafio');
-      // Abrir el juego en la ruta /Jugar/
-      const isGhPages = window.location.hostname.includes('github.io');
-      const gameUrl = isGhPages ? '/Vagari/Jugar/' : '/Jugar/';
+      // Abrir el juego en la ruta /Jugar/index.html
+      const baseUrl = import.meta.env.BASE_URL;
+      const gameUrl = `${baseUrl}Jugar/index.html`;
       window.location.href = gameUrl;
     }
   };
