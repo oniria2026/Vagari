@@ -748,7 +748,7 @@
             gl.bindTexture(gl.TEXTURE_2D, fisheyeTex);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, offscreenCanvas);
             gl.uniform1i(uTexLocation, 0);
-            gl.uniform1f(uStrengthLocation, 0.8); // Curvatura solicitada por el usuario (0.8)
+            gl.uniform1f(uStrengthLocation, 0.5);
             gl.uniform2f(uAspectLocation, width / height, 1.0);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, fisheyeBuffer);
