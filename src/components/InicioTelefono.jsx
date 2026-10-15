@@ -24,21 +24,18 @@ import aire from '../assets/aire.svg';
 import agua from '../assets/agua.svg';
 import color from '../assets/color.svg';
 import dia from '../assets/dia.svg';
-import espiral from '../assets/espiral.svg';
-
 const CARDS_DIA = [
-  { name: 'mixto', src: mixto, texto: 'la dualidad y el equilibrio', keyword: 'dualidad y el equilibrio' },
-  { name: 'monocromo', src: monocromo, texto: 'la simplicidad y la elegancia', keyword: 'simplicidad y la elegancia' },
-  { name: 'fuego', src: fuego, texto: 'la energía y la pasión', keyword: 'energía y la pasión' },
-  { name: 'noche', src: noche, texto: 'la calma y el misterio', keyword: 'calma y el misterio' },
-  { name: 'organico', src: organico, texto: 'la vida y la naturaleza', keyword: 'vida y la naturaleza' },
-  { name: 'tecnologico', src: tecnologico, texto: 'la innovación y el futuro', keyword: 'innovación y el futuro' },
-  { name: 'tierra', src: tierra, texto: 'la estabilidad y el arraigo', keyword: 'estabilidad y el arraigo' },
-  { name: 'aire', src: aire, texto: 'la libertad y el movimiento', keyword: 'libertad y el movimiento' },
-  { name: 'agua', src: agua, texto: 'la fluidez y la calma', keyword: 'fluidez y la calma' },
-  { name: 'color', src: color, texto: 'la creatividad y la diversidad', keyword: 'creatividad y la diversidad' },
-  { name: 'dia', src: dia, texto: 'la luz del sol', keyword: 'luz del sol' },
-  { name: 'espiral', src: espiral, texto: 'la evolución y el cambio', keyword: 'evolución y el cambio' },
+  { name: 'dia', src: dia, descripcion: 'Este es tu símbolo y representa la luz del sol en todas sus formas.' },
+  { name: 'noche', src: noche, descripcion: 'Este es tu símbolo y representa la luz de la luna.' },
+  { name: 'tierra', src: tierra, descripcion: 'Este es tu símbolo y representa las rocas y el suelo.' },
+  { name: 'agua', src: agua, descripcion: 'Este es tu símbolo y representa los ríos y el océano.' },
+  { name: 'fuego', src: fuego, descripcion: 'Este es tu símbolo y representa el calor y las llamas.' },
+  { name: 'aire', src: aire, descripcion: 'Este es tu símbolo y representa el viento y la brisa.' },
+  { name: 'monocromo', src: monocromo, descripcion: 'Este es tu símbolo y representa la ausencia de color a través del blanco, el negro y los grises.' },
+  { name: 'color', src: color, descripcion: 'Este es tu símbolo y representa la diversidad y combinación de colores.' },
+  { name: 'organico', src: organico, descripcion: 'Este es tu símbolo y representa la naturaleza y la vida vegetal.' },
+  { name: 'tecnologico', src: tecnologico, descripcion: 'Este es tu símbolo y representa lo digital, la tecnología y lo electrónico.' },
+  { name: 'mixto', src: mixto, descripcion: 'Este es tu símbolo y representa la combinación de lo orgánico y lo tecnológico.' },
 ];
 
 export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBack }) {
@@ -775,15 +772,9 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
 
                         {/* Parte inferior: Texto descriptivo alineado a la izquierda */}
                         <div className="relative z-10 flex-1 flex items-center justify-start w-full px-5 text-left">
-                          {simboloDia.name === 'dia' ? (
-                            <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-                              Este es tu símbolo y representa la <strong className="font-bold text-white">luz del sol</strong> en todas sus formas.
-                            </p>
-                          ) : (
-                            <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-                              Este es tu símbolo y representa
-                            </p>
-                          )}
+                          <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                            {simboloDia.descripcion}
+                          </p>
                         </div>
                       </div>
 
