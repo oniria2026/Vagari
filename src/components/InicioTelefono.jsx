@@ -674,9 +674,12 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                           </div>
                         </>
                       ) : (
-                        <div className="flex flex-col items-center py-2 px-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-center w-full">
-                          <span className="font-naiveer text-white text-base sm:text-lg tracking-wider drop-shadow">
-                            próximas fechas a anunciar
+                        <div className="flex flex-col items-center py-2.5 px-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-center w-full">
+                          <span className="font-naiveer text-[#FF94DA] text-lg sm:text-xl tracking-wider drop-shadow mb-1">
+                            ¡Gracias por haber participado!
+                          </span>
+                          <span className="text-xs sm:text-sm text-[#F1EEE7]/90 font-medium leading-relaxed">
+                            te esperamos en siguientes eventos.
                           </span>
                         </div>
                       )}
