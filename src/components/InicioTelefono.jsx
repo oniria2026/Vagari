@@ -67,39 +67,69 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
   const [state, handleSubmit] = useForm('xdekovjd');
   const [showModal, setShowModal] = useState(false);
 
-  // Contador para el próximo Vagari (días, horas, minutos, segundos)
-  const [timeLeft, setTimeLeft] = useState({
-    dias: 0,
-    horas: 0,
-    minutos: 0,
-    segundos: 0,
+  // Fechas y eventos de Vagari
+  // 10/17/2026 de 18:00 a 19:00 hs (hora local). Las demás fechas inician a las 00:00 por defecto.
+  const VAGARI_EVENTS = [
+    { start: new Date('2026-10-17T18:00:00'), end: new Date('2026-10-17T19:00:00') },
+    { start: new Date('2026-10-19T00:00:00'), end: new Date('2026-10-19T23:59:59') },
+    { start: new Date('2026-10-23T00:00:00'), end: new Date('2026-10-23T23:59:59') },
+    { start: new Date('2026-10-25T00:00:00'), end: new Date('2026-10-25T23:59:59') },
+    { start: new Date('2026-11-08T00:00:00'), end: new Date('2026-11-08T23:59:59') },
+    { start: new Date('2026-11-14T00:00:00'), end: new Date('2026-11-14T23:59:59') },
+  ];
+
+  // Estado para el próximo Vagari o si está ocurriendo ahora
+  const [vagariStatus, setVagariStatus] = useState({
+    isHappeningNow: false,
+    hasNext: true,
+    timeLeft: { dias: 0, horas: 0, minutos: 0, segundos: 0 },
   });
 
   useEffect(() => {
-    // Fecha objetivo del próximo Vagari (ej: 7 días dinámicos o fecha específica)
-    // Usamos una fecha consistente que se renueva o apunta al próximo evento
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 12);
-    targetDate.setHours(20, 0, 0, 0);
-
-    const updateCountdown = () => {
+    const updateVagariSchedule = () => {
       const now = new Date().getTime();
-      const difference = targetDate.getTime() - now;
 
-      if (difference > 0) {
-        setTimeLeft({
-          dias: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutos: Math.floor((difference / 1000 / 60) % 60),
-          segundos: Math.floor((difference / 1000) % 60),
+      // Verificar si hay algún evento ocurriendo ahora
+      const currentEvent = VAGARI_EVENTS.find(
+        (ev) => now >= ev.start.getTime() && now <= ev.end.getTime()
+      );
+
+      if (currentEvent) {
+        setVagariStatus({
+          isHappeningNow: true,
+          hasNext: true,
+          timeLeft: { dias: 0, horas: 0, minutos: 0, segundos: 0 },
+        });
+        return;
+      }
+
+      // Buscar el próximo evento futuro
+      const nextEvent = VAGARI_EVENTS.find((ev) => ev.start.getTime() > now);
+
+      if (nextEvent) {
+        const difference = nextEvent.start.getTime() - now;
+        setVagariStatus({
+          isHappeningNow: false,
+          hasNext: true,
+          timeLeft: {
+            dias: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutos: Math.floor((difference / 1000 / 60) % 60),
+            segundos: Math.floor((difference / 1000) % 60),
+          },
         });
       } else {
-        setTimeLeft({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
+        // No quedan más eventos programados
+        setVagariStatus({
+          isHappeningNow: false,
+          hasNext: false,
+          timeLeft: { dias: 0, horas: 0, minutos: 0, segundos: 0 },
+        });
       }
     };
 
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
+    updateVagariSchedule();
+    const interval = setInterval(updateVagariSchedule, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -563,11 +593,11 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                     className="w-full max-w-[380px] sm:max-w-[400px] px-3 sm:px-4 flex flex-col items-center justify-center shrink-0"
                   >
                     <a
-                      href="https://maps.google.com"
+                      href="https://maps.app.goo.gl/4oD7zmoF8eVyqL6RA"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="cursor-pointer active:scale-95 transition-transform flex flex-col items-center group w-full"
-                      title="Abrir en Google Maps"
+                      title="Abrir ubicación en Google Maps"
                     >
                       <img
                         src={mapaImg}
@@ -580,7 +610,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                     </span>
                   </motion.div>
 
-                  {/* Próximo Vagari con contador */}
+                  {/* Próximo Vagari o Vagari en curso */}
                   <div className="w-full max-w-[340px] sm:max-w-[380px] px-4 flex justify-center shrink-0">
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -588,48 +618,68 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                       transition={{ duration: 0.45, delay: 0.2 }}
                       className="w-full flex flex-col items-center"
                     >
-                      <span className="font-naiveer text-white text-base sm:text-lg md:text-xl tracking-wider mb-1.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
-                        próximo vagari en
-                      </span>
-
-                      {/* Bloques de días, horas, minutos y segundos */}
-                      <div className="grid grid-cols-4 gap-2 w-full">
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
-                            {String(timeLeft.dias).padStart(2, '0')}
+                      {vagariStatus.isHappeningNow ? (
+                        /* Mensaje cuando el Vagari está ocurriendo ahora */
+                        <div className="flex flex-col items-center py-2 px-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-center w-full">
+                          <span className="font-naiveer text-[#FF94DA] text-xl sm:text-2xl tracking-wider drop-shadow animate-pulse">
+                            ¡ocurriendo ahora!
                           </span>
-                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                            días
+                          <span className="text-xs sm:text-sm text-[#F1EEE7]/90 font-medium mt-1">
+                            El portal de Vagari está activo
                           </span>
                         </div>
-
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
-                            {String(timeLeft.horas).padStart(2, '0')}
+                      ) : vagariStatus.hasNext ? (
+                        <>
+                          <span className="font-naiveer text-white text-base sm:text-lg md:text-xl tracking-wider mb-1.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
+                            próximo vagari en
                           </span>
-                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                            horas
+
+                          {/* Bloques de días, horas, minutos y segundos */}
+                          <div className="grid grid-cols-4 gap-2 w-full">
+                            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                              <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
+                                {String(vagariStatus.timeLeft.dias).padStart(2, '0')}
+                              </span>
+                              <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                                días
+                              </span>
+                            </div>
+
+                            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                              <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
+                                {String(vagariStatus.timeLeft.horas).padStart(2, '0')}
+                              </span>
+                              <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                                horas
+                              </span>
+                            </div>
+
+                            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                              <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
+                                {String(vagariStatus.timeLeft.minutos).padStart(2, '0')}
+                              </span>
+                              <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                                min
+                              </span>
+                            </div>
+
+                            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
+                              <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
+                                {String(vagariStatus.timeLeft.segundos).padStart(2, '0')}
+                              </span>
+                              <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
+                                seg
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex flex-col items-center py-2 px-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-center w-full">
+                          <span className="font-naiveer text-white text-base sm:text-lg tracking-wider drop-shadow">
+                            próximas fechas a anunciar
                           </span>
                         </div>
-
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
-                            {String(timeLeft.minutos).padStart(2, '0')}
-                          </span>
-                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                            min
-                          </span>
-                        </div>
-
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl py-1.5 px-1 flex flex-col items-center shadow-lg">
-                          <span className="font-bold text-base sm:text-lg md:text-xl text-[#FF94DA] drop-shadow">
-                            {String(timeLeft.segundos).padStart(2, '0')}
-                          </span>
-                          <span className="text-[9px] sm:text-[10px] md:text-xs text-[#F1EEE7]/80 uppercase tracking-wider">
-                            seg
-                          </span>
-                        </div>
-                      </div>
+                      )}
                     </motion.div>
                   </div>
                 </div>
