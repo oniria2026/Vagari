@@ -250,6 +250,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
     setActiveApp(appData);
 
     if (id === 'dia') {
+      setIsFlippedCard(false);
       if (onOpenApp) onOpenApp('simbolo');
     } else if (id === 'mapa') {
       if (onOpenApp) onOpenApp('mapa');
@@ -262,6 +263,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
 
   const handleCloseApp = () => {
     setIsClosing(true);
+    setIsFlippedCard(false);
     if (onCloseApp) onCloseApp();
     setTimeout(() => {
       setActiveApp(null);
@@ -807,9 +809,9 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                   </button>
                 </div>
 
-                {/* Contenido principal: Título y Card distribuidos uniformemente */}
-                <div className="flex-1 flex flex-col items-center justify-evenly w-full select-none z-10 min-h-0 py-2 px-2">
-                  {/* Título símbolo del día con el mismo estilo que mapa onírico */}
+                {/* Contenido principal: Título y Card a la misma altura que el mapa */}
+                <div className="flex-1 flex flex-col items-center justify-evenly w-full select-none z-10 min-h-0 py-1 px-2">
+                  {/* Título símbolo del día con el mismo estilo y posición que mapa onírico */}
                   <div className="w-full px-4 flex justify-center shrink-0">
                     <motion.h2
                       initial={{ opacity: 0, y: -6 }}
@@ -821,10 +823,15 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                     </motion.h2>
                   </div>
 
-                  {/* Card volteable 3D al hacer click */}
-                  <div className="w-full flex flex-col items-center justify-center p-4 relative z-10">
+                  {/* Card volteable 3D al hacer click - Misma altura y proporciones que el mapa */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.45, delay: 0.1 }}
+                    className="w-full max-w-[340px] sm:max-w-[360px] px-3 sm:px-4 flex flex-col items-center justify-center shrink-0"
+                  >
                     <div
-                      className="relative w-full max-w-[340px] aspect-square cursor-pointer select-none"
+                      className="relative w-full aspect-square cursor-pointer select-none group"
                       style={{ perspective: 1200 }}
                       onClick={() => setIsFlippedCard(prev => !prev)}
                     >
@@ -834,73 +841,79 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                         animate={{ rotateY: isFlippedCard ? 180 : 0 }}
                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                       >
-                      {/* Cara A (Dorso con texto según diseño Figma) */}
-                      <div
-                        className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between text-center"
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(0deg)'
-                        }}
-                      >
-                        <img
-                          src={cardImg}
-                          alt="Card Frame"
-                          className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                        />
-
-                        {/* Parte superior: Nombre del símbolo en tipografía Naiveer achicado */}
-                        <div className="relative z-10 flex-1 flex items-center justify-center w-full">
-                          <span className="font-naiveer text-[#F1EEE7] text-4xl sm:text-5xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
-                            {simboloDia.name}
-                          </span>
-                        </div>
-
-                        {/* Guión / Línea separadora a lo largo */}
-                        <div className="relative z-10 w-[88%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
-
-                        {/* Parte inferior: Texto descriptivo alineado a la izquierda */}
-                        <div className="relative z-10 flex-1 flex items-center justify-start w-full px-5 text-left">
-                          <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-                            {simboloDia.descripcion}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Cara B (Frente con el Logo del Símbolo) */}
-                      <div
-                        className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-center text-center"
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(180deg)'
-                        }}
-                      >
-                        <img
-                          src={cardImg}
-                          alt="Card Frame"
-                          className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                        />
-
-                        {/* Logo del símbolo en el centro */}
-                        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+                        {/* Cara A (Frente inicial: Logo del Símbolo) */}
+                        <div
+                          className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-center text-center group-hover:scale-[1.02] transition-transform duration-200"
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'rotateY(0deg)'
+                          }}
+                        >
                           <img
-                            src={simboloDia.src}
-                            alt={simboloDia.name}
-                            className="w-36 h-36 sm:w-40 sm:h-40 object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:scale-105"
+                            src={cardImg}
+                            alt="Card Frame"
+                            className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
                           />
+
+                          {/* Logo del símbolo en el centro */}
+                          <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+                            <img
+                              src={simboloDia.src}
+                              alt={simboloDia.name}
+                              className="w-36 h-36 sm:w-40 sm:h-40 object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.45)]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  </div>
-                  <span className="text-white/70 text-xs mt-3 uppercase tracking-wider font-medium drop-shadow">
-                    toca la carta para girar
-                  </span>
+
+                        {/* Cara B (Dorso al girar: Texto descriptivo según diseño Figma) */}
+                        <div
+                          className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between text-center"
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'rotateY(180deg)'
+                          }}
+                        >
+                          <img
+                            src={cardImg}
+                            alt="Card Frame"
+                            className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
+                          />
+
+                          {/* Parte superior: Nombre del símbolo en tipografía Naiveer achicado */}
+                          <div className="relative z-10 flex-1 flex items-center justify-center w-full">
+                            <span className="font-naiveer text-[#F1EEE7] text-4xl sm:text-5xl tracking-wide select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+                              {simboloDia.name}
+                            </span>
+                          </div>
+
+                          {/* Guión / Línea separadora a lo largo */}
+                          <div className="relative z-10 w-[88%] h-[2px] bg-white/60 my-2 rounded-full shadow-sm" />
+
+                          {/* Parte inferior: Texto descriptivo alineado a la izquierda */}
+                          <div className="relative z-10 flex-1 flex items-center justify-start w-full px-5 text-left">
+                            <p className="text-white text-base sm:text-lg font-normal leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                              {simboloDia.descripcion}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    <span className="text-white/70 text-xs mt-3 uppercase tracking-wider font-medium drop-shadow">
+                      toca la carta para girar
+                    </span>
+                  </motion.div>
+
+                  {/* Espacio reservado inferior equilibrado idéntico a la altura del mapa */}
+                  <div className="w-full max-w-[340px] sm:max-w-[380px] px-4 flex justify-center shrink-0 opacity-0 pointer-events-none">
+                    <div className="h-10" />
                   </div>
                 </div>
 
                 {/* Espaciador inferior */}
-                <div className="h-4" />
+                <div className="h-2" />
               </div>
             ) : null}
           </motion.div>
