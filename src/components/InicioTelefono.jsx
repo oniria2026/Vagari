@@ -807,19 +807,33 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                   </button>
                 </div>
 
-                {/* Centro: Card volteable 3D al hacer click */}
-                <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10 my-auto">
-                  <div
-                    className="relative w-full max-w-[340px] aspect-square cursor-pointer select-none"
-                    style={{ perspective: 1200 }}
-                    onClick={() => setIsFlippedCard(prev => !prev)}
-                  >
-                    <motion.div
-                      className="w-full h-full relative"
-                      style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
-                      animate={{ rotateY: isFlippedCard ? 180 : 0 }}
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                {/* Contenido principal: Título y Card distribuidos uniformemente */}
+                <div className="flex-1 flex flex-col items-center justify-evenly w-full select-none z-10 min-h-0 py-2 px-2">
+                  {/* Título símbolo del día con el mismo estilo que mapa onírico */}
+                  <div className="w-full px-4 flex justify-center shrink-0">
+                    <motion.h2
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="font-naiveer text-[#FF94DA] text-xl sm:text-2xl md:text-3xl tracking-wide drop-shadow-[0_2px_8px_rgba(255,148,218,0.35)] m-0"
                     >
+                      símbolo del día
+                    </motion.h2>
+                  </div>
+
+                  {/* Card volteable 3D al hacer click */}
+                  <div className="w-full flex flex-col items-center justify-center p-4 relative z-10">
+                    <div
+                      className="relative w-full max-w-[340px] aspect-square cursor-pointer select-none"
+                      style={{ perspective: 1200 }}
+                      onClick={() => setIsFlippedCard(prev => !prev)}
+                    >
+                      <motion.div
+                        className="w-full h-full relative"
+                        style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
+                        animate={{ rotateY: isFlippedCard ? 180 : 0 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      >
                       {/* Cara A (Dorso con texto según diseño Figma) */}
                       <div
                         className="absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between text-center"
@@ -882,6 +896,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                   <span className="text-white/70 text-xs mt-3 uppercase tracking-wider font-medium drop-shadow">
                     toca la carta para girar
                   </span>
+                  </div>
                 </div>
 
                 {/* Espaciador inferior */}
