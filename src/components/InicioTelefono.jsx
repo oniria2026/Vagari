@@ -38,13 +38,36 @@ const CARDS_DIA = [
   { name: 'mixto', src: mixto, descripcion: 'Este simbolo representa la combinación de lo orgánico y lo tecnológico.' },
 ];
 
+// Función para obtener el símbolo correspondiente al día actual.
+// Rota 1 por día para todos los usuarios por igual en un ciclo ordenado de 11 días (sin repetirse dentro del ciclo),
+// cambiando exactamente a las 00:00 hs.
+function getSimboloDelDia() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+  // Epoch de referencia local a las 00:00 (1 de enero de 2026)
+  const baseLocal = new Date(2026, 0, 1, 0, 0, 0, 0).getTime();
+  const todayLocal = new Date(year, month, day, 0, 0, 0, 0).getTime();
+  const daysDiff = Math.floor((todayLocal - baseLocal) / (1000 * 60 * 60 * 24));
+  const index = ((daysDiff % CARDS_DIA.length) + CARDS_DIA.length) % CARDS_DIA.length;
+  return CARDS_DIA[index];
+}
+
 export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBack }) {
   const containerRef = useRef(null);
 
-  // Símbolo asignado
-  const [simboloDia] = useState(() => {
-    return CARDS_DIA[Math.floor(Math.random() * CARDS_DIA.length)];
-  });
+  // Símbolo del día asignado (cambia a las 00:00 hs de manera unificada para todos los usuarios)
+  const [simboloDia, setSimboloDia] = useState(getSimboloDelDia);
+
+  useEffect(() => {
+    // Mantener actualizado el símbolo automáticamente si la app queda abierta al cruzar las 00:00
+    const checkDayInterval = setInterval(() => {
+      const current = getSimboloDelDia();
+      setSimboloDia((prev) => (prev.name !== current.name ? current : prev));
+    }, 60000);
+    return () => clearInterval(checkDayInterval);
+  }, []);
 
   // Guarda el id y las coordenadas del icono pulsado para expandirse desde ahí
   const [activeApp, setActiveApp] = useState(() => {
