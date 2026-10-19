@@ -71,7 +71,6 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
   // 10/17/2026 de 18:00 a 19:00 hs (hora local). Las demás fechas inician a las 00:00 por defecto.
   const VAGARI_EVENTS = [
     { start: new Date('2026-10-17T18:00:00'), end: new Date('2026-10-17T19:00:00') },
-    { start: new Date('2026-10-19T00:00:00'), end: new Date('2026-10-19T23:59:59') },
     { start: new Date('2026-10-23T00:00:00'), end: new Date('2026-10-23T23:59:59') },
     { start: new Date('2026-10-25T00:00:00'), end: new Date('2026-10-25T23:59:59') },
     { start: new Date('2026-11-08T00:00:00'), end: new Date('2026-11-08T23:59:59') },
