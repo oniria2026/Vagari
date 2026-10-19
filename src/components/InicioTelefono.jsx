@@ -25,17 +25,17 @@ import agua from '../assets/agua.svg';
 import color from '../assets/color.svg';
 import dia from '../assets/dia.svg';
 const CARDS_DIA = [
-  { name: 'dia', src: dia, descripcion: 'Este es tu símbolo y representa la luz del sol en todas sus formas.' },
-  { name: 'noche', src: noche, descripcion: 'Este es tu símbolo y representa la luz de la luna.' },
-  { name: 'tierra', src: tierra, descripcion: 'Este es tu símbolo y representa las rocas y el suelo.' },
-  { name: 'agua', src: agua, descripcion: 'Este es tu símbolo y representa los ríos y el océano.' },
-  { name: 'fuego', src: fuego, descripcion: 'Este es tu símbolo y representa el calor y las llamas.' },
-  { name: 'aire', src: aire, descripcion: 'Este es tu símbolo y representa el viento y la brisa.' },
-  { name: 'monocromo', src: monocromo, descripcion: 'Este es tu símbolo y representa la ausencia de color a través del blanco, el negro y los grises.' },
-  { name: 'color', src: color, descripcion: 'Este es tu símbolo y representa la diversidad y combinación de colores.' },
-  { name: 'organico', src: organico, descripcion: 'Este es tu símbolo y representa la naturaleza y la vida vegetal.' },
-  { name: 'tecnologico', src: tecnologico, descripcion: 'Este es tu símbolo y representa lo digital, la tecnología y lo electrónico.' },
-  { name: 'mixto', src: mixto, descripcion: 'Este es tu símbolo y representa la combinación de lo orgánico y lo tecnológico.' },
+  { name: 'dia', src: dia, descripcion: 'Este simbolo representa la luz del sol en todas sus formas.' },
+  { name: 'noche', src: noche, descripcion: 'Este simbolo representa la luz de la luna.' },
+  { name: 'tierra', src: tierra, descripcion: 'Este simbolo representa las rocas y el suelo.' },
+  { name: 'agua', src: agua, descripcion: 'Este simbolo representa los ríos y el océano.' },
+  { name: 'fuego', src: fuego, descripcion: 'Este simbolo representa el calor y las llamas.' },
+  { name: 'aire', src: aire, descripcion: 'Este simbolo representa el viento y la brisa.' },
+  { name: 'monocromo', src: monocromo, descripcion: 'Este simbolo representa la ausencia de color a través del blanco, el negro y los grises.' },
+  { name: 'color', src: color, descripcion: 'Este simbolo representa la diversidad y combinación de colores.' },
+  { name: 'organico', src: organico, descripcion: 'Este simbolo representa la naturaleza y la vida vegetal.' },
+  { name: 'tecnologico', src: tecnologico, descripcion: 'Este simbolo representa lo digital, la tecnología y lo electrónico.' },
+  { name: 'mixto', src: mixto, descripcion: 'Este simbolo representa la combinación de lo orgánico y lo tecnológico.' },
 ];
 
 export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBack }) {
