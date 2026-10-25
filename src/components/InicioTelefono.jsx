@@ -617,7 +617,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                     className="w-full max-w-[380px] sm:max-w-[400px] px-3 sm:px-4 flex flex-col items-center justify-center shrink-0"
                   >
                     <a
-                      href="https://maps.app.goo.gl/HhC3wZjGPtjrU1CM8?g_st=aw"
+                      href="https://maps.app.goo.gl/1Gvw2cib8hLaGqGM7"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="cursor-pointer active:scale-95 transition-transform flex flex-col items-center group w-full"
