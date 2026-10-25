@@ -617,7 +617,7 @@ export default function InicioTelefono({ onOpenApp, initialApp, onCloseApp, onBa
                     className="w-full max-w-[380px] sm:max-w-[400px] px-3 sm:px-4 flex flex-col items-center justify-center shrink-0"
                   >
                     <a
-                      href="https://www.google.com/maps/place/Diag.+78+1009,+B1904BTR+La+Plata,+Provincia+de+Buenos+Aires/@-34.927414,-57.9448397,17z/data=!3m1!4b1!4m5!3m4!1s0x95a2e89e4c6daeab:0x6188c9d266b2a7a1!8m2!3d-34.9274184!4d-57.9422648?entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+                      href="https://maps.app.goo.gl/ReCZwa1ojpFrvnwz6"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="cursor-pointer active:scale-95 transition-transform flex flex-col items-center group w-full"
